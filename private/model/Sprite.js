@@ -77,6 +77,12 @@ Sprite.prototype = {
                 break;
         }
     },
+    /**
+     * （私有函数）攻击
+     * @param bg
+     * @returns {boolean}
+     * @private
+     */
     _attack:function(bg){
         if(this._t_isDead||this._t_loc<0)return false;
         console.log("开始攻击！");
@@ -104,6 +110,12 @@ Sprite.prototype = {
             }
         }
     },
+    /**
+     * （私有函数）防守
+     * @param bg
+     * @returns {boolean}
+     * @private
+     */
     _defend:function(bg){
         if(this._t_isDead||this._t_loc<0)return false;
         console.log("防守！");
@@ -117,6 +129,10 @@ Sprite.prototype = {
             }
         }
     },
+    /**
+     * 收到伤害
+     * @param damage
+     */
     getDamage:function(damage){
         var realD = damage - this._t_armor;
         if(realD<0)realD = 0;
@@ -127,6 +143,10 @@ Sprite.prototype = {
             this._die();
         }
     },
+    /**
+     * (私有函数）死亡
+     * @private
+     */
     _die:function(){
         this._t_isDead = true;
         console.log(this.type + " 死了");

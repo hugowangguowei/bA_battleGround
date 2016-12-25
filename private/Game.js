@@ -182,16 +182,6 @@ Game.prototype.endGame = function(winnerList,detail){
     this.GM.closeOneGame(this.id);
 };
 /**
- * 数据分析
- */
-Game.prototype.dataAnalyse = function(){
-    var quaTree = this.geoInfo.quaTree;
-    var leafList = quaTree.getLeafNode();
-    for(var i = 0;i<leafList.length;i++ ){
-
-    }
-};
-/**
  * 游戏自动控制
  */
 Game.prototype._autoCtrl = function(){
@@ -340,6 +330,7 @@ Game.prototype.pushData = function(data){
     this.dataPool.push(data);
 }
 //====================================================================================
+//TODO 用户输入需要一个新的对象来处理
 /**
  * 用户输入
  * @param inputInfo
@@ -429,6 +420,7 @@ Game.prototype._testCampSubmit = function(player,detail){
 Game.prototype._battle = function(){
     this.battleGround.ready(this.campManager);
     this.battleGround.fight();
+    this.battleGround.statistic();
     this.battleGround.clean();
     this._battleStatistic();
     this._playerOpReset();

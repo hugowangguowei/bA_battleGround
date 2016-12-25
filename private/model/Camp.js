@@ -1,9 +1,11 @@
 /**
+ * 阵营
  * Created by wgw on 2016/4/18.
  */
 
 module.exports = Camp;
 var GUID = require("../../dep/baBasicLib/util/GUID");
+var GroupManager = require("./controller/GroupManager");
 
 function Group(){
     this.soldierList = [];
@@ -12,7 +14,7 @@ function Group(){
 function Camp(id){
     this.id = id||GUID.getGUID();
     this.commander = null;
-    this.groupList = {};
+    this.groupManager = new GroupManager(this);
     this.battleGround = null;
     this._t_num = 0;
 }
@@ -40,6 +42,13 @@ Camp.prototype = {
         }
         campInfo.solderDetail = soldierDetail;
         return campInfo;
+    },
+    addSoldier:function(soldier){
+        var group = this.groupManager.getGroupBySoldierType(soldier.type);
+        if(!group) {
+            group = this.groupManager.addGroupBySoldierType(soldier.type);
+        };
+        group.addSoldier(soldier);
     },
     setCampByClientSubmit:function(campInfo){
         var soldierInfo_i,group_i,soldier_p;
@@ -71,6 +80,9 @@ Camp.prototype = {
         soldier._t_aimLoc = aimLoc;
         soldier._t_attLoc = attLoc;
         soldier._t_order = order;
+    },
+    refreshBlockInfo:function(blockInfo){
+
     },
     /**
      * 战后清理（主要是把死人清理出战场）

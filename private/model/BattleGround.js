@@ -9,6 +9,7 @@ var Block = function(id){
     this.id = id;
     this.loc = id;
     this.soldierList = [];
+    this.campList = [];
 }
 Block.prototype = {
     initialize:function(){
@@ -56,6 +57,17 @@ Block.prototype = {
         return null;
     },
     /**
+     * 数据统计
+     */
+    statistic:function(){
+        if(!this.soldierList.length)return 0;
+        var campList = this.getCampInBlock();
+        var blockInfo = this.getOutPut();
+        for(var i = 0;i<campList.length;i++){
+            campList[i].refreshBlockInfo(blockInfo);
+        }
+    },
+    /**
      * 战后block的清理
      */
     clean:function(){
@@ -65,10 +77,37 @@ Block.prototype = {
         this.soldierList = [];
     },
     /**
+     * 获取当前块的阵营信息
+     */
+    getCampInBlock:function(){
+        var campList = [];
+        var camp_i;
+        if(!this.soldierList.length)return campList;
+        outerLoop:
+        for(var i = 0;i<this.soldierList.length;i++){
+            var camp = this.soldierList[i].getCamp();
+            var isExist = false;
+            innerLoop:
+            for(var p = 0;p<campList.length;p++){
+                camp_i = campList[i];
+                if(camp.id == camp_i.id){
+                    isExist = true;
+                    break innerLoop;
+                }
+            }
+            if(!isExist)campList.push(camp);
+        }
+        this.campList = campList;
+        return campList;
+    },
+    /**
      * 获取基本信息
      * @returns {null}
      */
     getOutPut: function () {
+        var blockId = this.id;
+        var blockState;
+        if(this.campList)
         return null;
     }
 }
@@ -109,12 +148,15 @@ BattleGround.prototype = {
         var camp,group,soldier;
         for(var i in campList){
             camp = campList[i];
+            loop:
             for(var p in camp.groupList){
                 group = camp.groupList[p];
+
                 for(var m = 0;m<group.length;m++){
                     soldier = group[m];
                     this.addSoldier(soldier);
-                }
+                };
+
             }
         }
     },
@@ -137,6 +179,16 @@ BattleGround.prototype = {
                 soldier = speedGroup[p];
                 soldier.t_action(this);
             }
+        }
+    },
+    /**
+     * 数据统计
+     */
+    statistic:function(){
+        var block;
+        for(var i = 0;i<this.blockList.length;i++){
+            block = this.blockList[i];
+            block.statistic();
         }
     },
     /**
