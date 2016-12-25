@@ -1,0 +1,369 @@
+#outS{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: black;
+}
+/*检查界面样式========================================================================================================*/
+#resureLayer{
+    width: 100%;
+    height: 100%;
+    position:absolute;
+    opacity:0.95;
+    background-color: #2482bd;
+    z-index: 100;
+}
+#resureLayer_text_1{
+    width: 20%;
+    height: 10%;
+    position: absolute;
+    margin-top: 15%;
+    margin-left: 45%;
+    color: #ffffff;;
+}
+#resureLayer_btn_1{
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    margin-left: 40%;
+    margin-top: 20%;
+}
+#resureLayer_btn_2{
+    width: 10%;
+    height: 10%;
+    position: absolute;
+    margin-left: 50%;
+    margin-top: 20%;
+}
+/*初始化界面样式-mainShow=============================================================================================*/
+@media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) {
+    #INIT_name{
+        width: 20%;
+        height: 15%;
+        margin: 10% 40%;
+        text-align: center;
+        font-size: 200%;
+        position: absolute;
+        background-image: -webkit-linear-gradient(left, #3c7d96, #d6e4e6 25%, #417196 50%, #b7e6d3 75%, #5b8396);
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-background-size: 200% 100%;
+        -webkit-animation: masked-animation 4s infinite linear;
+    }
+}
+@-webkit-keyframes masked-animation {
+    0%  { background-position: 0 0;}
+    100% { background-position: -100% 0;}
+}
+#INIT_connect{
+    color: white;
+    width: 20%;
+    height: 10%;
+    margin: 20% 40%;
+    border:1px solid white;
+    background-color: black;
+}
+/*主界面样式-mainShowBasicStruct======================================================================================*/
+#MT_title{
+    width: 100%;
+    height: 10%;
+    background-color: aqua;
+}
+#MT_main{
+    width: 100%;
+    height: 70%;
+    position: absolute;
+    background-color: #e1e6ea;
+}
+#MT_leftFrame1{
+    width: 5%;
+    height: 100%;
+    background-color: coral;
+    position: absolute;
+}
+#MT_leftFrame2{
+    width: 20%;
+    height: 100%;
+    background-color: coral;
+    position: absolute;
+}
+#MT_middleFrame{
+    width: 60%;
+    height: 100%;
+    margin: 0 20%;
+    background-color: gray;
+    position: absolute;
+    box-shadow: inset 0 0 3px 3px black;
+    overflow: scroll;
+}
+.roomIntro{
+    width: 90%;
+    height: 10%;
+    margin: 1% 5%;
+    background-color: burlywood;
+}
+.roomIntroSelected{
+    background-color: cyan;
+}
+.rI_b1{
+    width: 10%;
+    height: 90%;
+    margin: 0.4% 1%;
+    background-color: #cf9d00;
+    float: left;
+}
+.rI_b2{
+    width: 20%;
+    height: 90%;
+    margin: 0.4% 1%;
+    background-color: #E99494;
+    float: left;
+}
+.rI_b3{
+    width: 40%;
+    height: 90%;
+    margin: 0.4% 1%;
+    background-color: #1971a8;
+    float: left;
+}
+#MT_rightFrame1{
+    width: 5%;
+    height: 100%;
+    right: 0;
+    background-color: coral;
+    position: absolute;
+}
+#MT_rightFrame2{
+    width: 20%;
+    height: 100%;
+    right: 0;
+    background-color: coral;
+    position: absolute;
+}
+.roomBtn{
+    width: 70%;
+    height: 10%;
+    text-shadow:1px 1px 1px #f2e;
+    position: absolute;
+}
+#MT_btn1{
+    margin: 5% 15%;
+}
+#MT_btn2{
+    margin: 25% 15%;
+}
+#MT_btn3{
+    margin: 45% 15%;
+}
+#MT_rF_buildRoom{
+    width: 70%;
+    height: 50%;
+    margin: 70% 0 15% 15%;
+    position: absolute;
+    background-color: white;
+}
+.MT_rF_buildRoomInner{
+    width:80%;
+    height: 10%;
+    margin: 3% 9%;
+}
+.MT_roomBtn_inner1{
+    width:50%;
+}
+#MT_rF_searchRoom{
+    width: 70%;
+    height: 50%;
+    margin: 70% 0 15% 15%;
+    position: absolute;
+    background-color: white;
+}
+#MT_bottom{
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    bottom: 0;
+    background-color: darkcyan;
+}
+#MT_bottomFrame{
+    width: 60%;
+    height: 90%;
+    margin: 0.5% 20%;
+    position: absolute;
+    background-color: #6f6f6f;
+    overflow: scroll;
+}
+#MT_gameControl_div{
+    width: 18%;
+    height: 90%;
+    right: 0;
+    margin: 0.5% 1%;
+    position: absolute;
+}
+.MT_gameControl_btns{
+
+}
+#MT_gC_start{
+    width: 40%;
+    height: 90%;
+    position: absolute;
+}
+#MT_gC_leaderQuit{
+    width: 40%;
+    height: 20%;
+    position: absolute;
+    margin: 0 42%;
+}
+#MT_gC_kick{
+    width: 40%;
+    height: 20%;
+    position: absolute;
+    margin: 12% 42%;
+}
+#MT_b_wrap{
+    min-width: 100px;
+    height: 90%;
+    position: absolute;
+    display: flex;
+    flex-wrap: nowrap;
+    left:0;
+    top: 0;
+}
+.MT_memIntro{
+    width: 100px;
+    height: 90%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    float: left;
+    background-color: blanchedalmond;
+    margin: 2px 2px;
+}
+/*游戏界面样式-gameStruct=============================================================================================*/
+#GA_title{
+    width: 100%;
+    height: 10%;
+    background-color: aqua;
+}
+#GA_main{
+    width: 100%;
+    height: 70%;
+    position: absolute;
+    background-color: #e1e6ea;
+}
+#GA_leftFrame1{
+    width: 5%;
+    height: 100%;
+    background-color: coral;
+    position: absolute;
+}
+#GA_leftFrame2{
+    width: 20%;
+    height: 100%;
+    background-color: coral;
+    position: absolute;
+}
+#GA_middleFrame{
+    width: 60%;
+    height: 100%;
+    margin: 0 20%;
+    background-color:white;
+    position: absolute;
+    box-shadow: inset 0 0 3px 3px black;
+    overflow: scroll;
+}
+.GA_textTag{
+    width: 90%;
+    height: 10%;
+    margin: 1% 5%;
+    border-color: #2482bd;
+    /*background-color: darkgray;*/
+    box-shadow: 0 0 2px 2px green;
+}
+.GA_tT1{
+    width: 10%;
+    height: 90%;
+    float: left;
+    background-color: #E99494;
+}
+.GA_tT2{
+    width: 70%;
+    height: 90%;
+    background-color: wheat;
+}
+#GA_rightFrame0{
+    width: 20%;
+    height: 100%;
+    right: 0;
+    background-color:#aaebb9;
+    position: absolute;
+}
+#GA_memContainer{
+    width: 70%;
+    height: 90%;
+    position: absolute;
+    overflow: scroll;
+    background-color: #d6e4e6;
+    margin: 5% 2.5%;
+}
+.GA_memTag{
+    width: 90%;
+    height: 15%;
+    background-color: #3fa2e0;
+    margin: 1% 0;
+}
+#GA_rightFrame1{
+    width: 5%;
+    height: 100%;
+    right: 0;
+    background-color: coral;
+    position: absolute;
+}
+#GA_rightFrame2{
+    width: 20%;
+    height: 100%;
+    right: 0;
+    background-color: coral;
+    position: absolute;
+    z-index: 10;
+}
+.roomBtn{
+    width: 70%;
+    height: 10%;
+    /*text-align: center;*/
+    /*font-weight: bold;*/
+    /*color: #ffe;*/
+    text-shadow:1px 1px 1px #f2e;
+    /*border-radius: 5px;*/
+    /*margin:0 15%;*/
+    position: absolute;
+}
+#GA_rF2_btn1{
+    margin: 5% 15%;
+}
+#GA_rF2_btn2{
+    margin: 25% 15%;
+}
+#GA_rF2_btn3{
+    margin: 45% 15%;
+}
+#GA_bottom{
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    bottom: 0;
+    background-color: darkcyan;
+}
+#GA_input{
+    width: 60%;
+    height: 90%;
+    margin: 0.4% 20%;
+    position: absolute;
+}
+#GA_submitBtn{
+    width: 15%;
+    height: 90%;
+    right: 0;
+    margin: 0.4% 2.5%;
+    position: absolute;
+    background-color: lightsalmon;
+}

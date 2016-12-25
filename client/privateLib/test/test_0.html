@@ -1,0 +1,170 @@
+<html>
+<head>
+    <title>Wormhole</title>
+</head>
+<body>
+<canvas id="canvas"/>
+</body>
+<script>
+    'use strict';
+    (function () {
+
+        /* Configuration */
+        var spacing = 0.5;
+        var velocity = 2;
+        /* Fixed circular radius */
+        var radius = function (i) {
+            return {
+                x:5,
+                y:5
+            };
+        };
+        /* Circle centre */
+        var centre = function (i, t) {
+            return {
+                x: 0,
+                y: 0,
+                z: spacing * i - velocity * t
+            };
+        };
+        /* Wobble the tunnel */
+        var wobble = function (i) {
+            return {
+                x: Math.cos(i / 12) * 5 + Math.cos(i / 4) * 2,
+                y: Math.sin(i / 9) * 6
+            };
+        };
+        var wobbledepth = 1/5;
+        /* Viewport and projection parameters */
+        var fovy = 120;
+        var viewport = { x: 600, y: 400 };
+
+        /* View */
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        var f = 1 / Math.tan(fovy * Math.PI / 180 / 2);
+        /* Max render distance */
+        var zmax = 30;
+        /* Color theme */
+        var heatmap = [[0, 0, 0.1], [0.3, 0.8, 0.7]];
+
+        /* Initialise the view and start the animation */
+        function init() {
+            canvas.width = viewport.x;
+            canvas.height = viewport.y;
+        }
+        /* Project a 3D point onto the 2D canvas */
+        function project(p, z) {
+            if (typeof z === 'undefined') {
+                z = p.z;
+            }
+            var scale = (z > 1) ? (f / z) : (f);
+            return {
+                x: p.x * scale,
+                y: p.y * scale
+            };
+        }
+        /* Convert a byte to a 2-digit hex string */
+        function byte(v) {
+            var i = Math.floor(v * 256);
+            if (i < 0) i = 0;
+            if (i > 255) i = 255;
+            var hex = '0123456789abcdef';
+            return hex[i >> 4] + hex[i & 0xf];
+        }
+        /* Project v in [0,1] onto a heatmap */
+        function heat(v) {
+            return '#' + [0, 1, 2].map(function (i) {
+                        var min = heatmap[0][i];
+                        var max = heatmap[1][i];
+                        return byte(v * (max - min) + min);
+                    }).join('');
+        }
+        /* Use the heatmap to generate colour based on spatial position */
+        function color(x, z) {
+            return heat(1 - Math.cos(Math.atan2(x, z)));
+        }
+        /*
+         * Calculate wobble displacement
+         *
+         * Rather than model an actual network of tunnels winding around
+         * in space, we cheat and have a displacement that appears to
+         * INCREASE with distance from viewer, instead of decreasing as
+         * one would expect with a perspective projection.  This creates
+         * a nice illusion of winding tunnels without requiring us to
+         * actually generate a map.
+         */
+        function wobblevector(i, z) {
+            var wz = z * wobbledepth;
+            if (wz < 0) wz = 0;
+            wz = 1 - Math.exp(-wz);
+            var w = wobble(i);
+            return {
+                x: w.x * wz,
+                y: w.y * wz
+            };
+        }
+        /*
+         * Render a ring
+         *
+         * In order to support occlusion (which occurs due to wobbling),
+         * we don't draw the rings from front to back as one would expect,
+         * filling in circles.  Instead, we draw from back to front,
+         * filling the area OUTSIDE of the next-furthest circle.  Hence,
+         * this function generates a path representing the canvas minus the
+         * inner circle, and fills that path.  This region subtraction
+         * operation seems to be quite slow in Chrome, considerably slower
+         * than I'd even expect the Windows GDI to be...  Ah well!
+         */
+        function ring(i, t) {
+            var c = centre(i, t);
+            var wv = wobblevector(i, c.z);
+            c.x += wv.x;
+            c.y += wv.y;
+            var r = radius(i);
+            var cp = project(c);
+            var rp = project(r, c.z);
+            context.beginPath();
+            context.save();
+            /* Render the inner circle (subtractive) */
+            context.scale(viewport.x / 2, viewport.y / 2);
+            context.translate(1, 1);
+            context.scale(viewport.y / viewport.x, 1);
+            context.scale(rp.x, rp.y);
+            context.arc(cp.x, cp.y, 1, 0, Math.PI * 2);
+            /* Render the outer rectangle */
+            context.restore();
+            context.rect(viewport.x, 0, -viewport.x, viewport.y);
+            /* Fill */
+            context.fillStyle = color(r.x, c.z);
+            context.fill();
+        }
+        /* Render a frame */
+        var start = new Date().getTime();
+        function render() {
+            var t = (new Date().getTime() - start) / 1000;
+
+            var imin = Math.floor(t * velocity / spacing - 1);
+            var imax = imin + Math.floor(zmax / spacing);
+            context.setTransform(1, 0, 0, 1, 0, 0);
+            context.fillStyle = color(0, zmax);
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (var i = imax; i >= imin; i--) {
+                ring(i, t);
+            }
+
+            if (window.requestAnimationFrame) {
+                window.requestAnimationFrame(render);
+            }
+            else {
+                setTimeout(render, 10);
+            }
+        }
+        /* Initialise */
+        init();
+        /* Start */
+        render();
+    })();
+</script>
+</html>

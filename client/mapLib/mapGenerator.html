@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="UI/style.css" type="text/css"/>
+    <script type="text/javascript" src="../dep/socket.io.js"></script>
+    <script type="text/javascript" src="../dep/require.js"></script>
+    <script type="text/javascript" src="../dep/jquery-1.9.1.js"></script>
+    <!--webGL-->
+    <script src="../dep/webGL/webgl-utils.js"></script>
+    <script src="../dep/webGL/webgl-debug.js"></script>
+    <script src="../dep/webGL/cuon-utils.js"></script>
+    <script src="../dep/webGL/cuon-matrix.js"></script>
+
+    <style>
+    </style>
+    <script>
+        requirejs.config({
+            baseUrl:'../',
+            path:{
+                baBasicLib:"baBasicLib",
+                mapController:"mapLib/controller",
+                mapView:"mapLib/view"
+            }
+        });
+        require([
+                    'mapLib/controller/GeoManager',
+                    'mapLib/view/GEO_view',
+                    'mapLib/view/GEO_3D_view',
+                    'mapLib/view/BLOCK_view',
+                    'baBasicLib/webSocket/WS_Manager',
+                    'mapLib/webSocket/WS_Config',
+                    'mapLib/webSocket/WS_msgDefine',
+                    'mapLib/config/btn_event'
+                ],
+                function(GeoManager,Geo_view,Geo_3D_view,Block_view,wsManager,wsConfig,wsMsgDefine,btn_event){
+                    var geoManager = GeoManager.getInstance();
+                    var mainCanvas = document.getElementById("mainCanvas");
+//                    var geoView1 = new Geo_view(mainCanvas,geoManager,"color");
+                    var geoView1 = new Geo_3D_view(mainCanvas,geoManager,"color");
+                    var secCanvas = document.getElementById("secCanvas");
+                    var geoView2 = new Block_view(secCanvas,geoManager,"text");
+
+                    var WSM = wsManager.getInstance(geoManager,wsConfig,wsMsgDefine);
+
+                    $("#connectSer").click(function () {
+                        btn_event.BTN_E_connectToServer();
+                    });
+                    $("#submitMap").click(function(){
+                        var mapName = $("#mapName").val();
+                        var mapInfo = geoManager.paperInfo;
+                        btn_event.BTN_E_uploadMap({mapName:mapName,mapInfo:mapInfo});
+                    });
+                });
+
+    </script>
+</head>
+<body>
+    高 度:<input id = "penWeight" type="text" value="20">
+    半 径:<input id = "penRadius" type="text" value="5">
+    类 型:<input id = "penType" type="text" value="normal">
+    <input id = "penInfoSub" type="button" value="提交">
+    <hr>
+    颜色1:
+    <input id = "color1R" class="colorInput" type="text" value="255">
+    <input id = "color1G" class="colorInput" type="text" value="0">
+    <input id = "color1B" class="colorInput" type="text" value="0">
+    <input id = "color1H" class="colorInput" type="text" value="255">
+    颜色2:
+    <input id = "color2R" class="colorInput" type="text" value="0">
+    <input id = "color2G" class="colorInput" type="text" value="255">
+    <input id = "color2B" class="colorInput" type="text" value="0">
+    <input id = "color2H" class="colorInput" type="text" value="0">
+    颜色3:
+    <input id = "color3R" class="colorInput" type="text" value="0">
+    <input id = "color3G" class="colorInput" type="text" value="0">
+    <input id = "color3B" class="colorInput" type="text" value="255">
+    <input id = "color3H" class="colorInput" type="text" value="-255">
+    <input id = "colorInfoSub" type="button" value="提交">
+    渐变效果：<canvas id = "colorPane" style="width: 512px;height: 10px"></canvas>
+    <hr>
+    <input id = "connectSer" type="button" value="连接服务器">
+    <input id = "mapName" type="text" value="mapName">
+    <input id = "submitMap" type="button" value="提交地图">
+    <div id = "mainDiv">
+        <canvas id = "mainCanvas"></canvas>
+        <canvas id = "secCanvas"></canvas>
+    </div>
+</body>
+</html>

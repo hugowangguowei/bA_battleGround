@@ -1,0 +1,165 @@
+<style>
+    #outS{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
+    #GA_title{
+        width: 100%;
+        height: 10%;
+        background-color: aqua;
+    }
+    #GA_main{
+        width: 100%;
+        height: 70%;
+        position: absolute;
+        background-color: #e1e6ea;
+    }
+    #GA_leftFrame1{
+        width: 5%;
+        height: 100%;
+        background-color: coral;
+        position: absolute;
+    }
+    #GA_leftFrame2{
+        width: 20%;
+        height: 100%;
+        background-color: coral;
+        position: absolute;
+    }
+    #GA_middleFrame{
+        width: 60%;
+        height: 100%;
+        margin: 0 20%;
+        background-color:white;
+        position: absolute;
+        box-shadow: inset 0 0 3px 3px black;
+        overflow: scroll;
+    }
+    .GA_textTag{
+        width: 90%;
+        height: 10%;
+        margin: 1% 5%;
+        border-color: #2482bd;
+        /*background-color: darkgray;*/
+        box-shadow: 0 0 2px 2px green;
+    }
+    .GA_tT1{
+        width: 10%;
+        height: 90%;
+        float: left;
+        background-color: #E99494;
+    }
+    .GA_tT2{
+        width: 70%;
+        height: 90%;
+        background-color: wheat;
+    }
+    #GA_rightFrame1{
+        width: 5%;
+        height: 100%;
+        right: 0;
+        background-color: coral;
+        position: absolute;
+    }
+    #GA_rightFrame2{
+        width: 20%;
+        height: 100%;
+        right: 0;
+        background-color: coral;
+        position: absolute;
+    }
+    .roomBtn{
+        width: 70%;
+        height: 10%;
+        /*text-align: center;*/
+        /*font-weight: bold;*/
+        /*color: #ffe;*/
+        text-shadow:1px 1px 1px #f2e;
+        /*border-radius: 5px;*/
+        /*margin:0 15%;*/
+        position: absolute;
+    }
+    #GA_btn1{
+        margin: 5% 15%;
+        /*color: blueviolet;*/
+    }
+    #GA_btn2{
+        margin: 25% 15%;
+    }
+    #GA_btn3{
+        margin: 45% 15%;
+    }
+    #GA_bottom{
+        width: 100%;
+        height: 20%;
+        position: absolute;
+        bottom: 0;
+        background-color: darkcyan;
+    }
+    #GA_input{
+        width: 60%;
+        height: 90%;
+        margin: 0.4% 20%;
+        position: absolute;
+    }
+    #GA_submitBtn{
+        width: 15%;
+        height: 90%;
+        right: 0;
+        margin: 0.4% 2.5%;
+        position: absolute;
+        background-color: lightsalmon;
+    }
+</style>
+<div id = "outS">
+    <div id = "GA_title"></div>
+    <div id = "GA_main">
+        <div id = "GA_leftFrame1"></div>
+        <div id = "GA_leftFrame2"></div>
+        <div id = "GA_middleFrame">
+
+        </div>
+        <div id = "GA_rightFrame1"></div>
+        <div id = "GA_rightFrame2">
+            <input type="button" id = "GA_btn1" class="roomBtn" value="buildRoom">
+            <input type="button" id = "GA_btn2" class="roomBtn" value="getIntoRoom">
+            <input type="button" id = "GA_btn3" class="roomBtn" value="addMem">
+        </div>
+    </div>
+    <div id = "GA_bottom">
+        <input type="text" id = "GA_input">
+        <input type="button" id="GA_submitBtn" value="submit">
+    </div>
+</div>
+<script>
+    $("#GA_leftFrame2").hide();
+    $("#GA_rightFrame1").hide();
+    $("#GA_leftFrame1").on("click",function(){
+        $("#GA_leftFrame1").hide();
+        $("#GA_leftFrame2").show();
+    });
+    $("#GA_leftFrame2").on("click",function(){
+        $("#GA_leftFrame2").hide();
+        $("#GA_leftFrame1").show();
+    });
+    $("#GA_rightFrame1").on("click",function(){
+        $("#GA_rightFrame1").hide();
+        $("#GA_rightFrame2").show();
+    });
+    $("#GA_rightFrame2").on("click",function(){
+        $("#GA_rightFrame2").hide();
+        $("#GA_rightFrame1").show();
+    });
+    $("#GA_submitBtn").on("click",function(){
+        var $GA_input = $('#GA_input')
+        var value = $GA_input.val();
+        $GA_input.val("");
+        var $newTextTag = $('<div></div>').addClass('GA_textTag');
+        $newTextTag.html(
+                "<div class = 'GA_tT1'></div>" +
+                "<div class='GA_tT2'>"+ value + "</div>"
+        )
+        $("#GA_middleFrame").append($newTextTag);
+    });
+</script>

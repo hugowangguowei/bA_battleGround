@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="UI/style.css" type="text/css"/>
+    <script type="text/javascript" src="../dep/require.js"></script>
+    <script type="text/javascript" src="../dep/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="./test/script/revengerRoad/chapter_1/buttonEvent.js"></script>
+    <script>
+        initUserId();
+        requirejs.config({
+            baseUrl:"../",
+            path:{
+                baBasicLib:"../baBasicLib",
+                strategyLib:"../strategyLib",
+                config:"./config",
+                gameStateMachine:"./gameStateMachine",
+                dep:"../dep",
+                privateLib:"./privateLib",
+                socket:":/socket",
+                test:"./test"
+            }
+        });
+        var gm;
+        var WSM;
+        //是否单身
+        var isSingle = false;
+        require(['' +
+                'gameLib/Game',
+                'gameLib/script/revengerRoad/chapter_1',
+                'gameLib/view/GAME_view',
+                'gameLib/view/STRATEGY_view',
+                'gameLib/view/CLOCK_view'
+                ],
+                function(
+                        Game,chapter_1,GameView,StrategyView,ClockView){
+                    gm = new Game();
+                    gm.loadChapter(chapter_1,null,true);
+                    var mainCanvas = document.getElementById("mainCanvas");
+                    var gameView = new GameView(mainCanvas,gm);
+                    var spCanvas = document.getElementById("spCanvas");
+                    var strategyView = new StrategyView(spCanvas,gm);
+                    var clockCanvas = document.getElementById("clockCanvas");
+                    var clockView = new ClockView(clockCanvas,gm);
+        });
+    </script>
+</head>
+<body onload="init()">
+<input type="button" id = "login" value = "登录" onclick="test0()">
+<input type="password" id = "MPassword" placeholder="管理员登录">
+<input type="text" id = "userId" placeholder="输入你的昵称">
+<input type="button" id="setUserId" value="确定使用该昵称" onclick="registerId()">
+<hr>
+<input type="button" id = "t2" value="test2" onclick="test2()">
+<select id = "roomSelect" onchange="changeRoomSelect(this)"></select>
+<select id = "charaSelect"></select>
+<input type="button" id = "refreshGameList" value="刷新游戏列表" onclick="refreshGameList()">
+<input type="button" id = "t3" value="test3" onclick="test3()">
+<input type="button" id = "t1" value="test1" onclick="test1()">
+<input type="button" id = "t4" value="test4" onclick="test4()">
+<input type="button" id = "t5" value="test5" onclick="test5()">
+<input type="button" id = "t6" value="查看帮助文档" onclick="test6()">
+<hr>
+先点‘连接服务器’按钮，然后点 ‘加入游戏’， 键盘上的 ←→ ↑ ↓ 可以控制某个对象
+<hr>
+<div id = "introduce" style="width: 582px; height: 608px">
+    <img src="../image/intro.PNG">
+    <!--游戏介绍：-->
+    <!--<hr>-->
+    <!--用户点击加入游戏，成功后将会显示当前战场上所有的对象-->
+    <!--你所控制的对象将被红色边框包裹-->
+    <!--<hr>-->
+    <!--角色介绍：-->
+    <!--<hr>-->
+    <!--三角形的点是骑士：骑士的攻击力会随着移动速度的增加而增加。-->
+    <!--小方块的点是熊：熊好像没啥特长。。。-->
+</div>
+<canvas id = "mainCanvas"></canvas>
+<canvas id = "spCanvas"></canvas>
+<canvas id = "clockCanvas"></canvas>
+<div id = "campDetail">
+
+</div>
+</body>
+</html>

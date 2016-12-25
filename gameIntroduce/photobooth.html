@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>bAdventure</title>
+
+    <style>
+      #video1{
+        position: absolute;
+        width: 350px;
+        height: 300px;
+      }
+      .standardCanvas{
+        position: absolute;
+        width: 1900px;
+        height: 300px;
+      }
+      #canvas1{
+        z-index: 0;
+      }
+      #canvas2{
+        z-index: 1;
+      }
+      #capture{
+        position: absolute;
+        top: 400px;
+      }
+      #mouseLoc{
+        position: absolute;
+        top: 400px;
+      }
+      .grayscale {
+        -webkit-filter: grayscale(1);
+        -moz-filter: grayscale(1);
+        -ms-filter: grayscale(1);
+        -o-filter: grayscale(1);
+        filter: grayscale(1);
+      }
+
+      .sepia {
+        -webkit-filter: sepia(1);
+        -moz-filter: sepia(1);
+        -ms-filter: sepia(1);
+        -o-filter: sepia(1);
+        filter: sepia(1);
+      }
+
+      .invert {
+        -webkit-filter: invert(1);
+        -moz-filter: invert(1);
+        -ms-filter: invert(1);
+        -o-filter: invert(1);
+        filter: invert(1);
+      }
+    </style>
+  </head>
+  <body>
+    <video id = 'video1' autoplay></video>
+    <canvas id = 'canvas1' class="standardCanvas"></canvas>
+    <canvas id = 'canvas2' class="standardCanvas"></canvas>
+    <div id = 'mouseLoc'>
+      trump嘴位置  x:<input id = 'tlx' type="text" value="200" oninput="inputChange()">
+      y:<input id = 'tly' type="text" value = '100' oninput="inputChange()">
+      <hr>
+      hilary嘴位置  x:<input id = 'hlx' value = '300' type="text" oninput="inputChange()">
+      y:<input id = 'hly' type="text" value = '100' oninput="inputChange()">
+    </div>
+
+    <!--<button id="capture">Capture</button>-->
+    <script src="dep/require.js"></script>
+    <script src="dep/jquery-1.9.1.js"></script>
+    <script src="photobooth.js"></script>
+  </body>
+</html>

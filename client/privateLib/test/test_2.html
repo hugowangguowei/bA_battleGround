@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body onload="init()">
+<script>
+    function init(){
+        function a(id){
+            this.id = id;
+        }
+        function b(id){
+            a.call(this,id);
+        }
+        var bb = new b("id");
+        console.log(bb.id);
+    }
+</script>
+</body>
+</html>

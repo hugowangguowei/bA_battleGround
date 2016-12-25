@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="UI/style.css" type="text/css"/>
+    <script type="text/javascript" src="../dep/socket.io.js"></script>
+    <script type="text/javascript" src="../dep/require.js"></script>
+    <script type="text/javascript" src="../dep/jquery-1.9.1.js"></script>
+    <script>
+        requirejs.config({
+            baseUrl:"../",
+            path:{
+                baBasicLib:"./baBasicLib",
+                config:"./config",
+                gameStateMachine:"./gameStateMachine",
+                dep:"../dep",
+                privateLib:"./privateLib",
+                socket:":/socket",
+                test:"./test"
+            }
+        });
+        var global;
+        var imageArray;
+        require(['baBasicLib/baGlobal','baBasicLib/gameState','privateLib/GSM/GSM_CSS_detail','privateLib/view/CSS_view'
+                    ],
+                function(baGlobal,gsm,GSM_detail,CSS_view){
+                    global = baGlobal.getInstance();
+                    var mainDiv = document.getElementById("mainDiv");
+                    var view1 = new CSS_view(mainDiv,global);
+                    var GSM1 = new gsm(global);
+
+                    var GSM_gameLoading = GSM_detail.gameLoading();
+                    var GSM_mainShow = GSM_detail.mainShow();
+                    var GSM_mainShowBasicStruct = GSM_detail.mainShowBasicStruct();
+                    var GSM_gameStruct = GSM_detail.gameStruct();
+                    GSM1.gameStateArray = [
+                        {stateName:"loading",stateFunction:GSM_gameLoading},
+                        {stateName:"mainShow",stateFunction:GSM_mainShow},
+                        {stateName:"mainShowBasicStruct",stateFunction:GSM_mainShowBasicStruct},
+                        {stateName:"gameStruct",stateFunction:GSM_gameStruct}
+                    ];
+                    GSM1.initRoutine();
+                });
+
+        function addText(){
+            var textB = global.getSpriteById("textShowTag");
+            if(textB){
+                textB.addText("haha");
+            }
+        }
+    </script>
+    <!-- 连接管理器 测试-->
+    <script type="text/javascript" src="test/socket/socketSpec.js"></script>
+</head>
+<body>
+<header>
+    <h1>test</h1>
+</header>
+<article>
+    roomName:<input type="text" id ="createRoomName" value="roomName"/>
+    memNum:<input type="text" id = "roomMemNum" value ="5"/>
+    <input type="button" id = "createRoomBtn" onclick="createNewRoom()" value = "确认创建"/>
+    <input type="button" id = "inputText" onclick="addText()" value="添加文字"/>
+    <hr>
+    <div id = "mainDiv"></div>
+    <hr>
+</article>
+</body>
+</html>
