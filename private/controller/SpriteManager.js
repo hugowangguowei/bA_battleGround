@@ -117,21 +117,21 @@ SpriteManager.prototype ={
             knight_i._t_camp = camp;
             knight_i._t_loc = num*8 + 1;
 
-            //archer_i = new Archer();
-            //archer_i._t_loc = num*8 + 2;
-            //archer_i._t_camp = camp;
-            //
-            //footMan_i = new FootMan();
-            //footMan_i._t_loc = num*8 + 3;
-            //footMan_i._t_camp = camp;
+            archer_i = new Archer();
+            archer_i._t_loc = num*8 + 2;
+            archer_i._t_camp = camp;
+
+            footMan_i = new FootMan();
+            footMan_i._t_loc = num*8 + 3;
+            footMan_i._t_camp = camp;
 
             if(!camp.groupList[knight_i.type])camp.groupList[knight_i.type] = [];
-            //if(!camp.groupList[archer_i.type])camp.groupList[archer_i.type] = [];
-            //if(!camp.groupList[footMan_i.type])camp.groupList[footMan_i.type] = [];
+            if(!camp.groupList[archer_i.type])camp.groupList[archer_i.type] = [];
+            if(!camp.groupList[footMan_i.type])camp.groupList[footMan_i.type] = [];
 
             camp.groupList[knight_i.type].push(knight_i);
-            //camp.groupList[archer_i.type].push(archer_i);
-            //camp.groupList[footMan_i.type].push(footMan_i);
+            camp.groupList[archer_i.type].push(archer_i);
+            camp.groupList[footMan_i.type].push(footMan_i);
         }
     }
 }
