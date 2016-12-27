@@ -8,7 +8,7 @@ function Sprite(id){
     this.id = id;
     this.controllable = true;
     this.controller = null;
-
+    this.type = "sprite";
     this.geoInfo = {
     }
     //新版属性=========================================================================
@@ -63,6 +63,21 @@ Sprite.prototype = {
     },
     getCamp:function(){
         return this._t_camp;
+    },
+    updatePropByOrder:function(info){
+        var loc,order,antiOrder,obey,brave,aimLoc,attLoc;
+        loc = info.loc;
+        order = info.order;
+        aimLoc = info.aimLoc;
+        attLoc = info.attLoc;
+
+        brave = info.brave;
+        obey = info.obey;
+
+        this._t_loc = loc;
+        this._t_aimLoc = aimLoc;
+        this._t_attLoc = attLoc;
+        this._t_order = order;
     },
     isDead:function(){
         return this._t_isDead;

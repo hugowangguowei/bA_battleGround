@@ -7,7 +7,7 @@ module.exports = Group;
 var GUID = require("../../dep/baBasicLib/util/GUID");
 
 function Group(camp){
-    this.id = id||GUID.getGUID();
+    this.id = GUID.getGUID();
     this.name = null;
     this.camp = null;
     this.type = null;
@@ -26,4 +26,14 @@ Group.prototype = {
     addSoldier:function(soldier){
         this.soldierList.push(soldier);
     },
+    battleStatistic:function(){
+        var soldier;
+        for(var i= 0 ; i<this.soldierList.length ;i++){
+            soldier = this.soldierList[i];
+            if(soldier._t_isDead){
+                group.splice(i,1);
+                i--;
+            }
+        }
+    }
 }

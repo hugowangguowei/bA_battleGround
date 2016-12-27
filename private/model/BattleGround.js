@@ -145,20 +145,25 @@ BattleGround.prototype = {
     ready:function(camManager){
         console.log("准备工作");
         var campList = camManager.getCampList();
-        var camp,group,soldier;
+        var camp,
+            groupManager,groupList,group,
+            soldierList,soldier;
         for(var i in campList){
             camp = campList[i];
+            groupManager = camp.groupManager;
+            groupList = groupManager.getGroupList();
             loop:
-            for(var p in camp.groupList){
-                group = camp.groupList[p];
-
-                for(var m = 0;m<group.length;m++){
-                    soldier = group[m];
+            for(var p in groupList){
+                group = groupList[p];
+                //添加士兵
+                var soldierList = group.getSoldierList();
+                for(var m = 0;m<soldierList.length;m++){
+                    soldier = soldierList[m];
                     this.addSoldier(soldier);
                 };
 
-            }
-        }
+            };
+        };
     },
     /**
      * 战斗
