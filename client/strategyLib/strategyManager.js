@@ -69,16 +69,6 @@ define(function(require){
         var len = by * sw + bx;
         return len;
     }
-    /**
-     * 提交‘战略’
-     */
-    StrategyManager.prototype.submitStrategy = function(){
-        var strategyInfo = this.curStrategy.getInfo();
-        //this.game.submitStrategy(strategyInfo);
-        if(WSM){
-            WSM.sendMsg("submitStrategy",strategyInfo);
-        }
-    };
     return StrategyManager;
 
 });

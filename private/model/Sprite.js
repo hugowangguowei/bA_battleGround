@@ -100,7 +100,7 @@ Sprite.prototype = {
      */
     _attack:function(bg){
         if(this._t_isDead||this._t_loc<0)return false;
-        console.log("开始攻击！");
+        console.log(this._t_camp._t_num +" 阵营的 "+ this.type + "开始攻击！目标位置为：" + this._t_aimLoc);
         var aimLoc = this._t_aimLoc;
         var attLoc = this._t_attLoc;
         var campId = this.getCamp().getCampId();
@@ -113,6 +113,7 @@ Sprite.prototype = {
                 aimSoldier.getDamage(damage);
             }
             else{
+                console.log("没有找到攻击目标,移动到" + aimLoc)
                 this._t_loc = aimLoc;
             }
         }

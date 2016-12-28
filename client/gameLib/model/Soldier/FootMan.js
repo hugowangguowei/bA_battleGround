@@ -7,7 +7,7 @@ define(function (require) {
 
     function FootMan(camp,soldierInfo){
         Soldier.call(this,camp,soldierInfo);
-        this.type = "footman";
+        this.type = "footMan";
         this.brave = 0.8;
         this.obey = 0.5;
 

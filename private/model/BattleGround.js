@@ -81,7 +81,7 @@ Block.prototype = {
      */
     getCampInBlock:function(){
         var campList = [];
-        var camp_i;
+        var camp_p;
         if(!this.soldierList.length)return campList;
         outerLoop:
         for(var i = 0;i<this.soldierList.length;i++){
@@ -89,8 +89,8 @@ Block.prototype = {
             var isExist = false;
             innerLoop:
             for(var p = 0;p<campList.length;p++){
-                camp_i = campList[i];
-                if(camp.id == camp_i.id){
+                camp_p = campList[p];
+                if(camp.id == camp_p.id){
                     isExist = true;
                     break innerLoop;
                 }
@@ -161,7 +161,6 @@ BattleGround.prototype = {
                     soldier = soldierList[m];
                     this.addSoldier(soldier);
                 };
-
             };
         };
     },

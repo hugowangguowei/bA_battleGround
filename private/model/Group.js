@@ -31,7 +31,7 @@ Group.prototype = {
         for(var i= 0 ; i<this.soldierList.length ;i++){
             soldier = this.soldierList[i];
             if(soldier._t_isDead){
-                group.splice(i,1);
+                this.soldierList.splice(i,1);
                 i--;
             }
         }

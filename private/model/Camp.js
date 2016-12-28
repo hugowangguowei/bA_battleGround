@@ -43,16 +43,6 @@ Camp.prototype = {
                 soldierDetail[type] = {num:len,loc:loc};
             }
         }
-
-        //for(var i in this.groupList){
-        //    var num = this.groupList[i].length;
-        //    var loc = -1;
-        //    if(num){
-        //        soldier_i = this.groupList[i][0];
-        //        loc = soldier_i._t_loc;
-        //    }
-        //    soldierDetail[i] = {num:num,loc:loc};
-        //}
         campInfo.solderDetail = soldierDetail;
         return campInfo;
     },
