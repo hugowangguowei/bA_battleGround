@@ -61,11 +61,17 @@ Block.prototype = {
      */
     statistic:function(){
         if(!this.soldierList.length)return 0;
-        var campList = this.getCampInBlock();
+        var campList = this.getCampsInBlock();
         var blockInfo = this.getOutPut();
         for(var i = 0;i<campList.length;i++){
             campList[i].refreshBlockInfo(blockInfo);
         }
+    },
+    /**
+     * 视野注册
+     */
+    sightRegister:function(){
+        var groupList = this.getGroupsInBlock();
     },
     /**
      * 战后block的清理
@@ -79,7 +85,7 @@ Block.prototype = {
     /**
      * 获取当前块的阵营信息
      */
-    getCampInBlock:function(){
+    getCampsInBlock:function(){
         var campList = [];
         var camp_p;
         if(!this.soldierList.length)return campList;
@@ -99,6 +105,27 @@ Block.prototype = {
         }
         this.campList = campList;
         return campList;
+    },
+    getGroupsInBlock:function(){
+        var groupList = [];
+        var group_p;
+        if(!this.soldierList.length)return groupList;
+        outerLoop:
+        for(var i = 0;i<this.soldierList.length;i++){
+            var group = this.soldierList[i].getGroup();
+            var isExist = false;
+            innerLoop:
+            for(var p = 0;p<groupList.length;p++){
+                group_p = groupList[i];
+                if(group_p.id = group.id){
+                    isExist = true;
+                    break innerLoop;
+                }
+            }
+            if(!isExist)groupList.push(group);
+        }
+        this.groupList = groupList;
+        return groupList;
     },
     /**
      * 获取基本信息
@@ -192,7 +219,8 @@ BattleGround.prototype = {
         var block;
         for(var i = 0;i<this.blockList.length;i++){
             block = this.blockList[i];
-            block.statistic();
+            //block.statistic();
+            block.sightRegister();
         }
     },
     /**

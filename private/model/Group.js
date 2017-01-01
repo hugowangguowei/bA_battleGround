@@ -25,6 +25,7 @@ Group.prototype = {
     },
     addSoldier:function(soldier){
         this.soldierList.push(soldier);
+        soldier.setGroup(this);
     },
     battleStatistic:function(){
         var soldier;

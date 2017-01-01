@@ -19,6 +19,12 @@ function Sprite(id){
      */
     this._t_camp = null;
     /**
+     * 小队
+     * @type {null}
+     * @private
+     */
+    this._t_group = null;
+    /**
      * 位置
      */
     this._t_loc = -1;
@@ -61,8 +67,17 @@ function Sprite(id){
 Sprite.prototype = {
     initialize:function(){
     },
+    setCamp:function(camp){
+        this._t_camp = camp;
+    },
     getCamp:function(){
         return this._t_camp;
+    },
+    setGroup:function(group){
+        this._t_group = group;
+    },
+    getGroup:function(group){
+        return this._t_group;
     },
     updatePropByOrder:function(info){
         var loc,order,antiOrder,obey,brave,aimLoc,attLoc;

@@ -7,10 +7,6 @@ module.exports = Camp;
 var GUID = require("../../dep/baBasicLib/util/GUID");
 var GroupManager = require("../controller/GroupManager");
 
-function Group(){
-    this.soldierList = [];
-}
-
 function Camp(id){
     this.id = id||GUID.getGUID();
     this.commander = null;
@@ -47,6 +43,7 @@ Camp.prototype = {
         return campInfo;
     },
     addSoldier:function(soldier){
+        soldier.setCamp(this);
         var group = this.groupManager.getGroupBySoldierType(soldier.type);
         if(!group) {
             group = this.groupManager.addGroupBySoldierType(soldier.type);
@@ -68,7 +65,6 @@ Camp.prototype = {
         }
     },
     refreshBlockInfo:function(blockInfo){
-
     },
     /**
      * 战后清理（主要是把死人清理出战场）

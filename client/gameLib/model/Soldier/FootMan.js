@@ -10,7 +10,6 @@ define(function (require) {
         this.type = "footMan";
         this.brave = 0.8;
         this.obey = 0.5;
-
         this.attackNum = 10;
         this.defendNum = 10;
 

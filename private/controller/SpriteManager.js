@@ -100,27 +100,17 @@ SpriteManager.prototype ={
         for(var i = 0;i<2;i++){
 
             knight_i = new Knight();
-            knight_i._t_camp = camp;
             knight_i._t_loc = num*8 + 1;
 
             archer_i = new Archer();
             archer_i._t_loc = num*8 + 2;
-            archer_i._t_camp = camp;
 
             footMan_i = new FootMan();
             footMan_i._t_loc = num*8 + 3;
-            footMan_i._t_camp = camp;
 
             camp.addSoldier(knight_i);
             camp.addSoldier(archer_i);
             camp.addSoldier(footMan_i);
-            //if(!camp.groupList[knight_i.type])camp.groupList[knight_i.type] = [];
-            //if(!camp.groupList[archer_i.type])camp.groupList[archer_i.type] = [];
-            //if(!camp.groupList[footMan_i.type])camp.groupList[footMan_i.type] = [];
-            //
-            //camp.groupList[knight_i.type].push(knight_i);
-            //camp.groupList[archer_i.type].push(archer_i);
-            //camp.groupList[footMan_i.type].push(footMan_i);
         }
     }
 }
