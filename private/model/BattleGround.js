@@ -8,8 +8,11 @@ var GUID = require("../../dep/baBasicLib/util/GUID");
 var Block = function(id){
     this.id = id;
     this.loc = id;
+    this.battleGround = null;
     this.soldierList = [];
     this.campList = [];
+    this.campSightList = [];
+
 }
 Block.prototype = {
     initialize:function(){
@@ -72,6 +75,47 @@ Block.prototype = {
      */
     sightRegister:function(){
         var groupList = this.getGroupsInBlock();
+        var group_i;
+        outerLoop:
+        for(var i = 0;i<groupList.length;i++){
+            group_i = groupList[i];
+            var sightList = group_i.sightList;
+            var rBlockList = this.getRelativeBlockBySL(sightList);
+            var block_p;
+            innerLoop:
+            for(var p = 0 ; p< rBlockList.length ; p++){
+                block_p = rBlockList[p];
+                block_p.addSight(group_i);
+            }
+        }
+    },
+    /**
+     * 添加视野
+     */
+    addSight:function(group){
+        var camp = group.camp;
+        var camp_i;
+        var isExist = false;
+        for(var i = 0;i<this.campSightList.length;i++){
+            camp_i = this.campSightList[i];
+            if(camp.id == camp_i.id){
+                isExist = true;
+                break;
+            }
+        }
+        if(!isExist)this.campSightList.push(camp);
+    },
+    /**
+     * 视野提交
+     */
+    sightCommit:function(){
+        var blockInfo = this.getOutPut();
+        var campSightList = this.campSightList;
+        var camp_i;
+        for(var i = 0;i<campSightList.length;i++){
+            camp_i = campSightList[i];
+            camp_i.addBlockStatistic(blockInfo);
+        }
     },
     /**
      * 战后block的清理
@@ -106,6 +150,10 @@ Block.prototype = {
         this.campList = campList;
         return campList;
     },
+    /**
+     * 获取当前块的小队信息
+     * @returns {Array}
+     */
     getGroupsInBlock:function(){
         var groupList = [];
         var group_p;
@@ -128,14 +176,47 @@ Block.prototype = {
         return groupList;
     },
     /**
+     * 根据视野获取相关块
+     * @param sightList
+     * @returns {Array}
+     */
+    getRelativeBlockBySL:function(sightList){
+        var blockList = [];
+        var battleGround = this.battleGround;
+        var w = battleGround.width;
+        var h = battleGround.height;
+        var x = this.loc%w;
+        var y = parseInt(this.loc/w);
+        var sight_i,s_x,s_y,loc_i;
+        for(var i = 0;i<sightList.length;i++){
+            sight_i = sightList[i];
+            s_x = x + sight_i.x;
+            s_y = y + sight_i.y;
+            if(s_x < 0 || s_x > w)continue;
+            if(s_y < 0 || s_y > h)continue;
+            loc_i = w * s_y + s_x;
+            var block = battleGround.getBlockByLoc(loc_i);
+            if(block)blockList.push(block);
+        }
+        return blockList;
+    },
+    /**
      * 获取基本信息
-     * @returns {null}
      */
     getOutPut: function () {
         var blockId = this.id;
-        var blockState;
-        if(this.campList)
-        return null;
+        var campNum = this.campList.length;
+        var campNameList = [];
+        for(var i = 0;i<this.campList.length;i++){
+            campNameList.push(this.campList[i].id);
+        }
+
+        var info = {
+            blockId:blockId,
+            campNum:campNum,
+            campNameList:campNameList
+        };
+        return info;
     }
 }
 
@@ -148,9 +229,13 @@ function BattleGround(id){
     this.initialize();
 }
 BattleGround.prototype = {
+    /**
+     * 初始化
+     */
     initialize:function(){
         for(var i = 0;i<this.width*this.height;i++){
             var block = new Block(i);
+            block.battleGround = this;
             this.blockList.push(block);
         }
     },
@@ -219,8 +304,11 @@ BattleGround.prototype = {
         var block;
         for(var i = 0;i<this.blockList.length;i++){
             block = this.blockList[i];
-            //block.statistic();
             block.sightRegister();
+        }
+        for(var i = 0;i<this.blockList.length;i++){
+            block = this.blockList[i];
+            block.sightCommit();
         }
     },
     /**
@@ -235,10 +323,15 @@ BattleGround.prototype = {
         }
         this.speedList = {};
     },
+    /**
+     * 根据loc获取指定的block
+     * @param loc
+     * @returns {*}
+     */
     getBlockByLoc:function(loc){
         return this.blockList[loc];
     },
     getInfo: function () {
-        var campInfo
+        var campInfo;
     }
 }

@@ -12,6 +12,7 @@ function Group(camp){
     this.camp = null;
     this.type = null;
     this.sightList = null;
+    this._isSightInit = false;
     this.soldierList = [];
 }
 Group.prototype = {
@@ -24,8 +25,26 @@ Group.prototype = {
         return this.soldierList;
     },
     addSoldier:function(soldier){
+        if(!this._isSightInit){
+            this.initSight(soldier);
+        }
         this.soldierList.push(soldier);
         soldier.setGroup(this);
+    },
+    initSight:function(soldier){
+        this._isSightInit = true;
+
+        switch (soldier.type){
+            case "knight":
+                this.sightList = [{x:-1,y:0},{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:0,y:-1}];
+                break;
+            case "footMan":
+                this.sightList = [{x:1,y:0},{x:0,y:1},{x:0,y:-1}];
+                break;
+            case "archer":
+                this.sightList = [{x:0,y:0},{x:0,y:1},{x:0,y:2}];
+                break;
+        }
     },
     battleStatistic:function(){
         var soldier;

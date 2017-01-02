@@ -12,6 +12,7 @@ function Camp(id){
     this.commander = null;
     this.groupManager = new GroupManager(this);
     this.battleGround = null;
+    this.viewBlockInfo = {};
     this._t_num = 0;
 }
 Camp.prototype = {
@@ -20,10 +21,16 @@ Camp.prototype = {
     getCampId:function(){
         return this.id;
     },
+    /**
+     * 获取阵营的信息
+     * @returns {{id: *}}
+     */
     getCampInfo: function () {
-        var campInfo = {
-            id:this.id,
-        };
+        var campInfo = {};
+
+        campInfo.id = this.id;
+
+        campInfo.viewBlock = this.viewBlockInfo;
 
         var soldierDetail = {};
         var group_i,soldierList,soldier_i;
@@ -40,8 +47,13 @@ Camp.prototype = {
             }
         }
         campInfo.solderDetail = soldierDetail;
+
         return campInfo;
     },
+    /**
+     * 添加士兵
+     * @param soldier
+     */
     addSoldier:function(soldier){
         soldier.setCamp(this);
         var group = this.groupManager.getGroupBySoldierType(soldier.type);
@@ -50,6 +62,10 @@ Camp.prototype = {
         };
         group.addSoldier(soldier);
     },
+    /**
+     * 根据用户请求，设置阵营属性
+     * @param campInfo
+     */
     setCampByClientSubmit:function(campInfo){
         var soldierInfo_i,group_i,soldier_p;
 
@@ -64,7 +80,13 @@ Camp.prototype = {
             }
         }
     },
-    refreshBlockInfo:function(blockInfo){
+    /**
+     * 收集战场信息
+     * @param block
+     */
+    addBlockStatistic:function(block){
+        var loc = block.loc;
+        this.viewBlockInfo[loc] = block;
     },
     /**
      * 战后清理（主要是把死人清理出战场）
