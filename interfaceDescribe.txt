@@ -1,0 +1,2 @@
+type_s_1   :{visibleBlocks}可见的区块，类型:对象{}
+type_c_1   :{visibleBlocks}可见的区块，类型:数组[]

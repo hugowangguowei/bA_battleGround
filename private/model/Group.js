@@ -9,7 +9,7 @@ var GUID = require("../../dep/baBasicLib/util/GUID");
 function Group(camp){
     this.id = GUID.getGUID();
     this.name = null;
-    this.camp = null;
+    this.camp = camp;
     this.type = null;
     this.sightList = null;
     this._isSightInit = false;

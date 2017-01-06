@@ -25,6 +25,18 @@ Block.prototype = {
     addSoldier:function(soldier){
         this.soldierList.push(soldier);
     },
+
+    removeSoldier:function(soldier){
+        var soldier_i;
+        for(var i = 0;i<this.soldierList.length;i++){
+            soldier_i = this.soldierList[i];
+            if(soldier_i.id ==  soldier.id){
+                this.soldierList.splice(i,1);
+                return true;
+            }
+        }
+        return false;
+    },
     /**
      * 集结
      * battle开始时，每个block都会进行集结
@@ -164,8 +176,8 @@ Block.prototype = {
             var isExist = false;
             innerLoop:
             for(var p = 0;p<groupList.length;p++){
-                group_p = groupList[i];
-                if(group_p.id = group.id){
+                group_p = groupList[p];
+                if(group_p.id == group.id){
                     isExist = true;
                     break innerLoop;
                 }
@@ -205,6 +217,7 @@ Block.prototype = {
      */
     getOutPut: function () {
         var blockId = this.id;
+        var loc = this.loc;
         var campNum = this.campList.length;
         var campNameList = [];
         for(var i = 0;i<this.campList.length;i++){
@@ -213,6 +226,7 @@ Block.prototype = {
 
         var info = {
             blockId:blockId,
+            loc:loc,
             campNum:campNum,
             campNameList:campNameList
         };

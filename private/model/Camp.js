@@ -12,7 +12,7 @@ function Camp(id){
     this.commander = null;
     this.groupManager = new GroupManager(this);
     this.battleGround = null;
-    this.viewBlockInfo = {};
+    this.visibleBlocks = {};
     this._t_num = 0;
 }
 Camp.prototype = {
@@ -30,7 +30,7 @@ Camp.prototype = {
 
         campInfo.id = this.id;
 
-        campInfo.viewBlock = this.viewBlockInfo;
+        campInfo.visibleBlocks = this.visibleBlocks;
 
         var soldierDetail = {};
         var group_i,soldierList,soldier_i;
@@ -86,7 +86,7 @@ Camp.prototype = {
      */
     addBlockStatistic:function(block){
         var loc = block.loc;
-        this.viewBlockInfo[loc] = block;
+        this.visibleBlocks[loc] = block;
     },
     /**
      * 战后清理（主要是把死人清理出战场）

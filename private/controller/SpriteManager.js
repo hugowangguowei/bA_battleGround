@@ -109,8 +109,8 @@ SpriteManager.prototype ={
             footMan_i._t_loc = num*8 + 3;
 
             camp.addSoldier(knight_i);
-            camp.addSoldier(archer_i);
-            camp.addSoldier(footMan_i);
+            //camp.addSoldier(archer_i);
+            //camp.addSoldier(footMan_i);
         }
     }
 }
