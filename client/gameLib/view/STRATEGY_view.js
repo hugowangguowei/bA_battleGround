@@ -75,18 +75,39 @@ define(function(require){
         var canvas = self.div;
         var cxt = canvas.getContext("2d");
         cxt.clearRect(0,0,500,500);
+        //绘制战场
+        var bG = this.model.battleGround;
+        //先涂黑
         cxt.beginPath();
         cxt.strokeStyle = "red";
-        cxt.fillStyle = "grey";
-        for(var i = 0;i<4;i++){
-            for(var j = 0;j<4;j++){
+        var w = bG.width;
+        var h = bG.height;
+        for(var i = 0;i<w;i++){
+            for(var j = 0;j<h;j++){
                 cxt.strokeRect(width*i,height*j,width,height);
-                var num = j*4 + i;
+                cxt.fillStyle = "grey";
+                cxt.fillRect(width*i + 1,height*j + 1,width - 2,height -2);
+                var num = j*w + i;
+                cxt.fillStyle = "white";
                 cxt.fillText(""+num,width*(i + 0.5),height*(j+0.2))
             }
         }
         cxt.closePath();
-
+        //再把能看见的涂白
+        cxt.beginPath();
+        var visibleBlocks = bG.visibleBlocks;
+        var vB_i,loc_i,_x,_y;
+        for(var i = 0;i<visibleBlocks.length;i++){
+            vB_i = visibleBlocks[i];
+            loc_i = vB_i.blockId;
+            _x = loc_i%w;
+            _y = parseInt(loc_i/w);
+            cxt.fillStyle = "white";
+            cxt.fillRect(width*_x + 1,height*_y + 1,width - 2,height -2);
+            cxt.fillStyle = "grey";
+            cxt.fillText(""+loc_i,width*(_x + 0.5),height*(j+0.2));
+        }
+        //绘制士兵
         var camp = this.model._selfCamp;
         if(!camp)return 0;
         var soldierList = camp.soldierList;

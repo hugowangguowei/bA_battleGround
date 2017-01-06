@@ -5,6 +5,7 @@ define(function(require){
     var spriteManager = require("gameLib/controller/SpriteManager").getInstance();
     var soldierManager = require("gameLib/controller/SoldierManager").getInstance();
     var Camp = require("gameLib/model/Camp");
+    var BattleGround = require("gameLib/model/BattleGround");
     var Geo = require("gameLib/model/Geo");
     var baEventSource = require("baBasicLib/baEventSource");
     var errorCheck = require("gameLib/webSocket/WS_errorCheck");
@@ -43,6 +44,8 @@ define(function(require){
                 }
             }
         };
+        this.battleGround = new BattleGround();
+
         this.startEngine();
     };
     Game.prototype.startEngine = function(){
@@ -194,8 +197,14 @@ define(function(require){
         }
     };
     Game.prototype._generateCamp = function(campInfo){
-        var soldierList = campInfo.solderDetail;
+        //battleGround信息更新
+        var blockInfo = campInfo.visibleBlocks;
+        this.battleGround.setVBByServer(blockInfo);
+        //新建camp
         var camp = new Camp(this);
+        this._selfCamp = camp;
+        //添加soldier信息
+        var soldierList = campInfo.solderDetail;
         var soldier_i;
         for(var i in soldierList){
             var soldierInfo = soldierList[i];
@@ -203,10 +212,10 @@ define(function(require){
             if(soldier_i){
                 camp.addSolder(soldier_i);
             }
-        }
-        this._selfCamp = camp;
+        };
+        //触发事件
         this.fireEvent("campChange",campInfo);
-    }
+    };
     Game.prototype._solderArrange = function(info){
         var type = info.type;
         var num = info.num;
