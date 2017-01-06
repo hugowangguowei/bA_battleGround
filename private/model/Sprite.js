@@ -1,11 +1,11 @@
 /**
  * Created by wgw on 2016/4/18.
  */
-
+var GUID = require("../../dep/baBasicLib/util/GUID");
 module.exports = Sprite;
 
 function Sprite(id){
-    this.id = id;
+    this.id = id||GUID.getGUID();
     this.controllable = true;
     this.controller = null;
     this.type = "sprite";
@@ -129,7 +129,8 @@ Sprite.prototype = {
             }
             else{
                 console.log("没有找到攻击目标,移动到" + aimLoc)
-                this._t_loc = aimLoc;
+                this._moveToBlock(bg,this._t_loc,aimLoc);
+
             }
         }
         else if(attLoc >= 0){
@@ -156,9 +157,22 @@ Sprite.prototype = {
             var block = bg.getBlockByLoc(aimLoc);
             var aimSoldier = block.getRandomEnemySoldier(campId);
             if(!aimSoldier){
-                this._t_loc = aimLoc;
+                this._moveToBlock(bg,this._t_loc,aimLoc);
             }
         }
+    },
+    /**
+     * 移动到指定Block
+     * @private
+     */
+    _moveToBlock:function(bg,curLoc,aimLoc){
+        if(curLoc){
+            var curBlock = bg.getBlockByLoc(curLoc);
+            curBlock.removeSoldier(this);
+        }
+        var aimBlock = bg.getBlockByLoc(aimLoc);
+        aimBlock.addSolder(this);
+        this._t_loc = aimLoc;
     },
     /**
      * 收到伤害
