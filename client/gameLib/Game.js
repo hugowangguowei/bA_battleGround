@@ -3,7 +3,7 @@
  */
 define(function(require){
     var spriteManager = require("gameLib/controller/SpriteManager").getInstance();
-    var soldierManager = require("gameLib/controller/SoldierManager").getInstance();
+    var groupManager = require("gameLib/controller/GroupManager").getInstance();
     var Camp = require("gameLib/model/Camp");
     var BattleGround = require("gameLib/model/BattleGround");
     var Geo = require("gameLib/model/Geo");
@@ -189,7 +189,6 @@ define(function(require){
         switch (type){
             case "selfCamp":
                 this._generateCamp(info);
-                this.addEventToPool("campChange");
                 break;
             case "soldierArrange":
                 this._solderArrange(info);
@@ -208,13 +207,13 @@ define(function(require){
         var soldier_i;
         for(var i in soldierList){
             var soldierInfo = soldierList[i];
-            soldier_i = soldierManager.generateSoldierByType(i,camp,soldierInfo);
+            soldier_i = groupManager.generateGroupByType(i,camp.id,soldierInfo);
             if(soldier_i){
-                camp.addSolder(soldier_i);
+                camp.addGroup(soldier_i);
             }
         };
         //触发事件
-        this.fireEvent("campChange",campInfo);
+        this.addEventToPool("campChange",campInfo);
     };
     Game.prototype._solderArrange = function(info){
         var type = info.type;
@@ -222,8 +221,9 @@ define(function(require){
         var value = info.value;
 
         if(this._selfCamp){
-            var soldier = this._selfCamp.getSoldierByNum(num);
+            var soldier = this._selfCamp.getGroupByNum(num);
             soldier.setProperty(type,value);
+            this.addEventToPool("soldierChange",null);
         }
     };
     Game.prototype.submitStrategy = function(){

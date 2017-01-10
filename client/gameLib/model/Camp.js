@@ -5,33 +5,34 @@
 
 define(function (require) {
 
-    function Camp(model){
+    function Camp(model,id){
+        this.id = id||0;
         this.model = model||0;
-        this.soldierList = [];
+        this.groupList = [];
         if(!this.model){
             throw new Error("camp's model not defined");
         }
     }
 
     Camp.prototype = {
-        addSolder:function(soldier){
-            this.soldierList.push(soldier);
+        addGroup:function(group){
+            this.groupList.push(group);
             return true;
         },
-        getSoldierList:function(){
-            return this.soldierList;
+        getGroupList:function(){
+            return this.groupList;
         },
-        getSoldierByNum:function(num){
-            if(this.soldierList[num])return this.soldierList[num];
+        getGroupByNum:function(num){
+            if(this.groupList[num])return this.groupList[num];
         },
         getCampInfo:function(){
-            var sL = this.soldierList;
+            var sL = this.groupList;
             var campInfo = [];
             var s_i = null;
             var s_iInfo = null;
             for(var i = 0;i<sL.length;i++){
                 s_i = sL[i];
-                s_iInfo = s_i.getSoldierInfo();
+                s_iInfo = s_i.getGroupInfo();
                 campInfo.push(s_iInfo);
             }
             return campInfo;

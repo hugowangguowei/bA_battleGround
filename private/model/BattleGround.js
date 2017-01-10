@@ -25,7 +25,11 @@ Block.prototype = {
     addSoldier:function(soldier){
         this.soldierList.push(soldier);
     },
-
+    /**
+     * 移除一个soldier
+     * @param soldier
+     * @returns {boolean}
+     */
     removeSoldier:function(soldier){
         var soldier_i;
         for(var i = 0;i<this.soldierList.length;i++){
@@ -75,12 +79,6 @@ Block.prototype = {
      * 数据统计
      */
     statistic:function(){
-        if(!this.soldierList.length)return 0;
-        var campList = this.getCampsInBlock();
-        var blockInfo = this.getOutPut();
-        for(var i = 0;i<campList.length;i++){
-            campList[i].refreshBlockInfo(blockInfo);
-        }
     },
     /**
      * 视野注册
@@ -218,17 +216,23 @@ Block.prototype = {
     getOutPut: function () {
         var blockId = this.id;
         var loc = this.loc;
-        var campNum = this.campList.length;
-        var campNameList = [];
-        for(var i = 0;i<this.campList.length;i++){
-            campNameList.push(this.campList[i].id);
+        if(this.loc == 1){
+            console.log("test");
+        }
+
+        var groupList = this.groupList;
+        var groupInfoList = [];
+        var groupInfo_i,group_i;
+        for(var i = 0;i<groupList.length;i++){
+            group_i = groupList[i];
+            groupInfo_i = group_i.getOutPut();
+            groupInfoList.push(groupInfo_i);
         }
 
         var info = {
             blockId:blockId,
             loc:loc,
-            campNum:campNum,
-            campNameList:campNameList
+            groupInfoList:groupInfoList
         };
         return info;
     }

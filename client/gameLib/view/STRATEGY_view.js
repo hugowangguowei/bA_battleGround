@@ -38,7 +38,7 @@ define(function(require){
         });
         this.model.addListener("campChange",prop,function(arg){
             var camp = self.model._selfCamp;
-            var sL = camp.getSoldierList();
+            var sL = camp.getGroupList();
             var count = 0;
             for(var i = 0;i<sL.length;i++){
                 var soldier_i = sL[i];
@@ -99,72 +99,86 @@ define(function(require){
         var vB_i,loc_i,_x,_y;
         for(var i = 0;i<visibleBlocks.length;i++){
             vB_i = visibleBlocks[i];
-            loc_i = vB_i.blockId;
+            loc_i = vB_i.loc;
             _x = loc_i%w;
             _y = parseInt(loc_i/w);
             cxt.fillStyle = "white";
             cxt.fillRect(width*_x + 1,height*_y + 1,width - 2,height -2);
             cxt.fillStyle = "grey";
             cxt.fillText(""+loc_i,width*(_x + 0.5),height*(j+0.2));
-        }
+            var groupList = vB_i.groupList;
+            var group_i;
+            for(var p = 0;p<groupList.length;p++){
+                group_i = groupList[i];
+                if(group_i.campId == this.model._selfCamp.id){
+                    cxt.fillStyle = "red";
+                }else{
+                    cxt.fillStyle = "blue";
+                }
+                cxt.fillRect(width*_x + 1,height*_y + 1,5,5);
+            }
+        };
+        cxt.closePath();
         //绘制士兵
         var camp = this.model._selfCamp;
-        if(!camp)return 0;
-        var soldierList = camp.soldierList;
-        var s_i = null;
-        for(var i = 0;i<soldierList.length;i++){
-            s_i = soldierList[i];
-            if(s_i.loc >= 0){
-                //绘制坐标位置
-                var x = s_i.loc%4;
-                var y = parseInt(s_i.loc/4);
+        if(camp){
+            var groupList = camp.groupList;
+            var s_i = null;
+            for(var i = 0;i<groupList.length;i++){
+                s_i = groupList[i];
+                if(s_i.loc >= 0){
+                    //绘制坐标位置
+                    var x = s_i.loc%4;
+                    var y = parseInt(s_i.loc/4);
 
-                var _x = width*(x + 0.5);
-                var _y = height*(y + 0.5);
+                    var _x = width*(x + 0.5);
+                    var _y = height*(y + 0.5);
 
-                cxt.fillStyle = s_i.fillColor;
-                cxt.fillRect(_x -5,_y -3,10,6);
-                cxt.textAlign = "center";
-                cxt.fillText(s_i.type,width*(x + 0.5),height*(y + 0.5)+ 15);
+                    cxt.fillStyle = s_i.fillColor;
+                    cxt.fillRect(_x -5,_y -3,10,6);
+                    cxt.textAlign = "center";
+                    cxt.fillText(s_i.type,width*(x + 0.5),height*(y + 0.5)+ 15);
 
-                if(s_i.aimLoc>= 0){
-                    var aX = s_i.aimLoc%4;
-                    var aY = parseInt(s_i.aimLoc/4);
+                    if(s_i.aimLoc>= 0){
+                        var aX = s_i.aimLoc%4;
+                        var aY = parseInt(s_i.aimLoc/4);
 
-                    var _aX = width * (aX + 0.5);
-                    var _aY = height *(aY + 0.5);
-                    cxt.strokeStyle = s_i.fillColor;
-                    cxt.beginPath();
-                    cxt.moveTo(_x,_y);
-                    cxt.lineTo(_aX,_aY);
-                    cxt.closePath();
-                    cxt.stroke();
-                    cxt.arc(_aX,_aY,4,0,Math.PI*2,true);
-                    cxt.fill();
-                }
-
-                if(s_i.attLoc >= 0){
-                    var tX = s_i.attLoc%4;
-                    var tY = parseInt(s_i.attLoc/4);
-
-                    var _tX = width * (tX + 0.5);
-                    var _tY = height *(tY + 0.5);
-                    cxt.strokeStyle = s_i.fillStyle;
-                    cxt.beginPath();
-                    if(s_i.aimLoc >= 0){
-                        cxt.moveTo(_aX,_aY);
-                    }else{
+                        var _aX = width * (aX + 0.5);
+                        var _aY = height *(aY + 0.5);
+                        cxt.strokeStyle = s_i.fillColor;
+                        cxt.beginPath();
                         cxt.moveTo(_x,_y);
+                        cxt.lineTo(_aX,_aY);
+                        cxt.closePath();
+                        cxt.stroke();
+                        cxt.arc(_aX,_aY,4,0,Math.PI*2,true);
+                        cxt.fill();
                     }
-                    cxt.lineTo(_tX,_tY);
-                    cxt.closePath();
-                    cxt.stroke();
-                    cxt.arc(_tX,_tY,4,0,Math.PI*2,0);
-                    cxt.fill();
-                }
 
-            }
+                    if(s_i.attLoc >= 0){
+                        var tX = s_i.attLoc%4;
+                        var tY = parseInt(s_i.attLoc/4);
+
+                        var _tX = width * (tX + 0.5);
+                        var _tY = height *(tY + 0.5);
+                        cxt.strokeStyle = s_i.fillStyle;
+                        cxt.beginPath();
+                        if(s_i.aimLoc >= 0){
+                            cxt.moveTo(_aX,_aY);
+                        }else{
+                            cxt.moveTo(_x,_y);
+                        }
+                        cxt.lineTo(_tX,_tY);
+                        cxt.closePath();
+                        cxt.stroke();
+                        cxt.arc(_tX,_tY,4,0,Math.PI*2,0);
+                        cxt.fill();
+                    }
+
+                }
+            };
         }
+
     };
     p.addBasicStruct = function(){
         var self = this;
@@ -236,6 +250,7 @@ define(function(require){
             var id = parent.attr("id");
             var num = id.split("_")[1];
             self.model.testCampInput("soldierArrange",{type:"attLoc","num":num,value:this.value})
+
         });
         //防守
         $(".campDefBtn").click(function(){

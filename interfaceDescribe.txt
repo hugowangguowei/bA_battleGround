@@ -1,2 +1,17 @@
 type_s_1   :{visibleBlocks}可见的区块，类型:对象{}
-type_c_1   :{visibleBlocks}可见的区块，类型:数组[]
+
+type_s_2   :{group_outPut}战斗组描述对象，类型：对象{}
+            id:          {string}
+            campId:      {string}
+            type:        {string}
+            soldierNum:  {int}
+
+type_s_3   :{blockInfo}战场块描述信息，类型：对象{}
+            id:            {string}
+            loc:           {int}
+            groupInfoList  {type_s_2}[]
+
+type_s_4   :{campInfo}阵营描述信息，类型：对象{}
+            id:            {string}
+            visibleBlocks: {type_s_1}
+            soldierDetail: {}

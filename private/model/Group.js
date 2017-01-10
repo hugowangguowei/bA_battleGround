@@ -55,5 +55,17 @@ Group.prototype = {
                 i--;
             }
         }
+    },
+    getOutPut:function(){
+        var id =  this.id;
+        var campId = this.camp.id;
+        var type = this.type;
+        var soldierNum = this.soldierList.length;
+        return {
+            id:id,
+            campId:campId,
+            type:type,
+            soldierNum:soldierNum
+        }
     }
 }

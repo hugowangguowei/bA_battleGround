@@ -3,8 +3,8 @@
  */
 define(function (require) {
 
-    function Soldier(camp,soldierInfo){
-        this.camp = camp||0;
+    function Group(campId,soldierInfo){
+        this.campId = campId||0;
         this.type = "footman";
 
         this.num = 10;
@@ -23,7 +23,7 @@ define(function (require) {
         this.initialize(soldierInfo);
     }
 
-    Soldier.prototype = {
+    Group.prototype = {
         initialize:function(sI){
             if(sI){
                 this.num = sI.num;
@@ -45,9 +45,8 @@ define(function (require) {
                     this.attLoc = value;
 
             }
-            this.camp.model.addEventToPool("soldierChange",null);
         },
-        getSoldierInfo:function(){
+        getGroupInfo:function(){
             return{
                 type:this.type,
                 loc:this.loc,
@@ -60,5 +59,5 @@ define(function (require) {
         }
     }
 
-    return Soldier;
+    return Group;
 })

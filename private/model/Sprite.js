@@ -124,8 +124,7 @@ Sprite.prototype = {
             var aimSoldier = block.getRandomEnemySoldier(campId);
             if(aimSoldier){
                 console.log("攻击一个 " + aimSoldier.type);
-                var damage = this._t_damage;
-                aimSoldier.getDamage(damage);
+                aimSoldier.getDamage(this._t_damage);
             }
             else{
                 console.log("没有找到攻击目标,移动到" + aimLoc)
@@ -137,8 +136,7 @@ Sprite.prototype = {
             var block = bg.getBlockByLoc(attLoc);
             var aimSoldier = block.getRandomEnemySoldier(campId);
             if(aimSoldier){
-                var damage = this._t_damage;
-                aimSoldier.getDamage(damage);
+                aimSoldier.getDamage(this._t_damage);
             }
         }
     },
@@ -171,7 +169,7 @@ Sprite.prototype = {
             curBlock.removeSoldier(this);
         }
         var aimBlock = bg.getBlockByLoc(aimLoc);
-        aimBlock.addSolder(this);
+        aimBlock.addSoldier(this);
         this._t_loc = aimLoc;
     },
     /**
