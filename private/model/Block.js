@@ -211,8 +211,8 @@ Block.prototype = {
             sight_i = sightList[i];
             s_x = x + sight_i.x;
             s_y = y + sight_i.y;
-            if(s_x < 0 || s_x > w)continue;
-            if(s_y < 0 || s_y > h)continue;
+            if(s_x < 0 || s_x >= w)continue;
+            if(s_y < 0 || s_y >= h)continue;
             loc_i = w * s_y + s_x;
             var block = battleGround.getBlockByLoc(loc_i);
             if(block)blockList.push(block);
