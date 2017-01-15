@@ -423,7 +423,7 @@ Game.prototype._battle = function(){
     this.battleGround.statistic();
     this.battleGround.clean();
     this._battleStatistic();
-    this._playerOpReset();
+    this._roundReset();
     routineManager.changeRoutine("showResult");
 };
 /**
@@ -433,12 +433,13 @@ Game.prototype._battle = function(){
 Game.prototype._battleStatistic = function(){
     this.campManager.battleStatistic();
     this.campManager.generateReport();
+    this.campManager.roundReset();
 };
 /**
  * 重置游戏玩家输入
  * @private
  */
-Game.prototype._playerOpReset = function(){
+Game.prototype._roundReset = function(){
     var client_i;
     for(var i in this.playerList){
         client_i = this.playerList[i];

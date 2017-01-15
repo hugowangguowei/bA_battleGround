@@ -130,17 +130,14 @@ define(function(require){
                         //更新机制还需要改进。
                     }
                 }
-                //self.fireEvent("spriteChange",info);
                 self.addEventToPool("spriteChange",info);
                 break;
             case "removeSprite":
                 self.removeSpriteById(info);
-                //self.fireEvent("spriteChange",info);
                 self.addEventToPool("spriteChange",info);
                 break;
             case "gameOver":
                 alert(info.detail);
-                //self.fireEvent("recordChange",info.record);
                 self.addEventToPool("recordChange",info.record);
                 break;
         }

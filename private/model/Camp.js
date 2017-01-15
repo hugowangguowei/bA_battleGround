@@ -89,14 +89,21 @@ Camp.prototype = {
         this.visibleBlocks[loc] = block;
     },
     /**
-     * 战后清理（主要是把死人清理出战场）
+     * 战后统计（主要是把死人清理出战场）
      */
     battleStatistic:function(){
-        var group,soldier;
+        var group;
         var groupList = this.groupManager.getGroupList();
         for(var i = 0;i<groupList.length;i++){
             group = groupList[i];
             group.battleStatistic();
         }
+    },
+    /**
+     * 回合重置
+     */
+    roundReset:function(){
+        this.visibleBlocks = {};
     }
+
 }

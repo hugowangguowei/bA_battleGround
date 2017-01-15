@@ -59,3 +59,13 @@ p.generateReport = function(){
         this.model.pushData(data);
     }
 }
+/**
+ * 回合重置
+ */
+p.roundReset = function(){
+    var camp;
+    for(var i in this.campList){
+        camp = this.campList[i];
+        camp.roundReset();
+    }
+}

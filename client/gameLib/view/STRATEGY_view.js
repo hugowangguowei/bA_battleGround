@@ -106,10 +106,10 @@ define(function(require){
             cxt.fillRect(width*_x + 1,height*_y + 1,width - 2,height -2);
             cxt.fillStyle = "grey";
             cxt.fillText(""+loc_i,width*(_x + 0.5),height*(j+0.2));
-            var groupList = vB_i.groupList;
+            var groupList = vB_i.groupInfoList;
             var group_i;
             for(var p = 0;p<groupList.length;p++){
-                group_i = groupList[i];
+                group_i = groupList[p];
                 if(group_i.campId == this.model._selfCamp.id){
                     cxt.fillStyle = "red";
                 }else{
