@@ -120,7 +120,6 @@ define(function(require){
                         for(var m in sInfo){
                             sprite[m] = sInfo[m];
                         }
-                        //sprite.refreshGeo();
                     }
                     else{
                         //之所以会有{！sprite}事件的发生，是因为角色死亡事件立刻触发
@@ -198,6 +197,7 @@ define(function(require){
         this.battleGround.setVBByServer(blockInfo);
         //新建camp
         var camp = new Camp(this);
+        camp.id = campInfo.id;
         this._selfCamp = camp;
         //添加soldier信息
         var soldierList = campInfo.solderDetail;

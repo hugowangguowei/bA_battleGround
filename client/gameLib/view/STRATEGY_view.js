@@ -3,7 +3,7 @@
  */
 define(function(require){
     var View = require("baBasicLib/view/View");
-    var viewConfig = require("geoLib/view/ViewConfig");
+    var viewConfig = require("baBasicLib/view/ViewConfig");
     var getGUID = require("baBasicLib/util/GUID");
     var baLib = require("baBasicLib/util/baLib");
 
@@ -12,6 +12,8 @@ define(function(require){
         this.id = getGUID();
         this.div = null;
         this.model = null;
+        this.battleGroundCache = null;
+        this.strategyCache = null;
         this.initialize(div,model);
     };
 
@@ -20,8 +22,17 @@ define(function(require){
     p.initialize = function(div,model){
         this.div = div;
         this.model = model;
+        this.initCache();
         this.addOriListeners();
         this.addBasicStruct();
+    };
+    p.initCache = function(){
+        this.battleGroundCache = document.createElement("canvas");
+        this.battleGroundCache.width = 500;
+        this.battleGroundCache.height = 500;
+        this.strategyCache = document.createElement("canvas");
+        this.strategyCache.width = 500;
+        this.strategyCache.height = 500;
     };
     p.addOriListeners = function(){
         var self = this;
@@ -34,6 +45,7 @@ define(function(require){
             self.draw();
         });
         this.model.addListener("soldierChange",prop,function(arg){
+            self._strategyCacheRefresh();
             self.draw(arg);
         });
         this.model.addListener("campChange",prop,function(arg){
@@ -65,16 +77,19 @@ define(function(require){
                     sDTag.hide();
                 }
             };
+            self._battleGroundCacheRefresh();
+            self._strategyCacheRefresh();
             self.draw();
         });
     };
-    p.draw = function(camp){
-        var width = 100;
-        var height = 75;
+    p._battleGroundCacheRefresh = function(){
+        var width = 50;
+        var height = 40;
         var self = this;
-        var canvas = self.div;
+        var canvas = this.battleGroundCache;
         var cxt = canvas.getContext("2d");
         cxt.clearRect(0,0,500,500);
+
         //绘制战场
         var bG = this.model.battleGround;
         //先涂黑
@@ -89,7 +104,7 @@ define(function(require){
                 cxt.fillRect(width*i + 1,height*j + 1,width - 2,height -2);
                 var num = j*w + i;
                 cxt.fillStyle = "white";
-                cxt.fillText(""+num,width*(i + 0.5),height*(j+0.2))
+                cxt.fillText(""+num,width*(i + 0.5),height*(j+0.25))
             }
         }
         cxt.closePath();
@@ -105,7 +120,7 @@ define(function(require){
             cxt.fillStyle = "white";
             cxt.fillRect(width*_x + 1,height*_y + 1,width - 2,height -2);
             cxt.fillStyle = "grey";
-            cxt.fillText(""+loc_i,width*(_x + 0.5),height*(j+0.2));
+            cxt.fillText(""+loc_i,width*(_x + 0.5),height*(_y+0.25));
             var groupList = vB_i.groupInfoList;
             var group_i;
             for(var p = 0;p<groupList.length;p++){
@@ -119,7 +134,17 @@ define(function(require){
             }
         };
         cxt.closePath();
-        //绘制士兵
+    };
+    p._strategyCacheRefresh = function(){
+        var width = 50;
+        var height = 40;
+        var self = this;
+        var canvas = self.strategyCache;
+        var cxt = canvas.getContext("2d");
+        cxt.clearRect(0,0,500,500);
+        var bG = this.model.battleGround;
+        var w = bG.width;
+        var h = bG.height;
         var camp = this.model._selfCamp;
         if(camp){
             var groupList = camp.groupList;
@@ -128,8 +153,8 @@ define(function(require){
                 s_i = groupList[i];
                 if(s_i.loc >= 0){
                     //绘制坐标位置
-                    var x = s_i.loc%4;
-                    var y = parseInt(s_i.loc/4);
+                    var x = s_i.loc%w;
+                    var y = parseInt(s_i.loc/w);
 
                     var _x = width*(x + 0.5);
                     var _y = height*(y + 0.5);
@@ -140,8 +165,8 @@ define(function(require){
                     cxt.fillText(s_i.type,width*(x + 0.5),height*(y + 0.5)+ 15);
 
                     if(s_i.aimLoc>= 0){
-                        var aX = s_i.aimLoc%4;
-                        var aY = parseInt(s_i.aimLoc/4);
+                        var aX = s_i.aimLoc%w;
+                        var aY = parseInt(s_i.aimLoc/w);
 
                         var _aX = width * (aX + 0.5);
                         var _aY = height *(aY + 0.5);
@@ -178,7 +203,14 @@ define(function(require){
                 }
             };
         }
-
+    };
+    p.draw = function(camp){
+        var self = this;
+        var canvas = self.div;
+        var cxt = canvas.getContext("2d");
+        cxt.clearRect(0,0,500,500);
+        cxt.drawImage(this.battleGroundCache,0,0);
+        cxt.drawImage(this.strategyCache,0,0);
     };
     p.addBasicStruct = function(){
         var self = this;

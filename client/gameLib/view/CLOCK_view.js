@@ -3,7 +3,7 @@
  */
 define(function(require){
     var View = require("baBasicLib/view/View");
-    var viewConfig = require("geoLib/view/ViewConfig");
+    var viewConfig = require("baBasicLib/view/ViewConfig");
     var getGUID = require("baBasicLib/util/GUID");
     var baLib = require("baBasicLib/util/baLib");
 

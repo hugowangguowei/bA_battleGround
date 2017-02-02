@@ -8,8 +8,8 @@ var Block = require("./Block");
 
 function BattleGround(id){
     this.id = id||GUID.getGUID();
-    this.width = 4;
-    this.height = 4;
+    this.width = 10;
+    this.height = 10;
     this.blockList = [] ;
     this.speedList = {};
     this.initialize();

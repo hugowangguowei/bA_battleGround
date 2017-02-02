@@ -8,10 +8,8 @@ define(function (require) {
         this.type = "footman";
 
         this.num = 10;
-
         this.brave = 0.8;
         this.obey = 0.5;
-
         this.attackNum = 10;
         this.defendNum = 10;
         this.loc = -1;

@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <title></title>
     <link rel="stylesheet" href="UI/style.css" type="text/css"/>
+    <script type="text/javascript" src="../dep/three.js"></script>
+    <script type="text/javascript" src="../dep/threeJS/controls/TrackballControls.js"></script>
+    <script type="text/javascript" src="../dep/threeJS/loaders/OBJLoader.js"></script>
+    <script type="text/javascript" src="../dep/threeJS/loaders/MTLLoader.js"></script>
     <script type="text/javascript" src="../dep/require.js"></script>
     <script type="text/javascript" src="../dep/jquery-1.9.1.js"></script>
+
     <script type="text/javascript" src="./test/script/revengerRoad/chapter_1/buttonEvent.js"></script>
     <script>
         initUserId();
@@ -31,14 +36,16 @@
                 'gameLib/script/revengerRoad/chapter_1',
                 'gameLib/view/GAME_view',
                 'gameLib/view/STRATEGY_view',
-                'gameLib/view/CLOCK_view'
+                'gameLib/view/CLOCK_view',
+                'gameLib/view/MAIN_view'
                 ],
                 function(
-                        Game,chapter_1,GameView,StrategyView,ClockView){
+                        Game,chapter_1,GameView,StrategyView,ClockView,MainView){
                     gm = new Game();
                     gm.loadChapter(chapter_1,null,true);
                     var mainCanvas = document.getElementById("mainCanvas");
                     var gameView = new GameView(mainCanvas,gm);
+                    var mainView = new MainView(mainCanvas,gm);
                     var spCanvas = document.getElementById("spCanvas");
                     var strategyView = new StrategyView(spCanvas,gm);
                     var clockCanvas = document.getElementById("clockCanvas");
@@ -66,15 +73,6 @@
 <hr>
 <div id = "introduce" style="width: 582px; height: 608px">
     <img src="../image/intro.PNG">
-    <!--游戏介绍：-->
-    <!--<hr>-->
-    <!--用户点击加入游戏，成功后将会显示当前战场上所有的对象-->
-    <!--你所控制的对象将被红色边框包裹-->
-    <!--<hr>-->
-    <!--角色介绍：-->
-    <!--<hr>-->
-    <!--三角形的点是骑士：骑士的攻击力会随着移动速度的增加而增加。-->
-    <!--小方块的点是熊：熊好像没啥特长。。。-->
 </div>
 <canvas id = "mainCanvas"></canvas>
 <canvas id = "spCanvas"></canvas>

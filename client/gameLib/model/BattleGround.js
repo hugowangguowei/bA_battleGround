@@ -8,8 +8,8 @@ define(function (require) {
 
     function BattleGround(model){
         this.model = model||0;
-        this.width = 4;
-        this.height = 4;
+        this.width = 10;
+        this.height = 10;
         this.visibleBlocks = [];
     }
 
