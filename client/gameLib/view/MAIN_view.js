@@ -16,10 +16,10 @@ define(function(require){
         this.div = null;
         this.model = null;
         this.objShapes = {};
-        this.fogShape = null;
+        this.frogShape = null;
 
         this.shapeCacheList = [];
-        this.fogCacheList = [];
+        this.frogCacheList = [];
         this.controller = null;
         this.initialize(div,model);
     };
@@ -70,10 +70,10 @@ define(function(require){
             this.scene.remove(this.shapeCacheList[i]);
         }
         this.shapeCacheList = [];
-        for(var i = 0;i< this.fogCacheList.length;i++){
-            this.scene.remove(this.fogCacheList[i]);
+        for(var i = 0;i< this.frogCacheList.length;i++){
+            this.scene.remove(this.frogCacheList[i]);
         }
-        this.fogCacheList = [];
+        this.frogCacheList = [];
     };
     MAIN_view.prototype._drawVisibleBlock = function(block){
         var loc = block.loc;
@@ -154,13 +154,15 @@ define(function(require){
      */
     MAIN_view.prototype._drawInvisibleBlock = function(block){
         var loc = block.loc;
-        var fogShape = this.fogShape.clone();
+        var fogShape = this.frogShape.clone();
         var tDLocInfo = this._getFogLocInfo(loc);
         fogShape.position.x = tDLocInfo.x;
         fogShape.position.y = tDLocInfo.y;
         fogShape.position.z = tDLocInfo.z;
-        fogShape.scale.y = 0.2;
-        this.fogCacheList.push(fogShape);
+        fogShape.scale.x = 0.01;
+        fogShape.scale.y = 0.01;
+        fogShape.scale.z = 0.01;
+        this.frogCacheList.push(fogShape);
         this.scene.add(fogShape);
     };
     /**
@@ -176,7 +178,7 @@ define(function(require){
         var x = loc%w;
         var y = parseInt(loc/w);
         var shapeX = -5 + x;
-        var shapeY = -0.1;
+        var shapeY = 0;
         var shapeZ = -5 + y;
         return{
             x:shapeX,
@@ -270,6 +272,30 @@ define(function(require){
             });
 
         });
+        mtlLoader.load( 'frog_01/BA_Frog_01.mtl', function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.setPath( '../image/Texture/' );
+            objLoader.load( 'frog_01/BA_Frog_01.obj', function ( object ) {
+                object.position.x = 2;
+                object.position.y = 0;
+                object.position.z = 2;
+                object.scale.x = 0.01;
+                object.scale.y = 0.01;
+                object.scale.z = 0.01;
+                object.rotation.y = Math.PI;
+                for(var i in materials.materials){
+                    var m = materials.materials[i];
+                    m.side = THREE.DoubleSide;
+                }
+                self.frogShape = object;
+                //self.objShapes["frog_01"] = object;
+                //scene.add( object );
+                //renderer.render(scene,camera);
+            });
+
+        });
 
         //Ìí¼Óµ×Í¼
         var group = new THREE.Group();
@@ -287,7 +313,7 @@ define(function(require){
                 var mesh = new THREE.Mesh(box,material);
                 mesh.position.x = -5 + i*x_length;
                 mesh.position.z = -5 + j*z_length;
-                mesh.position.y = -0.4;
+                mesh.position.y = -0.2;
                 mesh.scale.y = 0.4;
                 box.depth = Math.random()*2;
                 group.add(mesh);
@@ -303,13 +329,22 @@ define(function(require){
             //transparent:true
         });
         var mesh = new THREE.Mesh(box,material);
-        this.fogShape = mesh;
+        //this.fogShape = mesh;
 
 
         var lightAmbient = new THREE.AmbientLight(0x555555);
         scene.add(lightAmbient);
         var light = new THREE.DirectionalLight(0xffffff);
-        light.position.set(0,0,10);
+        light.position.set(0,3,10);
+        scene.add(light);
+        var light = new THREE.DirectionalLight(0xffffff);
+        light.position.set(0,3,-10);
+        scene.add(light);
+        //var light = new THREE.DirectionalLight(0xffffff);
+        //light.position.set(10,3,0);
+        //scene.add(light);
+        //var light = new THREE.DirectionalLight(0xffffff);
+        //light.position.set(-10,3,0);
         scene.add(light);
 
         //Ìì¿ÕºÐ×Ó
