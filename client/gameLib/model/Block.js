@@ -7,13 +7,14 @@ define(function(require){
     function Block(){
         this.id =  0;
         this.loc = -1;
+        this.visible = false;
         this.groupList = [];
     }
     Block.prototype = {
         init:function(){
 
         },
-        initByServerInfo:function(blockInfo){
+        setByServerInfo:function(blockInfo){
             var loc = blockInfo.loc;
             var groupInfoList = blockInfo.groupInfoList;
             var gI_i,group;

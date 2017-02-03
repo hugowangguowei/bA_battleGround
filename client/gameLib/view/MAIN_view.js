@@ -15,6 +15,11 @@ define(function(require){
         this.div = null;
         this.model = null;
         this.objShapes = {};
+        this.fogShape = null;
+
+        this.shapeCacheList = [];
+        this.fogCacheList = [];
+        this.controls = null;
         this.initialize(div,model);
     };
     MAIN_view.prototype = new View();
@@ -35,7 +40,7 @@ define(function(require){
 
         this.model.addListener("soldierChange",prop,function(soldier){
             var bG = self.model.battleGround;
-            var visibleBlocks = bG.visibleBlocks;
+            var visibleBlocks = bG.getVisibleBlocks();
             var vB_i,loc_i;
             for(var i = 0;i<visibleBlocks.length;i++){
                 vB_i = visibleBlocks[i];
@@ -43,30 +48,48 @@ define(function(require){
             };
         });
         this.model.addListener("campChange",prop,function(){
+            self._removeOriShape();
             var bG = self.model.battleGround;
-            var visibleBlocks = bG.visibleBlocks;
-            var vB_i,loc_i;
+            var visibleBlocks = bG.getVisibleBlocks();
+            var vB_i;
             for(var i = 0;i<visibleBlocks.length;i++){
                 vB_i = visibleBlocks[i];
                 self._drawVisibleBlock(vB_i);
             };
+            var iVB = bG.getInvisibleBlocks();
+            var iVB_i;
+            for(var i = 0;i<iVB.length;i++){
+                iVB_i = iVB[i];
+                self._drawInvisibleBlock(iVB_i);
+            }
         });
     };
+    MAIN_view.prototype._removeOriShape =function(){
+        for(var i = 0;i< this.shapeCacheList.length;i++){
+            this.scene.remove(this.shapeCacheList[i]);
+        }
+        this.shapeCacheList = [];
+        for(var i = 0;i< this.fogCacheList.length;i++){
+            this.scene.remove(this.fogCacheList[i]);
+        }
+        this.fogCacheList = [];
+    };
     MAIN_view.prototype._drawVisibleBlock = function(block){
-        var loc_i = block.loc;
+        var loc = block.loc;
         var groupList = block.groupInfoList;
         var len = groupList.length;
         var group_i;
         for(var i = 0;i<len;i++){
             group_i = groupList[i];
             var shape = this._getShapeByType(group_i.type);
-            var locInfo =this._getShapeLocInfo(loc_i,len,i);
+            var locInfo =this._getShapeLocInfo(loc,len,i);
             shape.position.x = locInfo.x;
             shape.position.y = locInfo.y;
             shape.position.z = locInfo.z;
             shape.scale.x = locInfo.s;
             shape.scale.y = locInfo.s;
             shape.scale.z = locInfo.s;
+            this.shapeCacheList.push(shape);
             this.scene.add(shape);
         }
     };
@@ -123,6 +146,32 @@ define(function(require){
             s:scale
         }
     };
+    MAIN_view.prototype._drawInvisibleBlock = function(block){
+        var loc = block.loc;
+        var fogShape = this.fogShape.clone();
+        var tDLocInfo = this._getFogLocInfo(loc);
+        fogShape.position.x = tDLocInfo.x;
+        fogShape.position.y = tDLocInfo.y;
+        fogShape.position.z = tDLocInfo.z;
+        fogShape.scale.y = 0.2;
+        this.fogCacheList.push(fogShape);
+        this.scene.add(fogShape);
+    };
+    MAIN_view.prototype._getFogLocInfo = function(loc){
+        var bG = this.model.battleGround;
+        var w = bG.width;
+        var h = bG.height;
+        var x = loc%w;
+        var y = parseInt(loc/w);
+        var shapeX = -5 + x;
+        var shapeY = 0.2;
+        var shapeZ = -5 + y;
+        return{
+            x:shapeX,
+            y:shapeY,
+            z:shapeZ
+        }
+    }
     /**
      * 初始化3d环境
      */
@@ -133,12 +182,12 @@ define(function(require){
         var scene = new THREE.Scene();
         this.scene = scene;
         var camera = new THREE.PerspectiveCamera(45,4/4,1,1000);
-        var controls = new THREE.TrackballControls( camera );
+        //this.controls = new THREE.TrackballControls( camera );
         camera.position.set(0,12,12);
         camera.lookAt(new THREE.Vector3(0,0.2,2));
         scene.add(camera);
 
-
+        //加载模型
         var mtlLoader = new THREE.MTLLoader();
         mtlLoader.setBaseUrl( '../image/Texture/' );
         mtlLoader.setPath( '../image/Texture/' );
@@ -165,7 +214,6 @@ define(function(require){
             });
 
         });
-
         mtlLoader.load( 'archer_01/BA_Archer_01.mtl', function( materials ) {
             materials.preload();
             var objLoader = new THREE.OBJLoader();
@@ -189,7 +237,6 @@ define(function(require){
             });
 
         });
-
         mtlLoader.load( 'footman_01/BA_Footman_01.mtl', function( materials ) {
             materials.preload();
             var objLoader = new THREE.OBJLoader();
@@ -238,6 +285,17 @@ define(function(require){
         };
         scene.add(group);
 
+        //加载战争迷雾模型
+        var box = new THREE.BoxGeometry(x_length,y_length,z_length);
+        var material = new THREE.MeshBasicMaterial({
+            color: 0xcccccc,
+            //opacity: 0.5,
+            //transparent:true
+        });
+        var mesh = new THREE.Mesh(box,material);
+        this.fogShape = mesh;
+
+
         var lightAmbient = new THREE.AmbientLight(0x555555);
         scene.add(lightAmbient);
         var light = new THREE.DirectionalLight(0xffffff);
@@ -277,7 +335,7 @@ define(function(require){
         renderer.render(scene,camera);
 
         setInterval(function(){
-            controls.update();
+            if(this.controls)this.controls.update();
             renderer.render(scene,camera);
         },20);
     };
