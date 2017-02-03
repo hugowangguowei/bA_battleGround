@@ -8,6 +8,7 @@ define(function(require){
     var listenerClass = viewConfig.listenerClass;
     var getGUID = require("baBasicLib/util/GUID");
     var baLib = require("baBasicLib/util/baLib");
+    var CameraController = require("gameLib/model/CameraController");
 
     function MAIN_view(div,model){
         View.call(this,div,model);
@@ -19,7 +20,7 @@ define(function(require){
 
         this.shapeCacheList = [];
         this.fogCacheList = [];
-        this.controls = null;
+        this.controller = null;
         this.initialize(div,model);
     };
     MAIN_view.prototype = new View();
@@ -27,8 +28,8 @@ define(function(require){
         this.div = div;
         this.model = model;
         this.addOriListeners();
-        this.addBasicStruct();
         this.init3DEnv();
+        this.addBasicStruct();
         this.draw();
     };
     MAIN_view.prototype.addOriListeners = function(){
@@ -146,6 +147,11 @@ define(function(require){
             s:scale
         }
     };
+    /**
+     * 绘制战争迷雾
+     * @param block
+     * @private
+     */
     MAIN_view.prototype._drawInvisibleBlock = function(block){
         var loc = block.loc;
         var fogShape = this.fogShape.clone();
@@ -157,6 +163,12 @@ define(function(require){
         this.fogCacheList.push(fogShape);
         this.scene.add(fogShape);
     };
+    /**
+     * 获取战争迷雾对象的3D场景位置
+     * @param loc
+     * @returns {{x: number, y: number, z: number}}
+     * @private
+     */
     MAIN_view.prototype._getFogLocInfo = function(loc){
         var bG = this.model.battleGround;
         var w = bG.width;
@@ -164,7 +176,7 @@ define(function(require){
         var x = loc%w;
         var y = parseInt(loc/w);
         var shapeX = -5 + x;
-        var shapeY = 0.2;
+        var shapeY = -0.1;
         var shapeZ = -5 + y;
         return{
             x:shapeX,
@@ -182,9 +194,7 @@ define(function(require){
         var scene = new THREE.Scene();
         this.scene = scene;
         var camera = new THREE.PerspectiveCamera(45,4/4,1,1000);
-        //this.controls = new THREE.TrackballControls( camera );
-        camera.position.set(0,12,12);
-        camera.lookAt(new THREE.Vector3(0,0.2,2));
+        this.controller = new CameraController(camera);
         scene.add(camera);
 
         //加载模型
@@ -326,16 +336,15 @@ define(function(require){
             side:THREE.BackSide
         });
         var geometry = new THREE.BoxGeometry(80, 80, 80);
-        var skyboxMesh = new THREE.Mesh(geometry, material);
-        skyboxMesh.position.x=0;
-        skyboxMesh.position.y=0;
-        skyboxMesh.position.z=0;
-        scene.add(skyboxMesh);
+        var skyBoxMesh = new THREE.Mesh(geometry, material);
+        skyBoxMesh.position.x=0;
+        skyBoxMesh.position.y=0;
+        skyBoxMesh.position.z=0;
+        scene.add(skyBoxMesh);
 
         renderer.render(scene,camera);
 
         setInterval(function(){
-            if(this.controls)this.controls.update();
             renderer.render(scene,camera);
         },20);
     };
@@ -348,9 +357,29 @@ define(function(require){
 
     };
     MAIN_view.prototype.addBasicStruct = function(){
+        var self = this;
+        document.onkeydown=function(event){
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            console.log(e.keyCode);
+            switch (e.keyCode){
+                case 37:
+                //Left
+                    self.controller.input("left");
+                break;
+                case 38:
+                    //Up
+                    self.controller.input("up");
+                    break;
+                case 39:
+                    //Right
+                    self.controller.input("right");
+                    break;
+                case 40:
+                    //Down
+                    self.controller.input("down");
+                    break;
+            }
+        };
     };
-    MAIN_view.prototype.get3DLoc = function(loc){
-
-    }
     return MAIN_view;
 })

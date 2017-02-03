@@ -228,19 +228,19 @@ $(document).keydown(function(event){
 
         case 37:
             //Left
-            WSM.sendMsg("gameInput",{type:"refreshSprite",detail:{type:"turnLeft",detail:""}});
+            //WSM.sendMsg("gameInput",{type:"refreshSprite",detail:{type:"turnLeft",detail:""}});
             break;
         case 38:
             //Up
-            WSM.sendMsg("gameInput",{type:"refreshSprite",detail:{type:"acc",detail:""}});
+            //WSM.sendMsg("gameInput",{type:"refreshSprite",detail:{type:"acc",detail:""}});
             break;
         case 39:
             //Right
-            WSM.sendMsg("gameInput",{type:"refreshSprite",detail:{type:"turnRight",detail:""}});
+            //WSM.sendMsg("gameInput",{type:"refreshSprite",detail:{type:"turnRight",detail:""}});
             break;
         case 40:
             //Down
-            WSM.sendMsg("gameInput",{type:"refreshSprite",detail:{type:"draw",detail:""}});
+            //WSM.sendMsg("gameInput",{type:"refreshSprite",detail:{type:"draw",detail:""}});
             break;
     }
 });
