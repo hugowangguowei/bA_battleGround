@@ -121,7 +121,7 @@ define(function(require){
             cxt.fillRect(width*_x + 1,height*_y + 1,width - 2,height -2);
             cxt.fillStyle = "grey";
             cxt.fillText(""+loc_i,width*(_x + 0.5),height*(_y+0.25));
-            var groupList = vB_i.groupInfoList;
+            var groupList = vB_i.groupList;
             var group_i;
             for(var p = 0;p<groupList.length;p++){
                 group_i = groupList[p];

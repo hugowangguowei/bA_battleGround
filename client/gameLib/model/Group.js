@@ -15,6 +15,7 @@ define(function (require) {
         this.loc = -1;
         this.aimLoc = -1;
         this.attLoc = -1;
+        this.showPad = true;
         this.curOrder = "defend";
         this.fillColor = "black";
 

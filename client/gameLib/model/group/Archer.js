@@ -3,10 +3,10 @@
  */
 
 define(function(require) {
-    var Soldier = require("../Group");
+    var Group = require("../Group");
 
     function Archer(camp,soldierInfo){
-        Soldier.call(this,camp,soldierInfo);
+        Group.call(this,camp,soldierInfo);
         this.type = "archer";
         this.brave = 0.8;
         this.obey = 0.5;
@@ -17,7 +17,7 @@ define(function(require) {
         this.fillColor = "green";
     }
 
-    Archer.prototype = new Soldier();
+    Archer.prototype = new Group();
 
     return Archer;
 });

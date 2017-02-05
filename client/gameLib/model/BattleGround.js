@@ -38,16 +38,16 @@ define(function (require) {
             this.resetVisibility();
 
             var vB_i,b_i;
-            //Éú³É¿É¼û¿é
+            //ç”Ÿæˆå¯è§å—
             for(var i in visibleBlocks){
                 vB_i = visibleBlocks[i];
                 var loc = vB_i.loc;
                 var block = this.getBlockByLoc(loc);
                 block.visible = true;
                 block.setByServerInfo(vB_i);
-                this.visibleBlocks.push(visibleBlocks[i]);
+                this.visibleBlocks.push(block);
             };
-            //Éú³É²»¿É¼û¿é
+            //ç”Ÿæˆä¸å¯è§å—
             for(var i in this.blockList){
                 b_i = this.blockList[i];
                 if(!b_i.visible){

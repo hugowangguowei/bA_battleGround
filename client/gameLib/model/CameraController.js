@@ -2,7 +2,8 @@
  * Created by wgw on 2017/2/3.
  */
 define(function(require){
-    function Controller(camera){
+    function Controller(model,camera){
+        this.model = model;
         this.camera = camera;
         this.axis = null;
         this.angle1 = 0;
@@ -64,6 +65,8 @@ define(function(require){
             this.camera.position.z = Math.cos(this.angle1)*this.pR;
             this.camera.position.x = Math.sin(this.angle1)*this.pR;
             this.camera.lookAt(new THREE.Vector3(0,0,0));
+
+            this.model.fireEvent("cameraChange");
         }
     }
     return Controller;
