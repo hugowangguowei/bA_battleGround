@@ -16,10 +16,12 @@ define(function(require){
         this.div = null;
         this.model = null;
         this.objShapes = {};
+        this.terraShapes = {};
         this.frogShape = null;
 
         this.shapeCacheList = [];
         this.frogCacheList = [];
+        this.terraCacheList = [];
         this.controller = null;
         this.initialize(div,model);
     };
@@ -70,6 +72,10 @@ define(function(require){
             this.scene.remove(this.shapeCacheList[i]);
         }
         this.shapeCacheList = [];
+        for(var i = 0;i< this.terraCacheList.length;i++){
+            this.scene.remove(this.terraCacheList[i]);
+        }
+        this.terraCacheList = [];
         for(var i = 0;i< this.frogCacheList.length;i++){
             this.scene.remove(this.frogCacheList[i]);
         }
@@ -93,9 +99,20 @@ define(function(require){
             this.shapeCacheList.push(shape);
             this.scene.add(shape);
         }
+
+        var terra = this._getTerraByType();
+        var terraLocInfo = this._getTerraLocInfo(loc);
+        terra.position.x = terraLocInfo.x;
+        terra.position.y = terraLocInfo.y;
+        terra.position.z = terraLocInfo.z;
+        terra.scale.x = 0.01;
+        terra.scale.y = 0.01;
+        terra.scale.z = 0.01;
+        this.terraCacheList.push(terra);
+        this.scene.add(terra);
     };
     /**
-     * ¸ù¾ÝgroupµÄtype»ñÈ¡ÒÑ¾­¼ÓÔØºÃµÄÄ£ÐÍ
+     * æ ¹æ®groupçš„typeèŽ·å–å·²ç»åŠ è½½å¥½çš„æ¨¡åž‹
      * @param type
      * @returns {*}
      * @private
@@ -116,7 +133,7 @@ define(function(require){
         return shape.clone();
     };
     /**
-     * ½«Õ½³¡Î»ÖÃ×ª»»Îª3D³¡¾°ÖÐµÄÎ»ÖÃ
+     * å°†æˆ˜åœºä½ç½®è½¬æ¢ä¸º3Dåœºæ™¯ä¸­çš„ä½ç½®
      * @param loc
      * @param len
      * @param i
@@ -147,15 +164,27 @@ define(function(require){
             s:scale
         }
     };
+    MAIN_view.prototype._getTerraByType = function(){
+        var m = Math.random();
+        var terra;
+        if(m < 0.4){
+            terra = this.terraShapes["plant_01"];
+        }else if(m<0.7){
+            terra = this.terraShapes["mount_01"];
+        }else{
+            terra = this.terraShapes["sea_01"];
+        }
+        return terra.clone();
+    };
     /**
-     * »æÖÆÕ½ÕùÃÔÎí
+     * ç»˜åˆ¶æˆ˜äº‰è¿·é›¾
      * @param block
      * @private
      */
     MAIN_view.prototype._drawInvisibleBlock = function(block){
         var loc = block.loc;
         var fogShape = this.frogShape.clone();
-        var tDLocInfo = this._getFogLocInfo(loc);
+        var tDLocInfo = this._getTerraLocInfo(loc);
         fogShape.position.x = tDLocInfo.x;
         fogShape.position.y = tDLocInfo.y;
         fogShape.position.z = tDLocInfo.z;
@@ -166,12 +195,12 @@ define(function(require){
         this.scene.add(fogShape);
     };
     /**
-     * »ñÈ¡Õ½ÕùÃÔÎí¶ÔÏóµÄ3D³¡¾°Î»ÖÃ
+     * èŽ·å–æˆ˜äº‰è¿·é›¾å¯¹è±¡çš„3Dåœºæ™¯ä½ç½®
      * @param loc
      * @returns {{x: number, y: number, z: number}}
      * @private
      */
-    MAIN_view.prototype._getFogLocInfo = function(loc){
+    MAIN_view.prototype._getTerraLocInfo = function(loc){
         var bG = this.model.battleGround;
         var w = bG.width;
         var h = bG.height;
@@ -187,7 +216,7 @@ define(function(require){
         }
     }
     /**
-     * ³õÊ¼»¯3d»·¾³
+     * åˆå§‹åŒ–3dçŽ¯å¢ƒ
      */
     MAIN_view.prototype.init3DEnv = function(){
         var self = this;
@@ -199,7 +228,7 @@ define(function(require){
         this.controller = new CameraController(camera);
         scene.add(camera);
 
-        //¼ÓÔØÄ£ÐÍ
+        //åŠ è½½æ¨¡åž‹
         var mtlLoader = new THREE.MTLLoader();
         mtlLoader.setBaseUrl( '../image/Texture/' );
         mtlLoader.setPath( '../image/Texture/' );
@@ -294,60 +323,146 @@ define(function(require){
                 //scene.add( object );
                 //renderer.render(scene,camera);
             });
+        });
+        mtlLoader.load( 'mount_01/BA_Mount_01.mtl', function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.setPath( '../image/Texture/' );
+            objLoader.load( 'mount_01/BA_Mount_01.obj', function ( object ) {
+                object.position.x = 2;
+                object.position.y = 1;
+                object.position.z = 2;
+                object.scale.x = 0.01;
+                object.scale.y = 0.01;
+                object.scale.z = 0.01;
+                object.rotation.y = Math.PI;
+                for(var i in materials.materials){
+                    var m = materials.materials[i];
+                    m.side = THREE.DoubleSide;
+                }
 
+                self.terraShapes["mount_01"] = object;
+                renderer.render(scene,camera);
+            });
+        });
+        mtlLoader.load( 'sea_01/BA_Sea_01.mtl', function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.setPath( '../image/Texture/' );
+            objLoader.load( 'sea_01/BA_Sea_01.obj', function ( object ) {
+                object.position.x = 3;
+                object.position.y = 1;
+                object.position.z = 2;
+                object.scale.x = 0.01;
+                object.scale.y = 0.01;
+                object.scale.z = 0.01;
+                object.rotation.y = Math.PI;
+                for(var i in materials.materials){
+                    var m = materials.materials[i];
+                    m.side = THREE.DoubleSide;
+                }
+                self.terraShapes["sea_01"] = object;
+                renderer.render(scene,camera);
+            });
+        });
+        mtlLoader.load( 'plant_01/BA_Plant_01.mtl', function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.setPath( '../image/Texture/' );
+            objLoader.load( 'plant_01/BA_Plant_01.obj', function ( object ) {
+                object.position.x = 3;
+                object.position.y = 1;
+                object.position.z = 1;
+                object.scale.x = 0.01;
+                object.scale.y = 0.01;
+                object.scale.z = 0.01;
+                object.rotation.y = Math.PI;
+                for(var i in materials.materials){
+                    var m = materials.materials[i];
+                    m.side = THREE.DoubleSide;
+                }
+                self.terraShapes["plant_01"] = object;
+                renderer.render(scene,camera);
+            });
+        });
+        mtlLoader.load( 'pad_01/BA_Pad_01.mtl', function( materials ) {
+            materials.preload();
+            var objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials( materials );
+            objLoader.setPath( '../image/Texture/' );
+            objLoader.load( 'pad_01/BA_Pad_01.obj', function ( object ) {
+                object.position.x = 0;
+                object.position.y = 1;
+                object.position.z = 0;
+                object.scale.x = 0.01;
+                object.scale.y = 0.01;
+                object.scale.z = 0.01;
+                object.rotation.y = Math.PI;
+                for(var i in materials.materials){
+                    var m = materials.materials[i];
+                    m.side = THREE.DoubleSide;
+                }
+                //self.terraShapes["plant_01"] = object;
+                scene.add(object);
+                renderer.render(scene,camera);
+            });
         });
 
-        //Ìí¼Óµ×Í¼
-        var group = new THREE.Group();
+
+        var material = new THREE.MeshPhongMaterial({
+            color: 0xffff00,
+            specular:0xffff00,
+            shininess:0
+        });
+        var loader = new THREE.FontLoader();
+        loader.load('../image/Font/helvetiker_regular.typeface.json', function(font) {
+            var mesh = new THREE.Mesh(new THREE.TextGeometry('Hello', {
+                font: font,
+                size: 1,
+                height: 0.1
+            }), material);
+            mesh.position.x = 0;
+            mesh.position.y = 1;
+            mesh.position.z = 0.01;
+            mesh.scale.x = 0.1;
+            mesh.scale.y = 0.1;
+            mesh.scale.z = 0.1;
+            scene.add(mesh);
+        });
+
+        //åŠ è½½æˆ˜äº‰è¿·é›¾æ¨¡åž‹
         var x_length = 1;
         var y_length = 1;
         var z_length = 1;
         var box = new THREE.BoxGeometry(x_length,y_length,z_length);
         var material = new THREE.MeshBasicMaterial({
-            map:THREE.ImageUtils.loadTexture("../image/bg_1.png",{},function(){
-                renderer.render(scene,camera);
-            })
-        });
-        for(var i = 0;i<10;i++){
-            for(var j = 0;j<10;j++){
-                var mesh = new THREE.Mesh(box,material);
-                mesh.position.x = -5 + i*x_length;
-                mesh.position.z = -5 + j*z_length;
-                mesh.position.y = -0.2;
-                mesh.scale.y = 0.4;
-                box.depth = Math.random()*2;
-                group.add(mesh);
-            }
-        };
-        scene.add(group);
-
-        //¼ÓÔØÕ½ÕùÃÔÎíÄ£ÐÍ
-        var box = new THREE.BoxGeometry(x_length,y_length,z_length);
-        var material = new THREE.MeshBasicMaterial({
-            color: 0xcccccc,
-            //opacity: 0.5,
-            //transparent:true
+            color: 0xcccccc
         });
         var mesh = new THREE.Mesh(box,material);
-        //this.fogShape = mesh;
 
-
-        var lightAmbient = new THREE.AmbientLight(0x555555);
+        var lightAmbient = new THREE.AmbientLight(0xaaaaaa);
         scene.add(lightAmbient);
-        var light = new THREE.DirectionalLight(0xffffff);
-        light.position.set(0,3,10);
-        scene.add(light);
-        var light = new THREE.DirectionalLight(0xffffff);
-        light.position.set(0,3,-10);
-        scene.add(light);
         //var light = new THREE.DirectionalLight(0xffffff);
         //light.position.set(10,3,0);
         //scene.add(light);
+        var light = new THREE.DirectionalLight(0xffffff);
+        light.position.set(-10,3,0);
+        scene.add(light);
+        var light = new THREE.PointLight(0xffffff);
+        light.position.set(10,3,0);
+        scene.add(light);
+        //var light = new THREE.DirectionalLight(0xffffff);
+        //light.position.set(0,10,0);
+        //scene.add(light);
         //var light = new THREE.DirectionalLight(0xffffff);
         //light.position.set(-10,3,0);
-        scene.add(light);
-
-        //Ìì¿ÕºÐ×Ó
+        //scene.add(light);
+        //var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 1 );
+        //scene.add( light );
+        //å¤©ç©ºç›’å­
         var urlPrefix = "../image/";
         var urls = [urlPrefix + "timg.jpg",
             urlPrefix + "timg.jpg",
@@ -413,6 +528,13 @@ define(function(require){
                     //Down
                     self.controller.input("down");
                     break;
+            }
+        };
+        document.onmousewheel = function(event){
+            if(event.deltaY > 0){
+                self.controller.input("zoomOut");
+            }else{
+                self.controller.input("zoomIn");
             }
         };
     };

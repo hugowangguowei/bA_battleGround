@@ -44,16 +44,23 @@ define(function(require){
                 case "up":
                     this.angle2 += this.step;
                     if(this.angle2>= Math.PI)this.angle2 =Math.PI;
-                    this.pR = Math.cos(this.angle2)*this.radius;
-                    this.camera.position.y = Math.sin(this.angle2)*this.radius;
                     break;
                 case "down":
                     this.angle2 += (-1*this.step);
                     if(this.angle2<= 0)this.angle2 =0;
-                    this.pR = Math.cos(this.angle2)*this.radius;
-                    this.camera.position.y = Math.sin(this.angle2)*this.radius;
+
+                    break;
+                case "zoomIn":
+                    this.radius--;
+                    if(this.radius<2)this.radius = 2;
+                    break;
+                case "zoomOut":
+                    this.radius++;
+                    if(this.radius>24)this.radius = 24;
                     break;
             }
+            this.pR = Math.cos(this.angle2)*this.radius;
+            this.camera.position.y = Math.sin(this.angle2)*this.radius;
             this.camera.position.z = Math.cos(this.angle1)*this.pR;
             this.camera.position.x = Math.sin(this.angle1)*this.pR;
             this.camera.lookAt(new THREE.Vector3(0,0,0));
