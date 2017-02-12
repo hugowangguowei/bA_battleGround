@@ -4,6 +4,7 @@
 
 
 define(function (require) {
+
     var Block = require("./Block");
 
     function BattleGround(model){
@@ -31,7 +32,7 @@ define(function (require) {
             }
         },
         /**
-         * hb
+         *
          * @param visibleBlocks {type_s_1}
          */
         setVBByServer:function(visibleBlocks){

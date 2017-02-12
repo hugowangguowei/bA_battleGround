@@ -4,7 +4,7 @@
 
 module.exports = BattleGround;
 var GUID = require("../../dep/baBasicLib/util/GUID");
-var Block = require("./Block");
+var blockManager = require("../controller/BlockManager").getInstance();
 
 function BattleGround(id){
     this.id = id||GUID.getGUID();
@@ -19,11 +19,12 @@ BattleGround.prototype = {
      * 初始化
      */
     initialize:function(){
-        for(var i = 0;i<this.width*this.height;i++){
-            var block = new Block(i);
-            block.battleGround = this;
-            this.blockList.push(block);
-        }
+        this.blockList = blockManager.generateBlockListByLineAndRow(this.width,this.height,this);
+        //for(var i = 0;i<this.width*this.height;i++){
+        //    var block = new Block(i);
+        //    block.battleGround = this;
+        //    this.blockList.push(block);
+        //}
     },
     /**
      * 添加soldier

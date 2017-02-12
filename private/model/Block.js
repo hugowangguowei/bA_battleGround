@@ -7,11 +7,13 @@ function Block(id){
     this.id = id;
     this.loc = id;
     this.battleGround = null;
+    //士兵相关
     this.soldierList = [];
     this.groupList = [];
     this.campList = [];
     this.campSightList = [];
-
+    //地形相关
+    this.terraType = "plant"
 }
 Block.prototype = {
     initialize:function(){
@@ -238,10 +240,13 @@ Block.prototype = {
             groupInfoList.push(groupInfo_i);
         }
 
+        var terraType = this.terraType;
+
         var info = {
             blockId:blockId,
             loc:loc,
-            groupInfoList:groupInfoList
+            groupInfoList:groupInfoList,
+            terraType:terraType
         };
         return info;
     }

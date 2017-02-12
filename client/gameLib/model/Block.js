@@ -9,6 +9,7 @@ define(function(require){
         this.loc = -1;
         this.visible = false;
         this.groupList = [];
+        this.terraType = "plant";
     }
     Block.prototype = {
         init:function(){
@@ -23,6 +24,7 @@ define(function(require){
                 group = GroupManager.generateGroupByType(gI_i.type,gI_i.campId,{"num":gI_i.soldierNum,"loc":loc});
                 this.groupList.push(group);
             }
+            this.terraType = blockInfo.terraType;
         }
     }
 

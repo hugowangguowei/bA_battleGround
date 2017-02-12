@@ -376,7 +376,7 @@ define(function(require){
             this._drawObjShape(group_i,loc,len,i);
         }
         //绘制地形
-        var terra = this._getTerraByType();
+        var terra = this._getTerraByType(block.terraType);
         var terraLocInfo = this._getTerraLocInfo(loc);
         terra.position.x = terraLocInfo.x;
         terra.position.y = terraLocInfo.y;
@@ -478,15 +478,21 @@ define(function(require){
      * @returns {*}
      * @private
      */
-    MAIN_view.prototype._getTerraByType = function(){
-        var m = Math.random();
+    MAIN_view.prototype._getTerraByType = function(terraType){
         var terra;
-        if(m < 0.4){
-            terra = this.terraShapes["plant_01"];
-        }else if(m<0.7){
-            terra = this.terraShapes["mount_01"];
-        }else{
-            terra = this.terraShapes["sea_01"];
+        switch (terraType){
+            case "plant":
+                terra = this.terraShapes["plant_01"];
+                break;
+            case "mount":
+                terra = this.terraShapes["mount_01"];
+                break;
+            case "sea":
+                terra = this.terraShapes["sea_01"];
+                break;
+            default :
+                terra = this.terraShapes["plant_01"];
+                break;
         }
         return terra.clone();
     };
