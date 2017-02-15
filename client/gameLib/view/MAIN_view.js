@@ -46,28 +46,22 @@ define(function(require){
         };
 
         this.model.addListener("soldierChange",prop,function(soldier){
-            var bG = self.model.battleGround;
-            var visibleBlocks = bG.getVisibleBlocks();
-            var vB_i,loc_i;
-            for(var i = 0;i<visibleBlocks.length;i++){
-                vB_i = visibleBlocks[i];
-                self._drawVisibleBlock(vB_i);
-            };
         });
         this.model.addListener("campChange",prop,function(){
-            self._removeOriShape();
             var bG = self.model.battleGround;
             var visibleBlocks = bG.getVisibleBlocks();
             var vB_i;
             for(var i = 0;i<visibleBlocks.length;i++){
                 vB_i = visibleBlocks[i];
-                self._drawVisibleBlock(vB_i);
+                var blockShape = vB_i.getBlockShape3D();
+                blockShape.draw(self);
             };
             var iVB = bG.getInvisibleBlocks();
             var iVB_i;
             for(var i = 0;i<iVB.length;i++){
                 iVB_i = iVB[i];
-                self._drawInvisibleBlock(iVB_i);
+                var blockShape = iVB_i.getBlockShape3D();
+                blockShape.draw(self);
             }
         });
         this.model.addListener("cameraChange",prop,function(){
@@ -335,130 +329,14 @@ define(function(require){
             renderer.render(scene,camera);
         },20);
     };
-    /**
-     * 重置view
-     * @private
-     */
-    MAIN_view.prototype._removeOriShape =function(){
-        for(var i = 0;i< this.shapeCacheList.length;i++){
-            this.scene.remove(this.shapeCacheList[i]);
-        }
-        this.shapeCacheList = [];
 
-        for(var i = 0;i< this.terraCacheList.length;i++){
-            this.scene.remove(this.terraCacheList[i]);
-        }
-        this.terraCacheList = [];
-
-        for(var i = 0;i< this.fogCacheList.length;i++){
-            this.scene.remove(this.fogCacheList[i]);
-        }
-        this.fogCacheList = [];
-
-        for(var i = 0;i< this.padCacheList.length;i++){
-            this.scene.remove(this.padCacheList[i]);
-        }
-        this.padCacheList = [];
-    };
-    /**
-     * 绘制可见块
-   * @param block
-     * @private
-     */
-    MAIN_view.prototype._drawVisibleBlock = function(block){
-        var loc = block.loc;
-        var groupList = block.groupList;
-        var len = groupList.length;
-        //绘制人物模型
-        var group_i;
-        for(var i = 0;i<len;i++){
-            group_i = groupList[i];
-            this._drawObjShape(group_i,loc,len,i);
-        }
-        //绘制地形
-        var terra = this._getTerraByType(block.terraType);
-        var terraLocInfo = this._getTerraLocInfo(loc);
-        terra.position.x = terraLocInfo.x;
-        terra.position.y = terraLocInfo.y;
-        terra.position.z = terraLocInfo.z;
-        terra.scale.x = 0.01;
-        terra.scale.y = 0.01;
-        terra.scale.z = 0.01;
-        this.terraCacheList.push(terra);
-        this.scene.add(terra);
-    };
-    /**
-     * 绘制group对象
-     * @param group
-     * @param loc
-     * @param len
-     * @param i
-     * @private
-     */
-    MAIN_view.prototype._drawObjShape = function(group,loc,len,i){
-        var shape = this._getShapeByType(group.type);
-        var locInfo =this._getShapeLocInfo(loc,len,i);
-        shape.position.x = locInfo.x;
-        shape.position.y = locInfo.y;
-        shape.position.z = locInfo.z;
-        shape.scale.x = locInfo.s;
-        shape.scale.y = locInfo.s;
-        shape.scale.z = locInfo.s;
-        this.shapeCacheList.push(shape);
-        this.scene.add(shape);
-        if(group.showPad){
-            var info = group.type;
-            var material = new THREE.MeshPhongMaterial({
-                color: 0x000000,
-                specular:0xffff00,
-                shininess:0
-            });
-            var padAll = new THREE.Group();
-            var text = new THREE.Mesh(new THREE.TextGeometry(info, {
-                font: this.font,
-                size: 0.1,
-                height: 0.1
-            }), material);
-            var bBox = new THREE.Box3().setFromObject(text)
-            var centerOffset = -0.5 * ( bBox.max.x - bBox.min.x );
-            text.position.x += centerOffset;
-            text.scale.z = 0.01;
-            padAll.add(text);
-            var pad = this._getPadByType();
-            padAll.add(pad);
-            padAll.position.x = locInfo.x;
-            padAll.position.y = locInfo.y + 1;
-            padAll.position.z = locInfo.z;
-            var rotateInfo = this._getPadRotate(padAll);
-            this.padCacheList.push(padAll);
-            this.scene.add(padAll);
-        }
-    };
-    /**
-     * 绘制战争迷雾
-     * @param block
-     * @private
-     */
-    MAIN_view.prototype._drawInvisibleBlock = function(block){
-        var loc = block.loc;
-        var fogShape = this.fogShape.clone();
-        var tDLocInfo = this._getTerraLocInfo(loc);
-        fogShape.position.x = tDLocInfo.x;
-        fogShape.position.y = tDLocInfo.y;
-        fogShape.position.z = tDLocInfo.z;
-        fogShape.scale.x = 0.01;
-        fogShape.scale.y = 0.01;
-        fogShape.scale.z = 0.01;
-        this.fogCacheList.push(fogShape);
-        this.scene.add(fogShape);
-    };
     /**
      * 根据group的type获取已经加载好的模型
      * @param type
      * @returns {*}
      * @private
      */
-    MAIN_view.prototype._getShapeByType = function(type){
+    MAIN_view.prototype._getShapeByType = function(type,campId){
         var shape = null;
         switch (type){
             case "knight":
@@ -556,7 +434,12 @@ define(function(require){
             y:shapeY,
             z:shapeZ
         }
-    }
+    };
+    /**
+     * 获取标牌的旋转
+     * @param pad
+     * @private
+     */
     MAIN_view.prototype._getPadRotate = function(pad){
         var _x = pad.position.x - this.mainCamera.position.x;
         var _y = pad.position.y - this.mainCamera.position.y;
@@ -564,11 +447,11 @@ define(function(require){
         pad.rotation.x = this.mainCamera.rotation.x;
         pad.rotation.y = this.mainCamera.rotation.y;
         pad.rotation.z = this.mainCamera.rotation.z;
-    }
-
+    };
 
     MAIN_view.prototype.draw = function(){
     };
+
     MAIN_view.prototype.addBasicStruct = function(){
         var self = this;
         document.onkeydown=function(event){
