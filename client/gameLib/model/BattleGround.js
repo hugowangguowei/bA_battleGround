@@ -23,7 +23,7 @@ define(function (require) {
             var count = 0;
             for(var i = 0;i<this.width;i++){
                 for(var p = 0;p<this.height;p++){
-                    var block = new Block();
+                    var block = new Block(this);
                     block.id = count;
                     block.loc = count;
                     this.blockList[block.loc] = block;
@@ -67,6 +67,9 @@ define(function (require) {
             };
             this.visibleBlocks = [];
             this.invisibleBlocks = [];
+        },
+        getBlockList:function(){
+            return this.blockList;
         },
         getVisibleBlocks:function(){
             return this.visibleBlocks;

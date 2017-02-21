@@ -166,12 +166,19 @@ define(function(require){
         //==============================================================================================================
         //==============================================================================================================
         //π‚‘¥«–ªª
-        var lightAmbient = new THREE.AmbientLight(0x555555);
+        var lightAmbient = new THREE.AmbientLight(0xaaaaaa);
         scene.add(lightAmbient);
-        //var light = new THREE.PointLight(0xffffff,1,0);
+        //var light = new THREE.DirectionalLight(0xffffff);
+        //light.position.set(10,3,0);
+        //scene.add(light);
         var light = new THREE.DirectionalLight(0xffffff);
-        light.position.set(0,0,10);
+        light.position.set(-10,3,0);
         scene.add(light);
+        var light = new THREE.PointLight(0xffffff);
+        light.position.set(10,3,0);
+        scene.add(light);
+        //var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 1 );
+        //scene.add( light );
         //==============================================================================================================
         renderer.render(scene,camera);
 
