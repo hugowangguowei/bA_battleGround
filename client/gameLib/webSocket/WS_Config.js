@@ -79,9 +79,13 @@ define(function(require){
             }},
             {msgName:SMT.TEST,msgFunc:function(msg){
                 switch (msg.type){
+                    case "testCampInit":
+                        var info = msg.detail;
+                        gm.testCampInput("serverCampInit",info);
+                        break;
                     case "testCampRefresh":
                         var info = msg.detail;
-                        gm.testCampInput("selfCamp",info);
+                        gm.testCampInput("serverCampRefresh",info);
                         break;
                     case "time":
                         gm.testClockInput(msg.detail);

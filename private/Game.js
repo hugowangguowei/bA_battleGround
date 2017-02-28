@@ -243,7 +243,7 @@ Game.prototype.addPlayer = function(client,charaType,clientType){
         var camp = this.campManager.generateOneCamp(client);
         spriteManager.generateSpriteForCamp(camp);
         var campInfo = client.camp.getCampInfo();
-        client.socket.emit(SMT.TEST,{type:"testCampRefresh",detail:campInfo});
+        client.socket.emit(SMT.TEST,{type:"testCampInit",detail:campInfo});
         this._playerNum++;
         if(this._playerNum == 2){
             routineManager.changeRoutine("playerOperate");

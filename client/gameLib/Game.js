@@ -2,9 +2,11 @@
  * Created by wgw on 2016/4/18.
  */
 define(function(require){
+    var User = require("gameLib/model/User");
     var spriteManager = require("gameLib/controller/SpriteManager").getInstance();
     var groupManager = require("gameLib/controller/GroupManager").getInstance();
     var Camp = require("gameLib/model/Camp");
+    var CampManager = require("gameLib/controller/CampManager").getInstance();
     var BattleGround = require("gameLib/model/BattleGround");
     var Geo = require("gameLib/model/Geo");
     var baEventSource = require("baBasicLib/baEventSource");
@@ -12,6 +14,7 @@ define(function(require){
     //TODO 要写成单例
     function Game(initInfo){
         baEventSource.call(this);
+        this.user = new User();
         this.geoInfo = new Geo();
         this.spriteList = {};
         this.spriteCount = 0;
@@ -22,7 +25,6 @@ define(function(require){
             frameSpeed:40
         }
         this._eventPool = {};
-        this._selfCamp = null;
         this.initialize(initInfo);
     }
 
@@ -183,7 +185,10 @@ define(function(require){
     };
     Game.prototype.testCampInput = function(type,info){
         switch (type){
-            case "selfCamp":
+            case "serverCampInit":
+                this._generateCamp(info);
+                break;
+            case "serverCampRefresh":
                 this._generateCamp(info);
                 break;
             case "soldierArrange":

@@ -196,6 +196,47 @@ define(function (require) {
                     self.padShapes["pad_01"] = object;
                 });
             });
+            mtlLoader.load( 'pad_02/BA_Pad_02.mtl', function( materials ) {
+                materials.preload();
+                var objLoader = new THREE.OBJLoader();
+                objLoader.setMaterials( materials );
+                objLoader.setPath( '../image/Texture/' );
+                objLoader.load( 'pad_02/BA_Pad_02.obj', function ( object ) {
+                    object.position.x = 0;
+                    object.position.y = 0;
+                    object.position.z = 0;
+                    object.scale.x = 0.01;
+                    object.scale.y = 0.01;
+                    object.scale.z = 0.01;
+                    object.rotation.y = Math.PI;
+                    for(var i in materials.materials){
+                        var m = materials.materials[i];
+                        m.side = THREE.DoubleSide;
+                    }
+                    self.padShapes["pad_02"] = object;
+                });
+            });
+            mtlLoader.load( 'pad_03/BA_Pad_03.mtl', function( materials ) {
+                materials.preload();
+                var objLoader = new THREE.OBJLoader();
+                objLoader.setMaterials( materials );
+                objLoader.setPath( '../image/Texture/' );
+                objLoader.load( 'pad_03/BA_Pad_03.obj', function ( object ) {
+                    object.position.x = 0;
+                    object.position.y = 0;
+                    object.position.z = 0;
+                    object.scale.x = 0.01;
+                    object.scale.y = 0.01;
+                    object.scale.z = 0.01;
+                    object.rotation.y = Math.PI;
+                    for(var i in materials.materials){
+                        var m = materials.materials[i];
+                        m.side = THREE.DoubleSide;
+                    }
+                    self.padShapes["pad_03"] = object;
+                });
+            });
+
             //加载字体
             var loader = new THREE.FontLoader();
             loader.load('../image/Font/helvetiker_regular.typeface.json', function(font) {
@@ -238,7 +279,12 @@ define(function (require) {
         getFogByType:function(type){
             return this.fogShape.clone();
         },
-        getPadByType:function(){
+        getPadByType:function(type){
+            if(type == ""){
+
+            }else if (type == ""){
+
+            }
             return this.padShapes["pad_01"].clone();
         }
     }
