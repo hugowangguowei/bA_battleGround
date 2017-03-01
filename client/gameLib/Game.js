@@ -183,35 +183,63 @@ define(function(require){
         }
         return false;
     };
+    Game.prototype.setSelfCamp = function(camp){
+        this.user.camp = camp;
+        //this.campManager.addCamp(camp);
+    }
+    Game.prototype.getSelfCamp = function(){
+        return this.user.camp;
+    };
     Game.prototype.testCampInput = function(type,info){
         switch (type){
             case "serverCampInit":
-                this._generateCamp(info);
+                this._campInit(info);
                 break;
             case "serverCampRefresh":
-                this._generateCamp(info);
+                this._campRefresh(info);
                 break;
             case "soldierArrange":
                 this._solderArrange(info);
                 break;
         }
     };
-    Game.prototype._generateCamp = function(campInfo){
+    Game.prototype._campInit = function(campInfo){
+        var camp = new Camp(this);
+        camp.id = campInfo.id;
+        this.setSelfCamp(camp);
+
+        var blockInfo = campInfo.visibleBlocks;
+        this.battleGround.setVBByServer(blockInfo);
+
+        //camp信息更新
+        var soldierList = campInfo.solderDetail;
+        var soldier_i;
+        var selfCamp = this.getSelfCamp();
+        for(var i in soldierList){
+            var soldierInfo = soldierList[i];
+            soldier_i = groupManager.generateGroupByType(i,selfCamp.id,soldierInfo);
+            if(soldier_i){
+                selfCamp.addGroup(soldier_i);
+            }
+        };
+
+        this.addEventToPool("campChange",campInfo);
+    };
+    Game.prototype._campRefresh = function(campInfo){
         //battleGround信息更新
         var blockInfo = campInfo.visibleBlocks;
         this.battleGround.setVBByServer(blockInfo);
-        //新建camp
-        var camp = new Camp(this);
-        camp.id = campInfo.id;
-        this._selfCamp = camp;
-        //添加soldier信息
+
+        //camp信息更新
         var soldierList = campInfo.solderDetail;
         var soldier_i;
+        var selfCamp = this.getSelfCamp();
+        selfCamp.groupList = [];
         for(var i in soldierList){
             var soldierInfo = soldierList[i];
-            soldier_i = groupManager.generateGroupByType(i,camp.id,soldierInfo);
+            soldier_i = groupManager.generateGroupByType(i,selfCamp.id,soldierInfo);
             if(soldier_i){
-                camp.addGroup(soldier_i);
+                selfCamp.addGroup(soldier_i);
             }
         };
         //触发事件
@@ -222,14 +250,15 @@ define(function(require){
         var num = info.num;
         var value = info.value;
 
-        if(this._selfCamp){
-            var soldier = this._selfCamp.getGroupByNum(num);
+        var selfCamp = this.getSelfCamp;
+        if(selfCamp){
+            var soldier = selfCamp.getGroupByNum(num);
             soldier.setProperty(type,value);
             this.addEventToPool("soldierChange",null);
         }
     };
     Game.prototype.submitStrategy = function(){
-        var campInfo = this._selfCamp.getCampInfo();
+        var campInfo = this.user.camp.getCampInfo();
         var info = {
             type:"testCampSubmit",
             detail:campInfo

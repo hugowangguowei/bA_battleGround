@@ -11,7 +11,9 @@ define(function(require){
     }
 
     CampManager.prototype = {
-
+        addCamp:function(camp){
+            this.campList.push(camp);
+        }
     }
 
     return {

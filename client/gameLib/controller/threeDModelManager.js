@@ -244,6 +244,7 @@ define(function (require) {
             });
         },
         getShapeByType:function(type,campId){
+
         var shape = null;
         switch (type){
             case "knight":
@@ -257,7 +258,7 @@ define(function (require) {
                 break;
         }
         return shape.clone();
-    },
+        },
         getTerraByType:function(terraType){
         var terra;
         switch (terraType){

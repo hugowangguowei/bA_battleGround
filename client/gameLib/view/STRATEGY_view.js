@@ -49,7 +49,7 @@ define(function(require){
             self.draw(arg);
         });
         this.model.addListener("campChange",prop,function(arg){
-            var camp = self.model._selfCamp;
+            var camp = self.model.user.camp;
             var sL = camp.getGroupList();
             var count = 0;
             for(var i = 0;i<sL.length;i++){
@@ -112,6 +112,7 @@ define(function(require){
         cxt.beginPath();
         var visibleBlocks = bG.visibleBlocks;
         var vB_i,loc_i,_x,_y;
+        var selfCamp = this.model.getSelfCamp();
         for(var i = 0;i<visibleBlocks.length;i++){
             vB_i = visibleBlocks[i];
             loc_i = vB_i.loc;
@@ -125,7 +126,7 @@ define(function(require){
             var group_i;
             for(var p = 0;p<groupList.length;p++){
                 group_i = groupList[p];
-                if(group_i.campId == this.model._selfCamp.id){
+                if(group_i.campId == selfCamp.id){
                     cxt.fillStyle = "red";
                 }else{
                     cxt.fillStyle = "blue";
@@ -145,7 +146,7 @@ define(function(require){
         var bG = this.model.battleGround;
         var w = bG.width;
         var h = bG.height;
-        var camp = this.model._selfCamp;
+        var camp = this.model.getSelfCamp();
         if(camp){
             var groupList = camp.groupList;
             var s_i = null;

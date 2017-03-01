@@ -126,7 +126,7 @@ define(function(require){
         },
         _drawTerraShape:function(terraType,loc){
             var terra = this.view.threeDModelManager.getTerraByType(terraType);
-            var terraLocInfo = this.view._getTerraLocInfo(loc);
+            var terraLocInfo = this._getTerraLocInfo(loc);
             terra.position.x = terraLocInfo.x;
             terra.position.y = terraLocInfo.y;
             terra.position.z = terraLocInfo.z;
