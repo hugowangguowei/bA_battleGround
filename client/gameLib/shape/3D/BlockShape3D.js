@@ -28,6 +28,10 @@ define(function(require){
             this.clearCacheList(this.padShapesCache);
         },
         draw:function(view){
+            if(!this.block.blockShape3DDirty){
+                console.log("+1");
+                return ;
+            }
             this.view = view;
             var loc = this.block.loc;
             this.clearAllCache();
@@ -44,6 +48,7 @@ define(function(require){
                 //绘制战争迷雾
                 this._drawFogShape(loc);
             }
+            this.block.blockShape3DDirty = false;
         },
         _getShapeLocInfo:function(loc,len,i){
             var bG = this.block.battleGround;

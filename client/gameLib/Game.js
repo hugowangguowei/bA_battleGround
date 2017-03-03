@@ -250,7 +250,7 @@ define(function(require){
         var num = info.num;
         var value = info.value;
 
-        var selfCamp = this.getSelfCamp;
+        var selfCamp = this.getSelfCamp();
         if(selfCamp){
             var soldier = selfCamp.getGroupByNum(num);
             soldier.setProperty(type,value);

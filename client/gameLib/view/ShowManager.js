@@ -20,7 +20,10 @@ define(function(require){
             "02",
             "03",
             "04",
-            "05"
+            "05",
+            "06",
+            "07",
+            "08"
         ];
         this.curShapeNum = 0;
         this.campId_ShapeNum = {};
@@ -43,9 +46,9 @@ define(function(require){
         getShapeNumByCampId:function(campId){
             var shapeNum = this.campId_ShapeNum[campId];
             if(!shapeNum){
-                var num = this.setShapeNumByCampId(campId);
+                shapeNum = this.setShapeNumByCampId(campId);
             }
-            return num;
+            return shapeNum;
         }
     }
 

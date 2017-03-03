@@ -44,15 +44,19 @@ define(function (require) {
                 vB_i = visibleBlocks[i];
                 var loc = vB_i.loc;
                 var block = this.getBlockByLoc(loc);
-                block.visible = true;
+                block.visibleFlag = true;
                 block.setByServerInfo(vB_i);
                 this.visibleBlocks.push(block);
             };
             //生成不可见块
             for(var i in this.blockList){
                 b_i = this.blockList[i];
-                if(!b_i.visible){
+                if(!b_i.visibleFlag){
                     this.invisibleBlocks.push(b_i);
+                    //如果原先可见，现在又不可见了，也需要重新设置
+                    if(b_i.visible){
+                        b_i.setByServerInfo();
+                    }
                 }
             };
         },
@@ -63,7 +67,9 @@ define(function (require) {
             var block_i;
             for(var i in this.blockList){
                 block_i = this.blockList[i];
-                block_i.visible = false;
+                if(block_i.visibleFlag){
+                    block_i.visibleFlag = false;
+                }
             };
             this.visibleBlocks = [];
             this.invisibleBlocks = [];

@@ -108,12 +108,12 @@ define(function(require){
         //var mtlLoader = new THREE.MTLLoader();
         //mtlLoader.setBaseUrl( '../image/Texture/');
         //mtlLoader.setPath( '../image/Texture/' );
-        //mtlLoader.load( 'knight_01/knight_01.mtl', function( materials ) {
+        //mtlLoader.load( 'knight_01/bA_Knight_01.mtl', function( materials ) {
         //    materials.preload();
         //    var objLoader = new THREE.OBJLoader();
         //    objLoader.setMaterials( materials );
         //    objLoader.setPath( '../image/Texture/' );
-        //    objLoader.load( 'knight_01/knight_01.obj', function ( object ) {
+        //    objLoader.load( 'knight_01/BA_Knight_01.obj', function ( object ) {
         //        object.position.x = 0.3;
         //        object.position.y = 0;
         //        object.position.z = 0.1;

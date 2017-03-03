@@ -10,6 +10,7 @@ define(function(require){
         this.battleGround = battleGround;
         this.loc = -1;
         this.visible = false;
+        this.visibleFlag = false;
         this.groupList = [];
         this.terraType = "plant";
         this.blockShape2D = null;
@@ -25,23 +26,42 @@ define(function(require){
             }
         },
         setByServerInfo:function(blockInfo){
-            var loc = blockInfo.loc;
-            var groupInfoList = blockInfo.groupInfoList;
-            var gI_i,group;
-            for(var i = 0;i<groupInfoList.length;i++){
-                gI_i = groupInfoList[i];
-                group = GroupManager.generateGroupByType(gI_i.type,gI_i.campId,{"num":gI_i.soldierNum,"loc":loc});
-                this.groupList.push(group);
+            this._compareChanges(blockInfo);
+            this._resetData();
+            this._setNewData(blockInfo);
+        },
+        _compareChanges:function(blockInfo){
+            //TODO 需要比较检测
+            this.blockShape3DDirty = true;
+            return true;
+        },
+        _resetData:function(){
+            if(!this.blockShape3DDirty){
+                return ;
             }
-            this.terraType = blockInfo.terraType;
+            this.groupList = [];
+        },
+        _setNewData:function(blockInfo){
+            if(blockInfo){
+                this.visible = true;
+                var loc = blockInfo.loc;
+                var groupInfoList = blockInfo.groupInfoList;
+                var gI_i,group;
+                for(var i = 0;i<groupInfoList.length;i++){
+                    gI_i = groupInfoList[i];
+                    group = GroupManager.generateGroupByType(gI_i.type,gI_i.campId,{"num":gI_i.soldierNum,"loc":loc});
+                    this.groupList.push(group);
+                }
+                this.terraType = blockInfo.terraType;
+            }
+            else{
+                this.visible = false;
+            }
         },
         getBlockShape2D:function(){
 
         },
         getBlockShape3D:function(){
-            //if(!this.blockShape3DDirty){
-            //    return this.blockShape3D;
-            //}
             if(!this.blockShape3D){
                 this.blockShape3D = new BlockShape3D(this);
             }

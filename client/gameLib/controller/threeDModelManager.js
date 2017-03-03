@@ -5,6 +5,7 @@
  * Created by wgw on 2016/4/29.
  */
 define(function (require) {
+    var showManager = require("../view/ShowManager").getInstance();
     var instance = null;
 
     function ThreeDModelManager(model){
@@ -30,12 +31,12 @@ define(function (require) {
             var mtlLoader = new THREE.MTLLoader();
             mtlLoader.setBaseUrl( '../image/Texture/' );
             mtlLoader.setPath( '../image/Texture/' );
-            mtlLoader.load( 'knight_01/knight_01.mtl', function( materials ) {
+            mtlLoader.load( 'knight_01/bA_Knight_01.mtl', function( materials ) {
                 materials.preload();
                 var objLoader = new THREE.OBJLoader();
                 objLoader.setMaterials( materials );
                 objLoader.setPath( '../image/Texture/' );
-                objLoader.load( 'knight_01/knight_01.obj', function ( object ) {
+                objLoader.load( 'knight_01/BA_Knight_01.obj', function ( object ) {
                     object.position.x = 0.3;
                     object.position.y = 0;
                     object.position.z = 0.1;
@@ -49,7 +50,26 @@ define(function (require) {
                     }
                     self.objShapes["knight_01"] = object;
                 });
-
+            });
+            mtlLoader.load( 'knight_02/BA_Knight_02.mtl', function( materials ) {
+                materials.preload();
+                var objLoader = new THREE.OBJLoader();
+                objLoader.setMaterials( materials );
+                objLoader.setPath( '../image/Texture/' );
+                objLoader.load( 'knight_02/BA_Knight_02.obj', function ( object ) {
+                    object.position.x = 0.3;
+                    object.position.y = 0;
+                    object.position.z = 0.1;
+                    object.scale.x = 0.003;
+                    object.scale.y = 0.003;
+                    object.scale.z = 0.003;
+                    object.rotation.y = Math.PI;
+                    for(var i in materials.materials){
+                        var m = materials.materials[i];
+                        m.side = THREE.DoubleSide;
+                    }
+                    self.objShapes["knight_02"] = object;
+                });
             });
             mtlLoader.load( 'archer_01/BA_Archer_01.mtl', function( materials ) {
                 materials.preload();
@@ -69,10 +89,27 @@ define(function (require) {
                         m.side = THREE.DoubleSide;
                     }
                     self.objShapes["archer_01"] = object;
-                    //scene.add( object );
-                    //renderer.render(scene,camera);
                 });
-
+            });
+            mtlLoader.load( 'archer_02/BA_Archer_02.mtl', function( materials ) {
+                materials.preload();
+                var objLoader = new THREE.OBJLoader();
+                objLoader.setMaterials( materials );
+                objLoader.setPath( '../image/Texture/' );
+                objLoader.load( 'archer_02/BA_Archer_02.obj', function ( object ) {
+                    object.position.x = 1.3;
+                    object.position.y = 0;
+                    object.position.z = 0.1;
+                    object.scale.x = 0.003;
+                    object.scale.y = 0.003;
+                    object.scale.z = 0.003;
+                    object.rotation.y = Math.PI;
+                    for(var i in materials.materials){
+                        var m = materials.materials[i];
+                        m.side = THREE.DoubleSide;
+                    }
+                    self.objShapes["archer_02"] = object;
+                });
             });
             mtlLoader.load( 'footman_01/BA_Footman_01.mtl', function( materials ) {
                 materials.preload();
@@ -93,7 +130,26 @@ define(function (require) {
                     }
                     self.objShapes["footMan_01"] = object;
                 });
-
+            });
+            mtlLoader.load( 'footman_02/BA_Footman_02.mtl', function( materials ) {
+                materials.preload();
+                var objLoader = new THREE.OBJLoader();
+                objLoader.setMaterials( materials );
+                objLoader.setPath( '../image/Texture/' );
+                objLoader.load( 'footman_02/BA_Footman_02.obj', function ( object ) {
+                    object.position.x = 2.3;
+                    object.position.y = 0;
+                    object.position.z = 0.1;
+                    object.scale.x = 0.003;
+                    object.scale.y = 0.003;
+                    object.scale.z = 0.003;
+                    object.rotation.y = Math.PI;
+                    for(var i in materials.materials){
+                        var m = materials.materials[i];
+                        m.side = THREE.DoubleSide;
+                    }
+                    self.objShapes["footMan_02"] = object;
+                });
             });
             mtlLoader.load( 'fog_01/BA_Fog_01.mtl', function( materials ) {
                 materials.preload();
@@ -243,21 +299,31 @@ define(function (require) {
                 self.font = font;
             });
         },
-        getShapeByType:function(type,campId){
-
-        var shape = null;
-        switch (type){
-            case "knight":
-                shape = this.objShapes["knight_01"];
-                break;
-            case "archer":
-                shape = this.objShapes["archer_01"];
-                break;
-            case "footMan":
-                shape = this.objShapes["footMan_01"];
-                break;
-        }
-        return shape.clone();
+        getShapeByType:function(shapeType,campId){
+            var shape = null;
+            var type = null,num = null;
+            switch (shapeType){
+                case "knight":
+                    type = "knight";
+                    break;
+                case "archer":
+                    type = "archer";
+                    break;
+                case "footMan":
+                    type = "footMan";
+                    break;
+                default :
+                    type = "knight";
+                    break;
+            }
+            var num = showManager.getShapeNumByCampId(campId);
+            var str = type + "_" + num;
+            shape = this.objShapes[str];
+            if(!shape){
+                throw new Error("shape not loaded!");
+                return null;
+            }
+            return shape.clone();
         },
         getTerraByType:function(terraType){
         var terra;
