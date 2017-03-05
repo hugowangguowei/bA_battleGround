@@ -76,7 +76,7 @@ Sprite.prototype = {
     setGroup:function(group){
         this._t_group = group;
     },
-    getGroup:function(group){
+    getGroup:function(){
         return this._t_group;
     },
     updatePropByOrder:function(info){
@@ -147,8 +147,11 @@ Sprite.prototype = {
      * @private
      */
     _defend:function(bg){
-        if(this._t_isDead||this._t_loc<0)return false;
-        console.log("防守！");
+        if(this._t_isDead||this._t_loc<0){
+            console.log(this._t_camp._t_num + "阵营的" + this.type + "不在战场内");
+            return false;
+        }
+        console.log(this._t_camp._t_num + "阵营的" + this.type + "在防守");
         var aimLoc = this._t_aimLoc;
         var campId = this.getCamp().getCampId();
         if(aimLoc >= 0){
@@ -193,6 +196,11 @@ Sprite.prototype = {
     _die:function(){
         this._t_isDead = true;
         console.log(this.type + " 死了");
+        var group = this.getGroup();
+        group.soldierDied(this);
+    },
+    isDead:function(){
+        return this._t_isDead;
     },
     getOutPut: function () {
         return null;

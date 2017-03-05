@@ -20,11 +20,6 @@ BattleGround.prototype = {
      */
     initialize:function(){
         this.blockList = blockManager.generateBlockListByLineAndRow(this.width,this.height,this);
-        //for(var i = 0;i<this.width*this.height;i++){
-        //    var block = new Block(i);
-        //    block.battleGround = this;
-        //    this.blockList.push(block);
-        //}
     },
     /**
      * 添加soldier

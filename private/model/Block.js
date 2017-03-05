@@ -91,6 +91,9 @@ Block.prototype = {
         outerLoop:
             for(var i = 0;i<groupList.length;i++){
                 group_i = groupList[i];
+                if(group_i.isDestroyed){
+                    continue;
+                }
                 var sightList = group_i.sightList;
                 var rBlockList = this.getRelativeBlockBySL(sightList);
                 var block_p;
@@ -181,6 +184,10 @@ Block.prototype = {
         if(!this.soldierList.length)return groupList;
         outerLoop:
             for(var i = 0;i<this.soldierList.length;i++){
+                var soldier_i = this.soldierList[i];
+                if(soldier_i.isDead()){
+                    continue;
+                }
                 var group = this.soldierList[i].getGroup();
                 var isExist = false;
                 innerLoop:

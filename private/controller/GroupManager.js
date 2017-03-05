@@ -28,3 +28,12 @@ p.addGroupBySoldierType = function(type){
     this.groupList.push(group);
     return group;
 };
+p.groupVanished = function(group){
+    for(var i = 0;i<this.groupList.length;i++){
+        if(group == this.groupList[i]){
+            this.groupList.splice(i,1);
+            return true;
+        }
+    }
+    return false;
+};

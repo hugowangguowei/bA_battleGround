@@ -49,7 +49,7 @@ define(function(require){
                 var gI_i,group;
                 for(var i = 0;i<groupInfoList.length;i++){
                     gI_i = groupInfoList[i];
-                    group = GroupManager.generateGroupByType(gI_i.type,gI_i.campId,{"num":gI_i.soldierNum,"loc":loc});
+                    group = GroupManager.generateGroupByType(gI_i.type,gI_i.campId,gI_i);
                     this.groupList.push(group);
                 }
                 this.terraType = blockInfo.terraType;

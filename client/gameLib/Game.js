@@ -207,23 +207,7 @@ define(function(require){
         var camp = new Camp(this);
         camp.id = campInfo.id;
         this.setSelfCamp(camp);
-
-        var blockInfo = campInfo.visibleBlocks;
-        this.battleGround.setVBByServer(blockInfo);
-
-        //camp信息更新
-        var soldierList = campInfo.solderDetail;
-        var soldier_i;
-        var selfCamp = this.getSelfCamp();
-        for(var i in soldierList){
-            var soldierInfo = soldierList[i];
-            soldier_i = groupManager.generateGroupByType(i,selfCamp.id,soldierInfo);
-            if(soldier_i){
-                selfCamp.addGroup(soldier_i);
-            }
-        };
-
-        this.addEventToPool("campChange",campInfo);
+        this._campRefresh(campInfo);
     };
     Game.prototype._campRefresh = function(campInfo){
         //battleGround信息更新
@@ -237,7 +221,7 @@ define(function(require){
         selfCamp.groupList = [];
         for(var i in soldierList){
             var soldierInfo = soldierList[i];
-            soldier_i = groupManager.generateGroupByType(i,selfCamp.id,soldierInfo);
+            soldier_i = groupManager.generateGroupByType(soldierInfo.type,selfCamp.id,soldierInfo);
             if(soldier_i){
                 selfCamp.addGroup(soldier_i);
             }

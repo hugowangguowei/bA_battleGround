@@ -4,6 +4,7 @@
 define(function (require) {
 
     function Group(campId,soldierInfo){
+        this.id = -1;
         this.campId = campId||0;
         this.type = "footman";
 
@@ -25,8 +26,11 @@ define(function (require) {
     Group.prototype = {
         initialize:function(sI){
             if(sI){
+                this.id = sI.id
                 this.num = sI.num;
                 this.loc = sI.loc;
+                this.campId = sI.campId;
+                this.name = sI.name;
             }
         },
         setProperty:function(type,value){

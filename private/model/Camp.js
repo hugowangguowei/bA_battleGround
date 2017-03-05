@@ -37,14 +37,8 @@ Camp.prototype = {
         var groupList = this.groupManager.getGroupList();
         for(var i = 0;i<groupList.length;i++){
             group_i = groupList[i];
-            soldierList = group_i.getSoldierList();
-            var len = soldierList.length;
-            if(len) {
-                var type = group_i.type;
-                var soldier_i = soldierList[0];
-                var loc = soldier_i._t_loc;
-                soldierDetail[type] = {num:len,loc:loc};
-            }
+            var groupInfo = group_i.getOutPut();
+            soldierDetail[groupInfo.id] = groupInfo;
         }
         campInfo.solderDetail = soldierDetail;
 
@@ -61,6 +55,13 @@ Camp.prototype = {
             group = this.groupManager.addGroupBySoldierType(soldier.type);
         };
         group.addSoldier(soldier);
+    },
+    /**
+     * 团队消失（被打到撤销番号）
+     * @param group
+     */
+    groupVanished:function(group){
+        this.groupManager.groupVanished(group);
     },
     /**
      * 根据用户请求，设置阵营属性

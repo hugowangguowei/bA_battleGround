@@ -1,6 +1,7 @@
 ﻿﻿/**
  * Created by wgw on 2016/4/29.
  * 服务器端
+ *
  */
 
 var Bear = require('../script/revengerRoad/chapter_1/sprite/O_Bear');
@@ -100,13 +101,13 @@ SpriteManager.prototype ={
         for(var i = 0;i<2;i++){
 
             knight_i = new Knight();
-            knight_i._t_loc = num*8 + 1;
+            knight_i._t_loc = num*10 + 1;
 
             archer_i = new Archer();
-            archer_i._t_loc = num*8 + 2;
+            archer_i._t_loc = num*10 + 2;
 
             footMan_i = new FootMan();
-            footMan_i._t_loc = num*8 + 3;
+            footMan_i._t_loc = num*10 + 3;
 
             camp.addSoldier(knight_i);
             camp.addSoldier(archer_i);
