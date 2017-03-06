@@ -82,6 +82,20 @@ define(function (require) {
         },
         getInvisibleBlocks:function(){
             return this.invisibleBlocks;
+        },
+        addGroup:function(group){
+            var loc = group.loc;
+            var block = this.getBlockByLoc(loc);
+            if(block){
+                block.addGroup(group);
+            }
+        },
+        deleteGroup:function(group){
+            var loc = group.loc;
+            var block = this.getBlockByLoc(loc);
+            if(block){
+                block.deleteGroup(group);
+            }
         }
     }
 

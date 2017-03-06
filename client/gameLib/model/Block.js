@@ -58,6 +58,21 @@ define(function(require){
                 this.visible = false;
             }
         },
+        addGroup:function(group){
+            this.groupList.push(group);
+            this.blockShape3DDirty = true;
+        },
+        deleteGroup:function(group){
+            for(var i = 0;i<this.groupList.length;i++){
+                var group_i = this.groupList[i];
+                if(group_i.id == group.id){
+                    this.groupList.splice(i,1);
+                    this.blockShape3DDirty = true;
+                    return true;
+                }
+            }
+            return false;
+        },
         getBlockShape2D:function(){
 
         },

@@ -49,23 +49,34 @@
     margin-top: 5px;
     margin-left: 10px;
 }
+
 .campNameBtn{
     width: 60px;
+    background-color: #00B7FF;
 }
 .campNumBtn{
-    margin-left: 5px;
+    margin-left: 10px;
     width: 40px;
+    background-color: #b7e6d3;
 }
 .campLocInp{
     width: 30px;
 }
-
 .campAttInp{
     width: 30px;
 }
+.campSepSpan{
+    margin-left: 118px;
+}
+.campSepInp{
+    width: 30px;
+}
+.campSepBtn{
+    margin-left: 8px;
+}
 
 #campSubmitBtn{
-    width:288px;
+    width:380px;
     height:40px;
     background-color: #1971a8;
     margin-top: 10px;

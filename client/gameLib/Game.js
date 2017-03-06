@@ -236,9 +236,15 @@ define(function(require){
 
         var selfCamp = this.getSelfCamp();
         if(selfCamp){
-            var soldier = selfCamp.getGroupByNum(num);
-            soldier.setProperty(type,value);
-            this.addEventToPool("soldierChange",null);
+            var group = selfCamp.getGroupByNum(num);
+            if(type == "campSep"){
+                selfCamp.divideGroup(group,value);
+            }else{
+                group.setProperty(type,value);
+            }
+
+            //this.addEventToPool("soldierChange",null);
+            this.addEventToPool("campChange",null);
         }
     };
     Game.prototype.submitStrategy = function(){

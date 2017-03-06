@@ -62,32 +62,24 @@ define(function(require){
         var campList = $("#campDetail");
         campList.empty();
         var count = 0;
+        //添加DOM
         for(var i = 0;i<sL.length;i++){
             var soldier_i = sL[i];
-            var sDTag = $("<div id = 'campTag_" + count + "'></div>" );
+            var sDTag = $("<div id = 'campTag_" + count + "'class ='campTag'></div>" );
             sDTag.html(
                 '<input type="button" class="campNameBtn">' +
                 '<input type="button" class="campNumBtn">' +
-                '  loc: <input type="text" class="campLocInp"> ' +
+                '  位置: <input type="text" class="campLocInp"> ' +
                 '<input type="button" class="campAttBtn" value="攻击"> ' +
                 '  : <input type="text" class="campAttInp"> ' +
                 '<input type="button" class="campDefBtn" value="防守"> ' +
-                '<span>拆分：</span>'+
-                '<input type="text" class="campSepInp">'
+                '<hr>'+
+                '<span class = "campSepSpan">拆分: </span>'+
+                '<input type="text" class="campSepInp">'+
+                '<input type="button" class="campSepBtn" value="确定"><hr>'
             )
-            //var sDTagB = document.createElement("div");
-            //sDTagB.id = "campTag_" +count;
-            //sDTagB.innerHTML =
-            //    '<input type="button" class="campNameBtn">' +
-            //    '<input type="button" class="campNumBtn">' +
-            //    '  loc: <input type="text" class="campLocInp"> ' +
-            //    '<input type="button" class="campAttBtn" value="攻击"> ' +
-            //    '  : <input type="text" class="campAttInp"> ' +
-            //    '<input type="button" class="campDefBtn" value="防守"> ' +
-            //    '<span>拆分：</span>'+
-            //    '<input type="text" class="campSepInp">';
-            //
-            //var sDTag = $("#campTag_" + count);
+            campList.append(sDTag);
+
             var type = sDTag.children()[0];
             type.value = soldier_i.type;
             var num = sDTag.children()[1];
@@ -100,31 +92,65 @@ define(function(require){
             attLoc.value = "";
             var def = sDTag.children()[5];
             $(def).attr("disabled",false);
-
-            //var soldier_i = sL[i];
-            //var sDTag = $("#campTag_" + count);
-            //if(sDTag){
-            //    var type = sDTag.children()[0];
-            //    type.value = soldier_i.type;
-            //    var num = sDTag.children()[1];
-            //    num.value = soldier_i.num;
-            //    var loc = sDTag.children()[2];
-            //    loc.value = "";
-            //    var att = sDTag.children()[3];
-            //    $(att).attr("disabled",false);
-            //    var attLoc = sDTag.children()[4];
-            //    attLoc.value = "";
-            //    var def = sDTag.children()[5];
-            //    $(def).attr("disabled",false);
-            //}
             count++;
         }
-        //if(count <5){
-        //    for(var i = count;i<6;i++){
-        //        sDTag = $("#campTag_" + i);
-        //        sDTag.hide();
-        //    }
-        //};
+
+        var sDSub = $(
+            '<div class="campSubmit">'+
+            '<input type = "button" id = "campSubmitBtn" value="提交布局">'+
+            '</div>'
+        );
+        campList.append(sDSub);
+
+
+        //绑定函数
+        $(".campAttInp").attr("disabled","disabled");
+        //进攻按钮
+        $(".campAttBtn").click(function(){
+            var parent = $(this).parent();
+            var id = parent.attr("id");
+            var num = id.split("_")[1];
+            self.model.testCampInput("soldierArrange",{type:"att",num:num,value:true});
+            $(this).attr("disabled","disabled");
+            $(this).next().removeAttr("disabled");
+            $(this).next().next().removeAttr("disabled");
+        });
+        //进攻位置
+        $(".campAttInp").bind('input propertychange',function(){
+            var parent = $(this).parent();
+            var id = parent.attr("id");
+            var num = id.split("_")[1];
+            self.model.testCampInput("soldierArrange",{type:"attLoc","num":num,value:this.value})
+        });
+        //防守
+        $(".campDefBtn").click(function(){
+            var parent = $(this).parent();
+            var id = parent.attr("id");
+            var num = id.split("_")[1];
+            self.model.testCampInput("soldierArrange",{type:"def",num:num,value:true});
+            $(this).attr("disabled","disabled");
+            $(this).prev().attr("disabled","disabled");
+            $(this).prev().prev().removeAttr("disabled");
+        });
+        //位置更改
+        $(".campLocInp").bind('input propertychange', function() {
+            var parent = $(this).parent();
+            var id = parent.attr("id");
+            var num = id.split("_")[1];
+            self.model.testCampInput("soldierArrange",{type:"loc","num":num,value:this.value})
+        });
+        //队伍拆分
+        $(".campSepBtn").click(function(){
+            var parent = $(this).parent();
+            var id = parent.attr("id");
+            var num = id.split("_")[1];
+            self.model.testCampInput("soldierArrange",{type:"campSep","num":num,value:this.value})
+        });
+        //阵营提交
+        $("#campSubmitBtn").click(function(){
+            self.model.submitStrategy();
+        });
+
     };
     p._battleGroundCacheRefresh = function(){
         var width = 40;
@@ -262,96 +288,6 @@ define(function(require){
         var canvas = self.div;
         canvas.width = 400;
         canvas.height = 320;
-
-        var campList = $("#campDetail");
-        campList.html('' +
-            '<div class="campTag" id="campTag_0"> ' +
-                '<input type="button" class="campNameBtn">' +
-                '<input type="button" class="campNumBtn">' +
-                '  loc: <input type="text" class="campLocInp"> ' +
-                '<input type="button" class="campAttBtn" value="攻击"> ' +
-                '  : <input type="text" class="campAttInp"> ' +
-                '<input type="button" class="campDefBtn" value="防守"> ' +
-                '<span>拆分：</span>'+
-                '<input type="text" class="campSepInp">'+
-            '</div> ' +
-            '<div class="campTag" id="campTag_1"> ' +
-                '<input type="button" class="campNameBtn">' +
-                '<input type="button" class="campNumBtn">' +
-                '  loc: <input type="text" class="campLocInp"> ' +
-                '<input type="button" class="campAttBtn" value="攻击"> ' +
-                '  : <input type="text" class="campAttInp"> ' +
-                '<input type="button" class="campDefBtn" value="防守"> ' +
-            '</div> ' +
-            '<div class="campTag" id="campTag_2"> ' +
-                '<input type="button" class="campNameBtn">' +
-                '<input type="button" class="campNumBtn">' +
-                '  loc: <input type="text" class="campLocInp"> ' +
-                '<input type="button" class="campAttBtn" value="攻击"> ' +
-                '  : <input type="text" class="campAttInp"> ' +
-                '<input type="button" class="campDefBtn" value="防守"> ' +
-            '</div> ' +
-            '<div class="campTag" id="campTag_3"> ' +
-                '<input type="button" class="campNameBtn">' +
-                '<input type="button" class="campNumBtn">' +
-                '  loc: <input type="text" class="campLocInp"> ' +
-                '<input type="button" class="campAttBtn" value="攻击"> ' +
-                '  : <input type="text" class="campAttInp"> ' +
-                '<input type="button" class="campDefBtn" value="防守"> ' +
-            '</div> ' +
-            '<div class="campTag" id="campTag_4"> ' +
-                '<input type="button" class="campNameBtn">' +
-                '<input type="button" class="campNumBtn">' +
-                '  loc: <input type="text" class="campLocInp"> ' +
-                '<input type="button" class="campAttBtn" value="攻击"> ' +
-                '  : <input type="text" class="campAttInp"> ' +
-                '<input type="button" class="campDefBtn" value="防守"> ' +
-            '</div>'+
-            '<div class="campSubmit">'+
-            '<input type = "button" id = "campSubmitBtn" value="提交布局">'+
-            '</div>'
-        );
-
-        $(".campAttInp").attr("disabled","disabled");
-        //进攻按钮
-        $(".campAttBtn").click(function(){
-            var parent = $(this).parent();
-            var id = parent.attr("id");
-            var num = id.split("_")[1];
-            self.model.testCampInput("soldierArrange",{type:"att",num:num,value:true});
-            $(this).attr("disabled","disabled");
-            $(this).next().removeAttr("disabled");
-            $(this).next().next().removeAttr("disabled");
-        });
-        //进攻位置
-        $(".campAttInp").bind('input propertychange',function(){
-            var parent = $(this).parent();
-            var id = parent.attr("id");
-            var num = id.split("_")[1];
-            self.model.testCampInput("soldierArrange",{type:"attLoc","num":num,value:this.value})
-
-        });
-        //防守
-        $(".campDefBtn").click(function(){
-            var parent = $(this).parent();
-            var id = parent.attr("id");
-            var num = id.split("_")[1];
-            self.model.testCampInput("soldierArrange",{type:"def",num:num,value:true});
-            $(this).attr("disabled","disabled");
-            $(this).prev().attr("disabled","disabled");
-            $(this).prev().prev().removeAttr("disabled");
-        });
-        //位置更改
-        $(".campLocInp").bind('input propertychange', function() {
-            var parent = $(this).parent();
-            var id = parent.attr("id");
-            var num = id.split("_")[1];
-            self.model.testCampInput("soldierArrange",{type:"loc","num":num,value:this.value})
-        });
-        //阵营提交
-        $("#campSubmitBtn").click(function(){
-            self.model.submitStrategy();
-        });
         this.draw();
     };
     return StrategyView;
