@@ -85,7 +85,7 @@ define(function(require){
             var num = sDTag.children()[1];
             num.value = soldier_i.num;
             var loc = sDTag.children()[2];
-            loc.value = "";
+            loc.value = soldier_i.loc;
             var att = sDTag.children()[3];
             $(att).attr("disabled",false);
             var attLoc = sDTag.children()[4];
@@ -144,7 +144,7 @@ define(function(require){
             var parent = $(this).parent();
             var id = parent.attr("id");
             var num = id.split("_")[1];
-            self.model.testCampInput("soldierArrange",{type:"campSep","num":num,value:this.value})
+            self.model.testCampInput("soldierArrange",{type:"groupSep","num":num,value:this.value})
         });
         //阵营提交
         $("#campSubmitBtn").click(function(){

@@ -6,7 +6,7 @@
 define(function (require) {
     var baLib = require("baBasicLib/util/baLib");
     var GUID = require("baBasicLib/util/GUID");
-    
+    var GroupEdit = require("./GroupEdit");
 
     function Camp(model,id){
         this.id = id||0;
@@ -15,6 +15,7 @@ define(function (require) {
         if(!this.model){
             throw new Error("camp's model not defined");
         }
+        this.operateList = [];
     }
 
     Camp.prototype = {
@@ -29,6 +30,7 @@ define(function (require) {
             if(this.groupList[num])return this.groupList[num];
         },
         divideGroup:function(group,value){
+
             var value = 2;
             var groupList = [];
             var group_i,avNum;
@@ -60,6 +62,13 @@ define(function (require) {
             for(var i = 0;i<groupList.length;i++){
                 this.model.battleGround.addGroup(groupList[i]);
             }
+
+            var edit = new GroupEdit("groupSep");
+            edit.addArg(group.id);
+            for(var i = 0;i<groupList.length;i++){
+                edit.addArg(groupList[i]);
+            }
+            return edit;
         },
         getCampInfo:function(){
             var sL = this.groupList;

@@ -2,6 +2,7 @@
  * Created by wgw on 2016/4/30.
  */
 define(function (require) {
+    var GroupEdit = require("./GroupEdit");
 
     function Group(campId,soldierInfo){
         this.id = -1;
@@ -48,6 +49,11 @@ define(function (require) {
                     this.attLoc = value;
 
             }
+
+            var edit = new GroupEdit(type);
+            edit.addArg(this.id);
+            edit.addArg(value);
+            return edit;
         },
         getGroupInfo:function(){
             return{

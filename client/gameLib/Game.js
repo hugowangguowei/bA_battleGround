@@ -236,22 +236,23 @@ define(function(require){
 
         var selfCamp = this.getSelfCamp();
         if(selfCamp){
+            var operate;
             var group = selfCamp.getGroupByNum(num);
-            if(type == "campSep"){
-                selfCamp.divideGroup(group,value);
+            if(type == "groupSep"){
+                operate = selfCamp.divideGroup(group,value);
             }else{
-                group.setProperty(type,value);
+                operate = group.setProperty(type,value);
             }
-
-            //this.addEventToPool("soldierChange",null);
+            this.user.addEdit(operate);
             this.addEventToPool("campChange",null);
         }
     };
     Game.prototype.submitStrategy = function(){
         var campInfo = this.user.camp.getCampInfo();
+        var editInfo = this.user.camp.getEditListInfo();
         var info = {
             type:"testCampSubmit",
-            detail:campInfo
+            detail:editInfo
         }
         WSM.sendMsg("gameInput",info);
     }

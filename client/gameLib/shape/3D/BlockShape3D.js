@@ -62,8 +62,8 @@ define(function(require){
             var scale = 0.003;
             if(len > 1){
                 scale = 0.002;
-                shapeX += (i%2)*0.1;
-                shapeZ += parseInt(i/2)*0.1;
+                shapeX += (i%2)*0.3;
+                shapeZ += parseInt(i/2)*0.3;
             }else{
                 shapeX += 0.2;
             }
