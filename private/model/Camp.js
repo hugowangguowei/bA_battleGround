@@ -6,6 +6,7 @@
 module.exports = Camp;
 var GUID = require("../../dep/baBasicLib/util/GUID");
 var GroupManager = require("../controller/GroupManager");
+var SoldierPool = require("./SoldierPool");
 
 function Camp(id){
     this.id = id||GUID.getGUID();
@@ -14,10 +15,14 @@ function Camp(id){
     this.battleGround = null;
     this.visibleBlocks = {};
     this._t_num = 0;
+    this.soldierPool = new SoldierPool(this);
+    this.initialize();
 }
 Camp.prototype = {
     initialize:function(){
+        this.soldierPool.inputSampleSoldiers();
     },
+
     getCampId:function(){
         return this.id;
     },
