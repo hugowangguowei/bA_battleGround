@@ -21,6 +21,68 @@ BattleGround.prototype = {
     initialize:function(){
         this.blockList = blockManager.generateBlockListByLineAndRow(this.width,this.height,this);
     },
+    groupAdd:function(group,editInfo){
+
+    },
+    groupSet:function(group,editInfo){
+        var type = editInfo.type;
+        var args = editInfo.args;
+        var block = this.blockList[group.getLoc()];
+        if(!block){return false;}
+
+        switch (type){
+            case "att":
+                group.order = "attack";
+                break;
+            case "def":
+                group.order = "defend";
+                break;
+            case "loc":
+                group.aimLoc = args[1];
+                break;
+            case "attLoc":
+                group.attLoc = args[1];
+                break;
+        }
+
+        return true;
+    },
+    groupDivide:function(group,editInfo){
+        var block = this.blockList[group.getLoc()];
+        var camp = group.getCamp();
+        var groupList = block.getGroupList();
+
+        var campNum = 0,group_i,camp_i;
+        for(var i = 0;i<groupList.length;i++){
+            group_i = groupList[i];
+            camp_i = group_i.getCamp();
+            if(camp_i.id == camp.id){
+                campNum ++;
+            }
+            if(campNum > 1){
+                return false;
+            }
+        }
+
+        var newGroup_i;
+        var newGroupList = [];
+        for(var i = 0;i<2;i++){
+            newGroup_i = camp.generateGroupByType(group.type);
+            newGroup_i.id = editInfo.args[i+1];
+            newGroupList.push(newGroup_i);
+        }
+        var soldierNum = group.getSoldierNum();
+        var soldierList = group.getSoldierList();
+        var firstNum = Math.ceil(soldierNum/2);
+        var secondList = soldierList.splice(firstNum + 1,firstNum -1);
+        newGroupList[0].groupList = soldierList;
+        newGroupList[1].groupList = secondList;
+        for(var i = 0;i<2;i++){
+            block.addGroup(newGroupList[i]);
+        }
+
+        block.removeGroup(group);
+    },
     /**
      * 添加soldier
      * @param soldier
@@ -49,6 +111,7 @@ BattleGround.prototype = {
             loop:
             for(var p in groupList){
                 group = groupList[p];
+
                 //添加士兵
                 var soldierList = group.getSoldierList();
                 for(var m = 0;m<soldierList.length;m++){

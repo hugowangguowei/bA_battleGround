@@ -18,6 +18,22 @@ function Block(id){
 Block.prototype = {
     initialize:function(){
     },
+    addGroup:function(group){
+        this.groupList.push(group);
+    },
+    removeGroup:function(group){
+        var group_i;
+        for(var i = 0;i<this.groupList.length;i++){
+            group_i = this.groupList[i];
+            if(group_i.id == group.id){
+                group_i.destroy();
+                this.groupList.splice(i,1);
+            }
+        }
+    },
+    getGroupList:function(){
+        return this.groupList;
+    },
     /**
      * 添加一个soldier
      * @param soldier

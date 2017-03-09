@@ -14,6 +14,16 @@ p = GroupManager.prototype;
 p.getGroupList = function(){
     return this.groupList;
 };
+p.getGroupById = function(id){
+    var group_i;
+    for(var i = 0;i<this.groupList.length;i++){
+        group_i = this.groupList[i];
+        if(group_i.id == id){
+            return group_i;
+        }
+    }
+    return false;
+};
 p.getGroupBySoldierType = function(type){
     var group_i;
     for(var i = 0;i< this.groupList.length;i++){
@@ -21,6 +31,11 @@ p.getGroupBySoldierType = function(type){
         if(group_i.type == type)return group_i;
     }
     return null;
+};
+p.generateGroupByType = function(type){
+    var group = new Group(this.camp);
+    group.type = type;
+    return group;
 };
 p.addGroupBySoldierType = function(type){
     var group = new Group(this.camp);

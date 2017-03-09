@@ -15,17 +15,30 @@ function Group(camp){
     this.isDestroyed = false;
     this.sightList = null;
     this._isSightInit = false;
-    this.loc = 0;
+    this.loc = -1;
+    this.aimLoc = -1;
+    this.attLoc = -1;
     this.soldierList = [];
+    this.order = "defend";
+
 }
 Group.prototype = {
     initialize:function(){
+    },
+    destroy:function(){
+        this.soldierList = [];
+    },
+    getLoc:function(){
+        return this.loc;
     },
     getCamp:function(){
         return this.camp;
     },
     getSoldierList:function(){
         return this.soldierList;
+    },
+    getSoldierNum:function(){
+        return this.soldierList.length;
     },
     addSoldier:function(soldier){
         if(!this._isSightInit){
