@@ -241,7 +241,7 @@ Game.prototype.addPlayer = function(client,charaType,clientType){
     //TODO 如果作为指挥官加入，则添加阵营
     if(true){
         var camp = this.campManager.generateOneCamp(client);
-        spriteManager.generateSpriteForCamp(camp);
+        //spriteManager.generateSpriteForCamp(camp);
         var campInfo = client.camp.getCampInfo();
         client.socket.emit(SMT.TEST,{type:"testCampInit",detail:campInfo});
         this._playerNum++;

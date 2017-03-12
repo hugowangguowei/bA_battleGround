@@ -2,7 +2,7 @@
  * Created by wgw on 2017/3/10.
  * 士兵池
  */
-module.exports = Group;
+module.exports = SoldierPool;
 var GUID = require("../../dep/baBasicLib/util/GUID");
 var spriteManager = require("../controller/SpriteManager").getInstance();
 
@@ -20,6 +20,16 @@ SoldierPool.prototype = {
             this.addSpriteToList(sprite_i);
             sprite_i = spriteManager.generateSpriteByType("knight");
             this.addSpriteToList(sprite_i);
+            sprite_i = spriteManager.generateSpriteByType("archer");
+            this.addSpriteToList(sprite_i);
         }
+    },
+    addSpriteToList:function(sprite){
+        var type = sprite.getType();
+        if(!this.soldierList[type]){
+            this.soldierList[type] = [];
+        }
+        this.soldierList.push(sprite);
     }
+
 }

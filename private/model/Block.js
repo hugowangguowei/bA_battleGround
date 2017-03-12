@@ -18,6 +18,9 @@ function Block(id){
 Block.prototype = {
     initialize:function(){
     },
+    getLoc:function(){
+        return this.loc;
+    },
     addGroup:function(group){
         this.groupList.push(group);
     },

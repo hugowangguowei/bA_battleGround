@@ -21,8 +21,8 @@ function Camp(id){
 Camp.prototype = {
     initialize:function(){
         this.soldierPool.inputSampleSoldiers();
+        this._setOriVisibleBlock();
     },
-
     getCampId:function(){
         return this.id;
     },
@@ -48,6 +48,30 @@ Camp.prototype = {
         campInfo.solderDetail = soldierDetail;
 
         return campInfo;
+    },
+    getCampNum:function(){
+        return this._t_num;
+    },
+
+    _setOriVisibleBlock:function(){
+        var campNum = this.getCampNum();
+        var oriNum;
+        switch (campNum){
+            case 0:
+                oriNum = 0;
+                break;
+            case 2:
+                oriNum = 8;
+                break;
+        }
+        for(var i = oriNum;i<2;i++){
+            for(var p = 2;p<8;p++){
+                var block_i = this.battleGround.getBlockByXY(i,p);
+                var blockInfo = block_i.getOutput();
+                var loc = block_i.getLoc();
+                this.visibleBlocks[loc] = blockInfo;
+            }
+        }
     },
     /**
      * 添加士兵

@@ -94,8 +94,8 @@ Sprite.prototype = {
         this._t_attLoc = attLoc;
         this._t_order = order;
     },
-    isDead:function(){
-        return this._t_isDead;
+    getType:function(){
+        return this.type;
     },
     t_action:function(bg){
         switch (this._t_order){

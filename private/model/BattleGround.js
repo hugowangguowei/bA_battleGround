@@ -176,6 +176,14 @@ BattleGround.prototype = {
     getBlockByLoc:function(loc){
         return this.blockList[loc];
     },
+    getBlockByXY:function(x,y){
+        var loc = x*this.width + y;
+        if(this.blockList[loc]){
+            return this.blockList[loc];
+        }
+        throw new Error("can't find block by XY");
+        return null;
+    },
     getInfo: function () {
         var campInfo;
     }
