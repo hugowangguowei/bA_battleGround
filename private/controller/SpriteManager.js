@@ -16,6 +16,7 @@ var King = require('../script/revengerRoad/chapter_1/sprite/R_King');
 var Archer = require('../script/revengerRoad/chapter_1/sprite/R_Archer');
 
 var instance = null;
+
 exports.getInstance = function(){
     if(!instance){
         instance = new SpriteManager();
@@ -57,6 +58,9 @@ SpriteManager.prototype ={
                 break;
             case 'archer':
                 sprite = new Archer();
+                break;
+            case 'footMan':
+                sprite = new FootMan();
                 break;
         }
         return sprite;
