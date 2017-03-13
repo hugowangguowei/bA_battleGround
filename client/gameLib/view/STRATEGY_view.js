@@ -58,11 +58,34 @@ define(function(require){
     p._controlBarRefresh = function(){
         var self = this;
         var camp = self.model.user.camp;
-        var sL = camp.getGroupList();
+
         var campList = $("#campDetail");
         campList.empty();
+
+
+        //添加士兵池控制
+        var sPCount = 0;
+        var sP = camp.getSoldierPool();
+        for(var i = 0;i<sP.length;i++){
+            var soldier_i = sP[i];
+            var sDTag = $("<div id = 'campTag_" + sPCount + "'class ='campTag'></div>" );
+            sDTag.html(
+                '<input type="button" class="soldierTypeBtn">' +
+                '<input type="button" class="soldierNumBtn">' +
+                '  位置: <input type="text" class="soldierLocInp"> ' +
+                '<input type="button" class="soldierAddBtn" value="添加"><hr>'
+            )
+            campList.append(sDTag);
+
+            var type = sDTag.children()[0];
+            type.value = soldier_i.type;
+            var num = sDTag.children()[1];
+            num.value = soldier_i.num;
+            sPCount++;
+        }
+        //添加战场队伍控制
         var count = 0;
-        //添加DOM
+        var sL = camp.getGroupList();
         for(var i = 0;i<sL.length;i++){
             var soldier_i = sL[i];
             var sDTag = $("<div id = 'campTag_" + count + "'class ='campTag'></div>" );
@@ -103,7 +126,15 @@ define(function(require){
         campList.append(sDSub);
 
 
-        //绑定函数
+        //绑定函数======================================================================================================
+        //从士兵池中输入数据
+        $(".soldierAddBtn").click(function(){
+            var parent = $(this).parent();
+            var id = parent.attr("id");
+            var num = id.split("_")[1];
+            self.model.testCampInput("soldierArrange",{type:"soldierAdd",num:num,value:true});
+        });
+        //进攻输入
         $(".campAttInp").attr("disabled","disabled");
         //进攻按钮
         $(".campAttBtn").click(function(){

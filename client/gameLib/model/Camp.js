@@ -12,6 +12,7 @@ define(function (require) {
         this.id = id||0;
         this.model = model||0;
         this.groupList = [];
+        this.soldierPool = [];
         if(!this.model){
             throw new Error("camp's model not defined");
         }
@@ -23,11 +24,17 @@ define(function (require) {
             this.groupList.push(group);
             return true;
         },
+        getSoldierPool:function(){
+            return this.soldierPool;
+        },
         getGroupList:function(){
             return this.groupList;
         },
         getGroupByNum:function(num){
             if(this.groupList[num])return this.groupList[num];
+        },
+        getGroupFromSoldierPool:function(){
+
         },
         divideGroup:function(group,value){
 

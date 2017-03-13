@@ -38,7 +38,7 @@ Camp.prototype = {
         campInfo.visibleBlocks = this.visibleBlocks;
 
         var soldierDetail = {};
-        var group_i,soldierList,soldier_i;
+        var group_i;
         var groupList = this.groupManager.getGroupList();
         for(var i = 0;i<groupList.length;i++){
             group_i = groupList[i];
@@ -46,6 +46,9 @@ Camp.prototype = {
             soldierDetail[groupInfo.id] = groupInfo;
         }
         campInfo.solderDetail = soldierDetail;
+
+        var soldierPoolInfo = this.soldierPool.getSoldierPoolInfo();
+        campInfo.soldierPoolInfo = soldierPoolInfo;
 
         return campInfo;
     },
@@ -99,32 +102,38 @@ Camp.prototype = {
     setCampByClientSubmit:function(campInfo){
         var soldierInfo_i,group_i,soldier_p;
 
-        for(var i = 0;i<campInfo.length;i++){
-            soldierInfo_i = campInfo[i];
-            group_i = this.groupManager.getGroupBySoldierType(soldierInfo_i.type);
-            if(!group_i)continue;
-            var soldierList = group_i.getSoldierList();
-            for(var p = 0;p<soldierList.length;p++){
-                soldier_p = soldierList[p];
-                soldier_p.updatePropByOrder(soldierInfo_i);
-            }
-        }
+        //for(var i = 0;i<campInfo.length;i++){
+        //    soldierInfo_i = campInfo[i];
+        //    group_i = this.groupManager.getGroupBySoldierType(soldierInfo_i.type);
+        //    if(!group_i)continue;
+        //    var soldierList = group_i.getSoldierList();
+        //    for(var p = 0;p<soldierList.length;p++){
+        //        soldier_p = soldierList[p];
+        //        soldier_p.updatePropByOrder(soldierInfo_i);
+        //    }
+        //}
         var self = this;
         var editInfo_i,group_i;
         for(var i = 0;i<campInfo.length;i++){
             editInfo_i = campInfo[i];
-            var group = this.groupManager.getGroupById(editInfo_i.args[0]);
-            if(!group){
-                throw new Error("can't find the group when you submit a groupEdit");
-                continue;
+            if(editInfo_i.type == "groupAdd"){
+                var group = this.groupManager.generateGroupByType(editInfo_i.args[1]);
+                this.battleGround.groupAdd(group,editInfo_i);
             }
-            if(editInfo_i.type == "groupSep"){
-                this.battleGround.groupDivide(group,editInfo_i);
-            }else if(editInfo_i.type == "groupAdd"){
-                this.battleGround.groupAdd(group,editInfo_i)
-            }else{
-                this.battleGround.groupSet(group,editInfo_i);
+            else{
+                var group = this.groupManager.getGroupById(editInfo_i.args[0]);
+                if(!group){
+                    throw new Error("can't find the group when you submit a groupEdit");
+                    continue;
+                }
+                if(editInfo_i.type == "groupSep"){
+                    this.battleGround.groupDivide(group,editInfo_i);
+                }
+                else{
+                    this.battleGround.groupSet(group,editInfo_i);
+                }
             }
+
         }
 
     },

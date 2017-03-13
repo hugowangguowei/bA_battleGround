@@ -30,6 +30,16 @@ SoldierPool.prototype = {
             this.soldierList[type] = [];
         }
         this.soldierList.push(sprite);
+    },
+    getSoldierPoolInfo:function(){
+        var info = [];
+        var sArray;
+        for(var type in this.soldierList){
+            sArray = this.soldierList[type];
+            var len = sArray.length;
+            info.push({type:type,num:len});
+        }
+        return info;
     }
 
 }

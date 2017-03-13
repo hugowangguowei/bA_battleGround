@@ -61,6 +61,20 @@ Block.prototype = {
         return false;
     },
     /**
+     * 战斗准备(士兵进场）
+     */
+    ready:function(){
+        var group_i,soldier_p;
+        for(var i = 0;i<this.groupList.length;i++){
+            group_i = this.groupList[i];
+            var soldierList = group_i.getSoldierList();
+            for(var p = 0;p<soldierList.length;p++){
+                soldier_p = soldierList[p];
+                this.addSoldier(soldier_p);
+            }
+        }
+    },
+    /**
      * 集结
      * battle开始时，每个block都会进行集结
      * 用以计算在该回合中每个block的增益
@@ -165,8 +179,8 @@ Block.prototype = {
         //1.记录当前块的阵营归属
         //2.记录当前块的归属转移情况
         this.soldierList = [];
-        this.groupList = [];
-        this.campList = [];
+        //this.groupList = [];
+        //this.campList = [];
         this.sightRemove();
     },
     /**

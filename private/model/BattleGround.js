@@ -22,7 +22,27 @@ BattleGround.prototype = {
         this.blockList = blockManager.generateBlockListByLineAndRow(this.width,this.height,this);
     },
     groupAdd:function(group,editInfo){
+        var type = editInfo.type;
+        var args = editInfo.args;
+        var groupId = args[0];
+        //var groupType = args[1];
+        var loc = args[2];
+        var order = args[3];
+        var aimLoc = args[4];
+        var attLoc = args[5];
 
+        group.id = groupId;
+        group.loc = loc;
+        group.order = order;
+        group.aimLoc = aimLoc;
+        group.attLoc = attLoc;
+
+        var block = this.blockList[group.getLoc()];
+        if(!block){
+            throw new Error("can't find the block when you try to add a group");
+            return null;
+        }
+        block.addGroup(group);
     },
     groupSet:function(group,editInfo){
         var type = editInfo.type;
@@ -67,7 +87,7 @@ BattleGround.prototype = {
         var newGroup_i;
         var newGroupList = [];
         for(var i = 0;i<2;i++){
-            newGroup_i = camp.generateGroupByType(group.type);
+            newGroup_i = camp.groupManager.generateGroupByType(group.type);
             newGroup_i.id = editInfo.args[i+1];
             newGroupList.push(newGroup_i);
         }
@@ -100,26 +120,31 @@ BattleGround.prototype = {
      */
     ready:function(camManager){
         console.log("准备工作");
-        var campList = camManager.getCampList();
-        var camp,
-            groupManager,groupList,group,
-            soldierList,soldier;
-        for(var i in campList){
-            camp = campList[i];
-            groupManager = camp.groupManager;
-            groupList = groupManager.getGroupList();
-            loop:
-            for(var p in groupList){
-                group = groupList[p];
+        //var campList = camManager.getCampList();
+        //var camp,
+        //    groupManager,groupList,group,
+        //    soldierList,soldier;
+        //for(var i in campList){
+        //    camp = campList[i];
+        //    groupManager = camp.groupManager;
+        //    groupList = groupManager.getGroupList();
+        //    loop:
+        //    for(var p in groupList){
+        //        group = groupList[p];
+        //        //添加士兵
+        //        var soldierList = group.getSoldierList();
+        //        for(var m = 0;m<soldierList.length;m++){
+        //            soldier = soldierList[m];
+        //            this.addSoldier(soldier);
+        //        };
+        //    };
+        //};
 
-                //添加士兵
-                var soldierList = group.getSoldierList();
-                for(var m = 0;m<soldierList.length;m++){
-                    soldier = soldierList[m];
-                    this.addSoldier(soldier);
-                };
-            };
-        };
+        var block_i;
+        for(var i = 0;i<this.blockList.length;i++){
+            block_i = this.blockList[i];
+            block_i.ready();
+        }
     },
     /**
      * 战斗
@@ -165,7 +190,8 @@ BattleGround.prototype = {
         for(var i = 0;i<this.blockList.length;i++){
             block = this.blockList[i];
             block.clean();
-        }
+        };
+
         this.speedList = {};
     },
     /**

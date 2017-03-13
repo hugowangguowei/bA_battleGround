@@ -214,7 +214,7 @@ define(function(require){
         var blockInfo = campInfo.visibleBlocks;
         this.battleGround.setVBByServer(blockInfo);
 
-        //camp信息更新
+        //camp信息更新(士兵更新）
         var soldierList = campInfo.solderDetail;
         var soldier_i;
         var selfCamp = this.getSelfCamp();
@@ -226,6 +226,10 @@ define(function(require){
                 selfCamp.addGroup(soldier_i);
             }
         };
+        //camp信息更新（soldierPool更新）
+        var soldierPoolInfo = campInfo.soldierPoolInfo;
+        selfCamp.soldierPool = soldierPoolInfo;
+
         //触发事件
         this.addEventToPool("campChange",campInfo);
     };
@@ -237,10 +241,17 @@ define(function(require){
         var selfCamp = this.getSelfCamp();
         if(selfCamp){
             var operate;
+            if(type == "groupAdd"){
+                var groupInfo = selfCamp.getGroupInfoFromSoldierPool(num);
+                operate = selfCamp.addGroup();
+            }else{
+
+            }
             var group = selfCamp.getGroupByNum(num);
             if(type == "groupSep"){
                 operate = selfCamp.divideGroup(group,value);
-            }else{
+            }
+            else{
                 operate = group.setProperty(type,value);
             }
             this.user.addEdit(operate);
