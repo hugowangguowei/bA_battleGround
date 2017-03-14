@@ -243,16 +243,16 @@ define(function(require){
             var operate;
             if(type == "groupAdd"){
                 var groupInfo = selfCamp.getGroupInfoFromSoldierPool(num);
-                operate = selfCamp.addGroup();
+                var group = groupManager.generateGroupByType(groupInfo.type,selfCamp,value);
+                operate = selfCamp.addGroup(group);
             }else{
-
-            }
-            var group = selfCamp.getGroupByNum(num);
-            if(type == "groupSep"){
-                operate = selfCamp.divideGroup(group,value);
-            }
-            else{
-                operate = group.setProperty(type,value);
+                var group = selfCamp.getGroupByNum(num);
+                if(type == "groupSep"){
+                    operate = selfCamp.divideGroup(group,value);
+                }
+                else{
+                    operate = group.setProperty(type,value);
+                }
             }
             this.user.addEdit(operate);
             this.addEventToPool("campChange",null);

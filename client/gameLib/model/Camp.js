@@ -22,7 +22,10 @@ define(function (require) {
     Camp.prototype = {
         addGroup:function(group){
             this.groupList.push(group);
-            return true;
+            var edit = new GroupEdit("groupAdd");
+            edit.addArg(group.id);
+            edit.addArg(group.loc);
+            return edit;
         },
         getSoldierPool:function(){
             return this.soldierPool;
@@ -33,8 +36,12 @@ define(function (require) {
         getGroupByNum:function(num){
             if(this.groupList[num])return this.groupList[num];
         },
-        getGroupFromSoldierPool:function(){
-
+        getGroupInfoFromSoldierPool:function(num){
+            if(this.soldierPool[num]){
+                return this.soldierPool[num];
+            }
+            throw new Error("can't find the groupInfo with the num input");
+            return null;
         },
         divideGroup:function(group,value){
 

@@ -22,6 +22,7 @@ p.generateOneCamp = function(commander){
     camp._t_num = this.campNum;
     camp.commander = commander;
     camp.battleGround = commander.game.battleGround;
+    camp.initialize();
     commander.camp = camp;
 
     this.campList[camp.id] = camp;

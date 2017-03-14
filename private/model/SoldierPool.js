@@ -29,7 +29,7 @@ SoldierPool.prototype = {
         if(!this.soldierList[type]){
             this.soldierList[type] = [];
         }
-        this.soldierList.push(sprite);
+        this.soldierList[type].push(sprite);
     },
     getSoldierPoolInfo:function(){
         var info = [];

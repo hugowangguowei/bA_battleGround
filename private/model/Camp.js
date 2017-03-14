@@ -16,7 +16,7 @@ function Camp(id){
     this.visibleBlocks = {};
     this._t_num = 0;
     this.soldierPool = new SoldierPool(this);
-    this.initialize();
+    //this.initialize();
 }
 Camp.prototype = {
     initialize:function(){
@@ -70,7 +70,7 @@ Camp.prototype = {
         for(var i = oriNum;i<2;i++){
             for(var p = 2;p<8;p++){
                 var block_i = this.battleGround.getBlockByXY(i,p);
-                var blockInfo = block_i.getOutput();
+                var blockInfo = block_i.getOutPut();
                 var loc = block_i.getLoc();
                 this.visibleBlocks[loc] = blockInfo;
             }

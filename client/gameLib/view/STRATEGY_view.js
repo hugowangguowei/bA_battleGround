@@ -132,7 +132,11 @@ define(function(require){
             var parent = $(this).parent();
             var id = parent.attr("id");
             var num = id.split("_")[1];
-            self.model.testCampInput("soldierArrange",{type:"soldierAdd",num:num,value:true});
+            var loc = $(this).prev().val();
+            if(loc == ""){
+                return false;
+            }
+            self.model.testCampInput("soldierArrange",{type:"soldierAdd",num:num,value:{loc:loc}});
         });
         //进攻输入
         $(".campAttInp").attr("disabled","disabled");
