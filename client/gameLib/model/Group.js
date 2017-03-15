@@ -3,6 +3,7 @@
  */
 define(function (require) {
     var GroupEdit = require("./GroupEdit");
+    var GUID = require("baBasicLib/util/GUID");
 
     function Group(campId,soldierInfo){
         this.id = -1;
@@ -27,11 +28,14 @@ define(function (require) {
     Group.prototype = {
         initialize:function(sI){
             if(sI){
-                this.id = sI.id
+                this.id = sI.id;
                 this.num = sI.num;
                 this.loc = sI.loc;
                 this.campId = sI.campId;
                 this.name = sI.name;
+            }
+            if(!this.id){
+                this.id = GUID();
             }
         },
         setProperty:function(type,value){

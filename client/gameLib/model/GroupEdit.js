@@ -3,9 +3,9 @@
  */
 define(function(require){
     var GUID = require("baBasicLib/util/GUID");
-    function GroupEdit(){
+    function GroupEdit(type){
         this.id = GUID();
-        this.type = "default";
+        this.type = type||"default";
         this.args = [];
     }
     GroupEdit.prototype = {
@@ -19,4 +19,6 @@ define(function(require){
             }
         }
     }
+
+    return GroupEdit;
 })

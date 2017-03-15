@@ -20,13 +20,6 @@ define(function (require) {
     }
 
     Camp.prototype = {
-        addGroup:function(group){
-            this.groupList.push(group);
-            var edit = new GroupEdit("groupAdd");
-            edit.addArg(group.id);
-            edit.addArg(group.loc);
-            return edit;
-        },
         getSoldierPool:function(){
             return this.soldierPool;
         },
@@ -42,6 +35,14 @@ define(function (require) {
             }
             throw new Error("can't find the groupInfo with the num input");
             return null;
+        },
+        addGroup:function(group){
+            this.groupList.push(group);
+            this.model.battleGround.addGroup(group);
+            var edit = new GroupEdit("groupAdd");
+            edit.addArg(group.id);
+            edit.addArg(group.loc);
+            return edit;
         },
         divideGroup:function(group,value){
 
@@ -82,6 +83,18 @@ define(function (require) {
             for(var i = 0;i<groupList.length;i++){
                 edit.addArg(groupList[i]);
             }
+            return edit;
+        },
+        soldierRecruitment:function(num,info){
+            var soldier = this.soldierPool[num];
+            if(!soldier){return null;}
+            soldier.num -= info.num;
+            if(soldier.num <= 0) {
+                this.soldierPool.splice(num, 1);
+            }
+            var edit = new GroupEdit("soldierRecruitment");
+            edit.addArg(soldier.type);
+            edit.addArg(info.num);
             return edit;
         },
         getCampInfo:function(){

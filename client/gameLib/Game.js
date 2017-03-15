@@ -240,11 +240,12 @@ define(function(require){
 
         var selfCamp = this.getSelfCamp();
         if(selfCamp){
-            var operate;
+            var operate,operate1;
             if(type == "groupAdd"){
                 var groupInfo = selfCamp.getGroupInfoFromSoldierPool(num);
                 var group = groupManager.generateGroupByType(groupInfo.type,selfCamp,value);
-                operate = selfCamp.addGroup(group);
+                operate = selfCamp.soldierRecruitment(num,value);
+                operate1 = selfCamp.addGroup(group);
             }else{
                 var group = selfCamp.getGroupByNum(num);
                 if(type == "groupSep"){
@@ -254,13 +255,18 @@ define(function(require){
                     operate = group.setProperty(type,value);
                 }
             }
-            this.user.addEdit(operate);
+            if(operate){
+                this.user.addEdit(operate);
+            }
+            if(operate1){
+                this.user.addEdit(operate1);
+            }
             this.addEventToPool("campChange",null);
         }
     };
     Game.prototype.submitStrategy = function(){
-        var campInfo = this.user.camp.getCampInfo();
-        var editInfo = this.user.camp.getEditListInfo();
+        //var campInfo = this.user.camp.getCampInfo();
+        var editInfo = this.user.getEditListInfo();
         var info = {
             type:"testCampSubmit",
             detail:editInfo

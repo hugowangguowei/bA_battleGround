@@ -50,6 +50,19 @@
     margin-left: 10px;
 }
 
+
+.soldierTypeBtn{
+    width:60px;
+    background-color: #ffe87c;
+}
+.soldierNumBtn{
+    margin-left: 10px;
+    width: 40px;
+    background-color: #b7e6d3;
+}
+.soldierLocInp{
+    width: 30px;
+}
 .campNameBtn{
     width: 60px;
     background-color: #00B7FF;

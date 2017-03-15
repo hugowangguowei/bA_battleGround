@@ -136,7 +136,8 @@ define(function(require){
             if(loc == ""){
                 return false;
             }
-            self.model.testCampInput("soldierArrange",{type:"soldierAdd",num:num,value:{loc:loc}});
+            var soldierNum = $(this).prev().prev().val();
+            self.model.testCampInput("soldierArrange",{type:"groupAdd",num:num,value:{num:soldierNum,loc:loc}});
         });
         //进攻输入
         $(".campAttInp").attr("disabled","disabled");
