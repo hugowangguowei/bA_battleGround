@@ -42,11 +42,11 @@ SoldierPool.prototype = {
         var type = args[0];
         var soldiers = this.soldierList[type];
         var soldierNum = soldiers.length;
-        var recruitNum = args[1];
+        var recruitNum = parseInt(args[1]);
         if(recruitNum > soldierNum){
             recruitNum = soldierNum;
         }
-        var recruitSoldier = this.soldierList.splice(0,recruitNum);
+        var recruitSoldier = this.soldierList[type].splice(0,recruitNum);
         var reserveSoldier = {
             groupId:args[2],
             type:type,
@@ -74,7 +74,9 @@ SoldierPool.prototype = {
         for(var type in this.soldierList){
             sArray = this.soldierList[type];
             var len = sArray.length;
-            info.push({type:type,num:len});
+            if(len){
+                info.push({type:type,num:len});
+            }
         }
         return info;
     }

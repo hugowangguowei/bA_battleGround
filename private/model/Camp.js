@@ -63,11 +63,11 @@ Camp.prototype = {
             case 0:
                 oriNum = 0;
                 break;
-            case 2:
-                oriNum = 8;
+            case 1:
+                oriNum = 2;
                 break;
         }
-        for(var i = oriNum;i<2;i++){
+        for(var i = oriNum;i<oriNum+2;i++){
             for(var p = 2;p<8;p++){
                 var block_i = this.battleGround.getBlockByXY(i,p);
                 var blockInfo = block_i.getOutPut();
@@ -102,16 +102,6 @@ Camp.prototype = {
     setCampByClientSubmit:function(campInfo){
         var soldierInfo_i,group_i,soldier_p;
 
-        //for(var i = 0;i<campInfo.length;i++){
-        //    soldierInfo_i = campInfo[i];
-        //    group_i = this.groupManager.getGroupBySoldierType(soldierInfo_i.type);
-        //    if(!group_i)continue;
-        //    var soldierList = group_i.getSoldierList();
-        //    for(var p = 0;p<soldierList.length;p++){
-        //        soldier_p = soldierList[p];
-        //        soldier_p.updatePropByOrder(soldierInfo_i);
-        //    }
-        //}
         var self = this;
         var editInfo_i,group_i;
         for(var i = 0;i<campInfo.length;i++){

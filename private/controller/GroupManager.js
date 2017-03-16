@@ -42,7 +42,7 @@ p.generateGroupByType = function(type){
 p.generateGroupBySubmit = function(args){
     var group = new Group(this.camp);
     var groupId = args[0];
-    var groupLoc = args[1];
+    var groupLoc = parseInt(args[1]);
     var groupType = args[2];
     group.id = groupId;
     group.loc = groupLoc;
@@ -53,6 +53,9 @@ p.generateGroupBySubmit = function(args){
             group.addSoldier(soldierList[i]);
         }
     }
+    this.groupList.push(group);
+
+    return group;
 };
 p.addGroupBySoldierType = function(type){
     var group = new Group(this.camp);
