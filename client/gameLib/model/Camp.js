@@ -74,17 +74,24 @@ define(function (require) {
                     }
                 }
             }
-            this.model.battleGround.deleteGroup(group);
-            for(var i = 0;i<groupList.length;i++){
-                this.model.battleGround.addGroup(groupList[i]);
+            var result = this.model.battleGround.deleteGroup(group);
+            //如果成功删除了父group，则继续添加子group
+            if(result){
+                for(var i = 0;i<groupList.length;i++){
+                    var result2 = this.model.battleGround.addGroup(groupList[i]);
+                    if(!result2){
+                        return false;
+                    }
+                }
+                var edit = new GroupEdit("groupSep");
+                edit.addArg(group.id);
+                for(var i = 0;i<groupList.length;i++){
+                    edit.addArg(groupList[i]);
+                }
+                return edit;
             }
-
-            var edit = new GroupEdit("groupSep");
-            edit.addArg(group.id);
-            for(var i = 0;i<groupList.length;i++){
-                edit.addArg(groupList[i]);
-            }
-            return edit;
+            //如果删除父group失败，则直接返回false
+            return false;
         },
         soldierRecruitment:function(num,info,groupId){
             var soldier = this.soldierPool[num];

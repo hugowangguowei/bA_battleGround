@@ -61,6 +61,7 @@ define(function(require){
         addGroup:function(group){
             this.groupList.push(group);
             this.blockShape3DDirty = true;
+            return true;
         },
         deleteGroup:function(group){
             for(var i = 0;i<this.groupList.length;i++){

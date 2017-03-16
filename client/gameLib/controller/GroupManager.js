@@ -14,17 +14,17 @@ define(function(require){
     }
 
     GroupManager.prototype = {
-        generateGroupByType:function(type,camp,soldierInfo){
+        generateGroupByType:function(type,campId,soldierInfo){
             var group;
             switch(type){
                 case "footMan":
-                    group = new FootMan(camp,soldierInfo);
+                    group = new FootMan(campId,soldierInfo);
                     break;
                 case "archer":
-                    group = new Archer(camp,soldierInfo);
+                    group = new Archer(campId,soldierInfo);
                     break;
                 case "knight":
-                    group = new Knight(camp,soldierInfo);
+                    group = new Knight(campId,soldierInfo);
                     break;
             }
             return group;

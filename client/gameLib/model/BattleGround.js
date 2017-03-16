@@ -88,14 +88,20 @@ define(function (require) {
             var block = this.getBlockByLoc(loc);
             if(block){
                 block.addGroup(group);
+                return true;
             }
+            return false;
         },
         deleteGroup:function(group){
             var loc = group.loc;
             var block = this.getBlockByLoc(loc);
             if(block){
-                block.deleteGroup(group);
+                if(block.deleteGroup(group)){
+                    return true;
+                };
+                return false;
             }
+            return false;
         }
     }
 

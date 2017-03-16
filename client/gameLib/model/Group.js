@@ -31,7 +31,6 @@ define(function (require) {
                 this.id = sI.id;
                 this.num = sI.num;
                 this.loc = sI.loc;
-                this.campId = sI.campId;
                 this.name = sI.name;
             }
             if(!this.id){
