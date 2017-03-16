@@ -103,16 +103,28 @@ define(function(require){
             )
             campList.append(sDTag);
 
+            //设置类型
             var type = sDTag.children()[0];
             type.value = soldier_i.type;
+            //设置数量
             var num = sDTag.children()[1];
             num.value = soldier_i.num;
+            //设置进攻位置
             var loc = sDTag.children()[2];
-            loc.value = soldier_i.loc;
+            var aimLoc = soldier_i.aimLoc;
+            var oriLoc = soldier_i.loc;
+            if(aimLoc >= 0){
+                loc.value = aimLoc;
+            }else{
+                loc.value = oriLoc;
+            }
+            //设置是否攻击
             var att = sDTag.children()[3];
             $(att).attr("disabled",false);
+            //设置攻击位置
             var attLoc = sDTag.children()[4];
             attLoc.value = "";
+            //设置是否防守
             var def = sDTag.children()[5];
             $(def).attr("disabled",false);
             count++;
