@@ -10,6 +10,7 @@ function SoldierPool(camp){
     this.id = GUID.getGUID();
     this.camp = camp;
     this.soldierList = {};
+    this.reserveList = [];
 
 }
 SoldierPool.prototype = {
@@ -31,6 +32,42 @@ SoldierPool.prototype = {
         }
         this.soldierList[type].push(sprite);
     },
+    /**
+     * 征召士兵
+     * 被征召的士兵
+     * @param args{[type,num,groupId]}分别表示征召的士兵类型和数量
+     * @returns {boolean}
+     */
+    recruitment:function(args){
+        var type = args[0];
+        var soldiers = this.soldierList[type];
+        var soldierNum = soldiers.length;
+        var recruitNum = args[1];
+        if(recruitNum > soldierNum){
+            recruitNum = soldierNum;
+        }
+        var recruitSoldier = this.soldierList.splice(0,recruitNum);
+        var reserveSoldier = {
+            groupId:args[2],
+            type:type,
+            list:recruitSoldier
+        }
+        this.reserveList.push(reserveSoldier);
+        return true;
+    },
+    getReserveList:function(){
+        return this.reserveList;
+    },
+    getReserveSoldierByGroupId:function(id){
+        for(var i = 0;i<this.reserveList.length;i++){
+            var rL = this.reserveList[i];
+            if(rL.groupId == id){
+                this.reserveList.splice(i,1);
+                return rL.list;
+            }
+        }
+        return false;
+    },
     getSoldierPoolInfo:function(){
         var info = [];
         var sArray;
@@ -41,5 +78,6 @@ SoldierPool.prototype = {
         }
         return info;
     }
+
 
 }

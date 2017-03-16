@@ -42,6 +42,7 @@ define(function (require) {
             var edit = new GroupEdit("groupAdd");
             edit.addArg(group.id);
             edit.addArg(group.loc);
+            edit.addArg(group.type);
             return edit;
         },
         divideGroup:function(group,value){
@@ -85,7 +86,7 @@ define(function (require) {
             }
             return edit;
         },
-        soldierRecruitment:function(num,info){
+        soldierRecruitment:function(num,info,groupId){
             var soldier = this.soldierPool[num];
             if(!soldier){return null;}
             soldier.num -= info.num;
@@ -95,6 +96,7 @@ define(function (require) {
             var edit = new GroupEdit("soldierRecruitment");
             edit.addArg(soldier.type);
             edit.addArg(info.num);
+            edit.addArg(groupId);
             return edit;
         },
         getCampInfo:function(){

@@ -244,7 +244,7 @@ define(function(require){
             if(type == "groupAdd"){
                 var groupInfo = selfCamp.getGroupInfoFromSoldierPool(num);
                 var group = groupManager.generateGroupByType(groupInfo.type,selfCamp,value);
-                operate = selfCamp.soldierRecruitment(num,value);
+                operate = selfCamp.soldierRecruitment(num,value,group.id);
                 operate1 = selfCamp.addGroup(group);
             }else{
                 var group = selfCamp.getGroupByNum(num);

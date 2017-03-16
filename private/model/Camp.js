@@ -116,8 +116,12 @@ Camp.prototype = {
         var editInfo_i,group_i;
         for(var i = 0;i<campInfo.length;i++){
             editInfo_i = campInfo[i];
-            if(editInfo_i.type == "groupAdd"){
-                var group = this.groupManager.generateGroupByType(editInfo_i.args[1]);
+
+            if(editInfo_i.type == "soldierRecruitment"){
+                this.soldierPool.recruitment(editInfo_i.args);
+            }
+            else if(editInfo_i.type == "groupAdd"){
+                var group = this.groupManager.generateGroupBySubmit(editInfo_i.args);
                 this.battleGround.groupAdd(group,editInfo_i);
             }
             else{

@@ -35,7 +35,24 @@ p.getGroupBySoldierType = function(type){
 p.generateGroupByType = function(type){
     var group = new Group(this.camp);
     group.type = type;
+    this.groupList.push(group);
     return group;
+};
+
+p.generateGroupBySubmit = function(args){
+    var group = new Group(this.camp);
+    var groupId = args[0];
+    var groupLoc = args[1];
+    var groupType = args[2];
+    group.id = groupId;
+    group.loc = groupLoc;
+    group.type = groupType;
+    var soldierList = this.camp.soldierPool.getReserveSoldierByGroupId(groupId);
+    if(soldierList){
+        for(var i = 0;i<soldierList.length;i++){
+            group.addSoldier(soldierList[i]);
+        }
+    }
 };
 p.addGroupBySoldierType = function(type){
     var group = new Group(this.camp);
