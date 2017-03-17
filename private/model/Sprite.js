@@ -75,6 +75,13 @@ Sprite.prototype = {
     },
     setGroup:function(group){
         this._t_group = group;
+        var loc = group.getLoc();
+        this.setLoc(loc);
+        var camp = group.getCamp();
+        this.setCamp(camp);
+    },
+    setLoc:function(loc){
+        this._t_loc = loc;
     },
     getGroup:function(){
         return this._t_group;
