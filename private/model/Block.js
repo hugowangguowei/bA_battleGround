@@ -91,6 +91,13 @@ Block.prototype = {
         }
     },
     /**
+     * 战后重整
+     * @param battleGround
+     */
+    reform:function(battleGround){
+        this.reformGroupsInBlock();
+    },
+    /**
      * 获取本block内一个随机soldier
      */
     getRandomEnemySoldier:function(myCampId){
@@ -119,7 +126,7 @@ Block.prototype = {
      * 视野注册
      */
     sightRegister:function(){
-        var groupList = this.getGroupsInBlock();
+        var groupList = this.groupList;
         var group_i;
         outerLoop:
             for(var i = 0;i<groupList.length;i++){
@@ -208,13 +215,16 @@ Block.prototype = {
         return campList;
     },
     /**
-     * 获取当前块的小队信息
+     * 重组当前block的小组信息
      * @returns {Array}
      */
-    getGroupsInBlock:function(){
+    reformGroupsInBlock:function(){
         var groupList = [];
         var group_p;
-        if(!this.soldierList.length)return groupList;
+        if(!this.soldierList.length){
+            this.groupList = [];
+            return groupList;
+        }
         outerLoop:
             for(var i = 0;i<this.soldierList.length;i++){
                 var soldier_i = this.soldierList[i];
@@ -231,7 +241,10 @@ Block.prototype = {
                             break innerLoop;
                         }
                     }
-                if(!isExist)groupList.push(group);
+                if(!isExist){
+                    group.setPropBySoldier(soldier_i);
+                    groupList.push(group);
+                }
             }
         this.groupList = groupList;
         return groupList;

@@ -245,6 +245,7 @@ Game.prototype.addPlayer = function(client,charaType,clientType){
         client.socket.emit(SMT.TEST,{type:"testCampInit",detail:campInfo});
         this._playerNum++;
         if(this._playerNum == 2){
+
             routineManager.changeRoutine("playerOperate");
         }
     }

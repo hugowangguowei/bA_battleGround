@@ -266,13 +266,13 @@ define(function(require){
 
     };
     Game.prototype.submitStrategy = function(){
-        //var campInfo = this.user.camp.getCampInfo();
         var editInfo = this.user.getEditListInfo();
         var info = {
             type:"testCampSubmit",
             detail:editInfo
         }
         WSM.sendMsg("gameInput",info);
+        this.user.cleanEdit();
     }
     Game.prototype.testClockInput = function(info){
         this.addEventToPool("clockChange",info);

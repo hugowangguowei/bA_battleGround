@@ -16,6 +16,9 @@ define(function (require) {
         addEdit:function(op){
             this.editList.push(op);
         },
+        cleanEdit:function(){
+            this.editList = [];
+        },
         /**
          * 获取编辑操作队列
          * editList中的每个元素，都是GroupEdit

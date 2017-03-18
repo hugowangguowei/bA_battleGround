@@ -50,20 +50,18 @@ BattleGround.prototype = {
         var block = this.blockList[group.getLoc()];
         if(!block){return false;}
 
+        //该判断主要用作用户的输入检测和过滤
         switch (type){
             case "att":
-                group.order = "attack";
                 break;
             case "def":
-                group.order = "defend";
                 break;
             case "loc":
-                group.aimLoc = args[1];
                 break;
             case "attLoc":
-                group.attLoc = args[1];
                 break;
         }
+        group.setProp(type,args);
 
         return true;
     },
@@ -166,7 +164,13 @@ BattleGround.prototype = {
                 soldier.t_action(this);
             }
         }
+
+        for(var i = 0;i<this.blockList.length;i++){
+            block = this.blockList[i];
+            block.reform(this);
+        }
     },
+
     /**
      * 数据统计
      */

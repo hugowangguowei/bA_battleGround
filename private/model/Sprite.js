@@ -80,11 +80,27 @@ Sprite.prototype = {
         var camp = group.getCamp();
         this.setCamp(camp);
     },
+    getGroup:function(){
+        return this._t_group;
+    },
     setLoc:function(loc){
         this._t_loc = loc;
     },
-    getGroup:function(){
-        return this._t_group;
+    setProp:function(type,args){
+        switch (type){
+            case "att":
+                this._t_order = "attack";
+                break;
+            case "def":
+                this._t_order = "defend";
+                break;
+            case "loc":
+                this._t_aimLoc = args[1];
+                break;
+            case "attLoc":
+                this._t_attLoc = args[1];
+                break;
+        }
     },
     updatePropByOrder:function(info){
         var loc,order,antiOrder,obey,brave,aimLoc,attLoc;

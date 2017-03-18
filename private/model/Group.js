@@ -40,6 +40,31 @@ Group.prototype = {
     getSoldierNum:function(){
         return this.soldierList.length;
     },
+    setProp:function(type,args){
+        switch (type){
+            case "att":
+                this.order = "attack";
+                break;
+            case "def":
+                this.order = "defend";
+                break;
+            case "loc":
+                this.aimLoc = args[1];
+                break;
+            case "attLoc":
+                this.attLoc = args[1];
+                break;
+        }
+        var soldier_i;
+        for(var i = 0;i< this.soldierList.length;i++){
+            soldier_i = this.soldierList[i];
+            soldier_i.setProp(type,args);
+        }
+    },
+    setPropBySoldier:function(soldier){
+        this.loc = soldier._t_loc;
+        this.order = soldier._t_order;
+    },
     addSoldier:function(soldier){
         if(!this._isSightInit){
             this.initSight(soldier);
