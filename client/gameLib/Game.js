@@ -215,17 +215,10 @@ define(function(require){
         this.battleGround.setVBByServer(blockInfo);
 
         //camp信息更新(士兵更新）
-        var soldierList = campInfo.solderDetail;
-        var soldier_i;
         var selfCamp = this.getSelfCamp();
-        selfCamp.groupList = [];
-        for(var i in soldierList){
-            var soldierInfo = soldierList[i];
-            soldier_i = groupManager.generateGroupByType(soldierInfo.type,selfCamp.id,soldierInfo);
-            if(soldier_i){
-                selfCamp.addGroup(soldier_i);
-            }
-        };
+        var soldierList = campInfo.solderDetail;
+        selfCamp.refreshGroupByServer(soldierList);
+
         //camp信息更新（soldierPool更新）
         var soldierPoolInfo = campInfo.soldierPoolInfo;
         selfCamp.soldierPool = soldierPoolInfo;

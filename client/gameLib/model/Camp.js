@@ -6,6 +6,7 @@
 define(function (require) {
     var baLib = require("baBasicLib/util/baLib");
     var GUID = require("baBasicLib/util/GUID");
+    var groupManager = require("gameLib/controller/GroupManager").getInstance();
     var GroupEdit = require("./GroupEdit");
 
     function Camp(model,id){
@@ -35,6 +36,16 @@ define(function (require) {
             }
             throw new Error("can't find the groupInfo with the num input");
             return null;
+        },
+        refreshGroupByServer:function(groupList){
+            this.groupList = [];
+            for(var i in groupList){
+                var groupInfo_i = groupList[i];
+                var group_i = groupManager.generateGroupByType(groupInfo_i.type,this.id,groupInfo_i);
+                if(group_i){
+                    this.groupList.push(group_i);
+                }
+            };
         },
         addGroup:function(group){
             this.groupList.push(group);
