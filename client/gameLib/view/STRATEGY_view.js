@@ -113,6 +113,7 @@ define(function(require){
             var loc = sDTag.children()[2];
             var aimLoc = soldier_i.aimLoc;
             var oriLoc = soldier_i.loc;
+            console.log("c");
             if(aimLoc >= 0){
                 loc.value = aimLoc;
             }else{
@@ -136,7 +137,6 @@ define(function(require){
             '</div>'
         );
         campList.append(sDSub);
-
 
         //绑定函数======================================================================================================
         //从士兵池中输入数据
@@ -182,6 +182,7 @@ define(function(require){
         });
         //位置更改
         $(".campLocInp").bind('input propertychange', function() {
+            console.log("a");
             var parent = $(this).parent();
             var id = parent.attr("id");
             var num = id.split("_")[1];

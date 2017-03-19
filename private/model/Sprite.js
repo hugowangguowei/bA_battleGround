@@ -142,25 +142,24 @@ Sprite.prototype = {
         var aimLoc = this._t_aimLoc;
         var attLoc = this._t_attLoc;
         var campId = this.getCamp().getCampId();
+        //先进行移动
         if(aimLoc >= 0){
-            var block = bg.getBlockByLoc(aimLoc);
-            var aimSoldier = block.getRandomEnemySoldier(campId);
-            if(aimSoldier){
-                console.log("攻击一个 " + aimSoldier.type);
-                aimSoldier.getDamage(this._t_damage);
-            }
-            else{
-                console.log("没有找到攻击目标,移动到" + aimLoc)
-                this._moveToBlock(bg,this._t_loc,aimLoc);
-
-            }
+            this._moveToBlock(bg,this._t_loc,aimLoc);
         }
-        else if(attLoc >= 0){
-            var block = bg.getBlockByLoc(attLoc);
+
+        var finalAttLoc = -1;
+        if(attLoc >= 0){
+            finalAttLoc = attLoc;
+        }else if(aimLoc>= 0){
+            finalAttLoc = aimLoc;
+        }
+        if(finalAttLoc >= 0){
+            var block = bg.getBlockByLoc(finalAttLoc);
             var aimSoldier = block.getRandomEnemySoldier(campId);
             if(aimSoldier){
                 aimSoldier.getDamage(this._t_damage);
             }
+        }else{
         }
     },
     /**

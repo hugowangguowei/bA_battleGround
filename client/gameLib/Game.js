@@ -248,6 +248,7 @@ define(function(require){
                     operate = selfCamp.divideGroup(group,value);
                 }
                 else{
+                    console.log("b");
                     operate = group.setProperty(type,value);
                 }
             }
