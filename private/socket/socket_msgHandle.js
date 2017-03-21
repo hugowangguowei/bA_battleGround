@@ -92,7 +92,12 @@ exports.clientHandle = function(){
         }},
         //测试数据
         {msgName:'test',msgFunc:function(info){
-            var game = GM.getGameByUser(this);
+            var client = CM.getClientBySocketId(this.id);
+            if(!client._test_count){
+                client._test_count = 0;
+            }
+            client._test_count ++;
+            this.emit('testReturn',client._test_count);
         }},
         //调试
         {msgName:CMT.DEBUG,msgFunc:function(info) {
