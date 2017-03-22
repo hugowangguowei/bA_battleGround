@@ -7,8 +7,8 @@ define(function(require){
     var SSIT = require('gameLib/webSocket/WS_msgDefine').SSIT;
 
     return {
-        WS_URL:'http://badventure.duapp.com:80',
-        //WS_URL:'localhost:18080',
+        //WS_URL:'http://babattleground.duapp.com:80',
+        WS_URL:'ws://localhost:18080',
         msgHandleList:[
             {msgName:SMT.SYSTEM_INFORM,msgFunc:function(msgInfo){
                 /**msgInfo的标准格式如下：
