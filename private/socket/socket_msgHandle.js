@@ -32,6 +32,11 @@ exports.clientHandle = function(){
                 _socket.emit('basicConnectReturn',serverInfo);
             }
         }},
+        //请求游戏列表
+        {msgName:CMT.GET_GAME_LIST,msgFunc:function(){
+            var gameList = GM.getGameList();
+            this.emit(SMT.GAME_LIST_RETURN,gameList);
+        }},
         //开始游戏
         {msgName:CMT.START_GAME,msgFunc:function(map){
             var client = CM.getClientBySocketId(this.id);
@@ -62,7 +67,8 @@ exports.clientHandle = function(){
             }
             var game = GM.getGameByID(gameID);
             var chara = gameInfo.charaType;
-            game.addPlayer(client,chara);
+            var clientType = gameInfo.clientType;
+            game.addPlayer(client,chara,clientType);
         }},
         //结束游戏
         {msgName:CMT.CLOSE_GAME,msgFunc:function(gameInfo){

@@ -9,6 +9,7 @@
 var CMT = {
     DISCONNECT:'disconnect',
     BASIC_CONNECT:'basicConnect',
+    GET_GAME_LIST:'getGameList',
     START_GAME:'startGame',
     JOIN_GAME:'joinGame',
     CLOSE_GAME:'closeGame',
@@ -26,6 +27,8 @@ var SMT = {
     SYSTEM_INFORM : "system_inform",
     //基本连接返回值
     BASIC_CONNECT_RETURN : "basicConnectReturn",
+    //游戏列表返回值
+    GAME_LIST_RETURN : "gameListReturn",
     //游戏消息
     GAME_INFO:'gameInfo',
     //游戏同步
@@ -46,9 +49,9 @@ exports.SERVER_MSG_TYPE = SMT;
 var SSIT ={
     //通知
     INFORM:"inform",
-    //加入游戏成功
-    JOIN_GAME_FAIL:"joinFail",
     //加入游戏失败
+    JOIN_GAME_FAIL:"joinFail",
+    //加入游戏成功
     JOIN_GAME_SUC:"joinSuc",
     //用户输入成功
     PLAYER_INPUT_FAIL:"playerInputFail",

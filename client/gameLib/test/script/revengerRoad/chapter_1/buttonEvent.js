@@ -180,7 +180,7 @@ function test4(){
     var gameID = $("#roomSelect").val();
     var charaType = $("#charaSelect").val();
     console.log(charaType);
-    WSM.webSocket.emit('joinGame',{gameID:gameID,charaType:charaType});
+    WSM.webSocket.emit('joinGame',{gameID:gameID,charaType:"commander",clientType:"commander"});
 }
 
 //关闭一个游戏

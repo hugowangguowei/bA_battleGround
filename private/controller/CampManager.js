@@ -32,6 +32,15 @@ p.generateOneCamp = function(commander){
 p.getCampList = function(){
     return this.campList;
 };
+p.getCampListInfo = function(){
+    var campInfoList = [];
+    for(var i in this.campList){
+        var camp_i = this.campList[i];
+        var campInfo_i = camp_i.getCampInfo;
+        campInfoList.push(campInfo_i);
+    }
+    return campInfoList;
+};
 /**
  * 战斗完成后统计
  */

@@ -35,6 +35,10 @@ function Game(initInfo){
     this.playerList = {};
     //玩家数量
     this._playerNum = 0;
+    //指挥官列表
+    this._commanderList = [];
+    //士兵列表
+    this._soldierList = [];
     //阵营列表
     this.campManager = null;
     //精灵列表
@@ -230,24 +234,37 @@ Game.prototype._checkTimer = function(){
  * @param ws
  */
 Game.prototype.addPlayer = function(client,charaType,clientType){
-    //TODO 测试状态，只允许两个玩家进入
-    if(this._playerNum > 1)return ;
-
     var self = this;
-    //在事件监听器中添加ws
-    this._eventList.push(client);
-    client.game = this;
-    this.playerList[client.UNI_id] = client;
-    //TODO 如果作为指挥官加入，则添加阵营
-    if(true){
-        var camp = this.campManager.generateOneCamp(client);
-        var campInfo = client.camp.getCampInfo();
-        client.socket.emit(SMT.TEST,{type:"testCampInit",detail:campInfo});
-        this._playerNum++;
-        if(this._playerNum == 2){
+    //TODO 检测是否可以加入玩家
+    //TODO 测试状态，只允许两个玩家进入
+    if(clientType == "commander"){
+        addCommander();
+    }else{
+        addSoldier();
+    }
 
+    //添加一个指挥官
+    function addCommander(){
+        var len = self._commanderList.length;
+        if(len >= 2){
+            client.socket.emit(SMT.SYSTEM_INFORM,{type:SSIT.JOIN_GAME_FAIL,detail:"commander is full"});
+            return null;
+        }
+        client.game = self;
+        self._eventList.push(client);
+        self.playerList[client.UNI_id] = client;
+        self._playerNum++;
+
+        var camp = self.campManager.generateOneCamp(client);
+        var campInfo = camp.getCampInfo();
+        client.socket.emit(SMT.TEST,{type:"testCampInit",detail:campInfo});
+        if(self._commanderList.length == 2){
             routineManager.changeRoutine("playerOperate");
         }
+    }
+    //添加一个士兵
+    function addSoldier(){
+
     }
 
 };
@@ -497,15 +514,13 @@ Game.prototype.clientDebug = function(info){
  * 获取游戏的简单信息
  */
 Game.prototype.getGameInfo = function(){
-    var sprite;
-    for(var i in this.spriteList){
-        sprite = this.spriteList[i];
-        if(sprite.controllable&&!sprite.controller){
-            this.gameInfo.charaControl[sprite.type] = true;
-        }
-    }
-    return this.gameInfo;
+    var gameInfo = {};
+    var gameId = this.id;
+    var campListInfo = this.campManager.getCampListInfo();
+    gameInfo.gameId = gameId;
+    gameInfo.campListInfo = campListInfo;
 
+    return gameInfo;
 }
 /**
  * 测试代码——当{sprite}死亡的时候将该对象的id推入记录

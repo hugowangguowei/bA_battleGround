@@ -68,5 +68,14 @@ GameManager.prototype = {
             gameList.push(gameInfo);
         }
         return gameList;
+    },
+    getGameList:function(){
+        var gameList = [];
+        for(var i = 0;i<this.gameList.length;i++){
+            var game_i = this.gameList[i];
+            var gameInfo = game_i.getGameInfo();
+            gameList.push(gameInfo);
+        }
+        return gameList;
     }
 }
